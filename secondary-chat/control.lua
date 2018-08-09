@@ -6,17 +6,7 @@
 
 local mod = {}
 
-global.secondary_chat = global.secondary_chat or {}
-global.secondary_chat.state_chat = global.secondary_chat.state_chat or true
-global.secondary_chat.settings = global.secondary_chat.settings or {}
-global.secondary_chat.settings.limit_characters =  global.secondary_chat.settings.limit_characters or 73 * 14 --1022
-global.secondary_chat.players = global.secondary_chat.players or {}
-global.secondary_chat.players.settings = global.secondary_chat.players.settings or {}
-global.secondary_chat.players.info = global.secondary_chat.players.info or {}
-global.secondary_chat.global = global.secondary_chat.global or {}
-global.secondary_chat.global.settings = global.secondary_chat.global.settings or {}
-global.secondary_chat.global.info = global.secondary_chat.global.info or {}
-global.secondary_chat.global.list = global.secondary_chat.global.list or {}
+chats = {}
 chat_events =
 {
   on_console_chat = script.generate_event_name(),
@@ -67,8 +57,8 @@ remote.add_interface('secondary-chat',
   end,]]--
   update_gui = function()
     for _, player in pairs( game.connected_players ) do
-      if player.gui.left.table_chat then
-        destroy_chat_gui(player)
+      local table_chat = player.gui.left.table_chat
+      if table_chat and table_chat.style.visible ~= false then
         create_chat_gui(player)
       end
     end
@@ -91,7 +81,7 @@ remote.add_interface('secondary-chat',
 })
 
 mod.on_configuration_changed = function(event)
-  update_global_config()
+
 end
 
 mod.on_gui_click = function(event)
@@ -124,15 +114,8 @@ mod.on_player_created = function(event)
 end
 
 mod.on_player_removed = function(event)
-  local target = game.players[event.player_index]
-  global.secondary_chat.players[event.player_index].settings = nil
-  for _, player in pairs( game.connected_players ) do
-    local table_chat = player.gui.left.table_chat
-    if table_chat and table_chat.style.visible then
-      create_chat_gui(player)
-      --sc_change_button_allied(player)
-    end
-  end
+  global.secondary_chat.players[event.player_index] = nil
+  update_chat_gui()
 end
 
 mod.on_gui_checked_state_changed = function(event)
@@ -140,6 +123,7 @@ mod.on_gui_checked_state_changed = function(event)
   if not (gui and gui.valid) then return end
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   local parametr = string.match(gui.name, "(.+)_boolean")
   if parametr then
     update_checkbox(player, gui, parametr)
@@ -151,6 +135,7 @@ mod.on_gui_selection_state_changed = function(event)
   if not (gui and gui.valid) then return end
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   if gui.name == 'chat_drop_down' and gui.parent.parent.name == 'select_chat' then
     update_chat_and_drop_down(gui, player)
   end
@@ -167,6 +152,7 @@ end
 mod.on_player_demoted = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   local table_chat = player.gui.left.table_chat
   if table_chat and table_chat.settings.admin then
     table_chat.settings.admin.clear()
@@ -175,6 +161,7 @@ end
 
 mod.on_round_start = function()
   if not global.secondary_chat.state_chat then return end
+
   for _, player in pairs( game.players ) do
     create_chat_gui(player)
   end
@@ -182,23 +169,32 @@ end
 
 mod.on_round_end = function()
   if not global.secondary_chat.state_chat then return end
+
   for _, player in pairs( game.players ) do
     destroy_chat_gui(player)
   end
 end
 
+
 mod.on_init = function()
-  update_global_config()
+  global_init()
+
+  chats = global.secondary_chat.chats
+  init_chats()
+  add_commands()
 end
 
 mod.on_load = function()
-  init_chats()
-  add_commands()
+  if global.secondary_chat and global.secondary_chat.chats then
+    chats = global.secondary_chat.chats
+    add_commands()
+  end
 end
 
 mod.on_player_joined_game = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   if global.secondary_chat.players[event.player_index] then
     color_picker.destroy_gui(player)
     local table_chat = player.gui.left.table_chat
@@ -211,12 +207,16 @@ mod.on_player_joined_game = function(event)
   else
     update_global_config_player(player)
   end
+
+  update_chat_gui()
 end
 
 mod.on_player_left_game = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   color_picker.destroy_gui(player)
+
   local table_chat = player.gui.left.table_chat
   if table_chat then
     table_chat.style.visible = false
@@ -224,24 +224,11 @@ mod.on_player_left_game = function(event)
 end
 
 mod.on_player_changed_force = function(event)
-  --local target = game.players[event.player_index]
-  for _, player in pairs ( game.connected_players ) do
-    local table_chat = player.gui.left.table_chat
-    if table_chat and table_chat.style.visible then
-      create_chat_gui(player)
-      --sc_change_button_allied(player)
-    end
-  end
+  update_chat_gui()
 end
 
 mod.on_forces_merging = function(event)
-  for _, player in pairs ( game.connected_players ) do
-    local table_chat = player.gui.left.table_chat
-    if table_chat and table_chat.style.visible then
-      create_chat_gui(player)
-      --sc_change_button_allied(player)
-    end
-  end
+  update_chat_gui()
 end
 
 -- For soft-mods, scenarios, interfaces
