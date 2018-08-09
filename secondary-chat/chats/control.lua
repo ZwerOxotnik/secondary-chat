@@ -14,7 +14,6 @@ if global.secondary_chat.chats == nil then
 end
 
 chats = global.secondary_chat.chats
-log(serpent.block(chats))
 
 data = {}
 data.chat = {}
