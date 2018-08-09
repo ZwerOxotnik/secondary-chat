@@ -1,12 +1,12 @@
 {
     "name": "secondary-chat",
-    "version": "1.9.0",
+    "version": "1.9.1",
     "factorio_version": "0.16",
     "title": "Secondary chat [experimental]",
     "author": "ZwerOxotnik",
     "contact": "zweroxotnik@gmail.com",
     "homepage": "https://mods.factorio.com/mod/secondary-chat",
-    "description": "Adds a gui secondary chat and new commands with new chats.",
+    "description": "Adds gui of chat, new commands, new types of chat..",
     "dependencies": 
     [
         "? color-picker16",
