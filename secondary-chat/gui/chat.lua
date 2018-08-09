@@ -5,6 +5,15 @@ function destroy_chat_gui(player)
   end
 end
 
+function update_chat_gui()
+  for _, player in pairs ( game.connected_players ) do
+    local table_chat = player.gui.left.table_chat
+    if table_chat and table_chat.style.visible then
+      create_chat_gui(player)
+    end
+  end
+end
+
 -- function hidden_chat_gui(player)
 --   local table_chat = player.gui.left.table_chat
 --   if table_chat then
