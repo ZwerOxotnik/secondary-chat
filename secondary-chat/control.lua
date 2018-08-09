@@ -7,6 +7,16 @@
 local mod = {}
 
 global.secondary_chat = global.secondary_chat or {}
+global.secondary_chat.state_chat = global.secondary_chat.state_chat or true
+global.secondary_chat.settings = global.secondary_chat.settings or {}
+global.secondary_chat.settings.limit_characters =  global.secondary_chat.settings.limit_characters or 73 * 14 --1022
+global.secondary_chat.players = global.secondary_chat.players or {}
+global.secondary_chat.players.settings = global.secondary_chat.players.settings or {}
+global.secondary_chat.players.info = global.secondary_chat.players.info or {}
+global.secondary_chat.global = global.secondary_chat.global or {}
+global.secondary_chat.global.settings = global.secondary_chat.global.settings or {}
+global.secondary_chat.global.info = global.secondary_chat.global.info or {}
+global.secondary_chat.global.list = global.secondary_chat.global.list or {}
 chat_events =
 {
   on_console_chat = script.generate_event_name(),
@@ -178,17 +188,6 @@ mod.on_round_end = function()
 end
 
 mod.on_init = function()
-  local init = global.secondary_chat
-  init.state_chat = true
-  init.settings = init.settings or {}
-  init.settings.limit_characters =  init.settings.limit_characters or 73 * 14 --1022
-  init.players = init.players or {}
-  init.players.settings = init.players.settings or {}
-  init.players.info = init.players.info or {}
-  init.global = init.global or {}
-  init.global.settings = init.global.settings or {}
-  init.global.info = init.global.info or {}
-  init.global.list = init.global.list or {}
   update_global_config()
 end
 
@@ -200,7 +199,7 @@ end
 mod.on_player_joined_game = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
-  if global.secondary_chat.players[event.player_index].settings then
+  if global.secondary_chat.players[event.player_index] then
     color_picker.destroy_gui(player)
     local table_chat = player.gui.left.table_chat
     if table_chat then
