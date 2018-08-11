@@ -5,7 +5,7 @@ config.player.info = require('secondary-chat/config/info/player')
 
 for table, child_table in pairs( config.player.settings ) do
   for name, _ in pairs( child_table ) do
-    config.player.settings[table][name].access = config.player.settings or nil
+    config.player.settings[table][name].access = config.player.settings or true
   end
 end
 
@@ -13,9 +13,9 @@ config.global = {}
 config.global.settings = require('secondary-chat/config/settings/global')
 config.global.info = require('secondary-chat/config/info/global')
 
-function update_global_config()
-  for _, player in pairs( game.players ) do   
-    local settings = global.secondary_chat.players[player.index].settings
+function update_global_config_player(player) 
+  local settings = global.secondary_chat.players[player.index].settings
+  if settings then
     for table, child_table in pairs( config.player.settings ) do
       settings[table] = settings[table] or {}
       for name, data in pairs( child_table ) do
@@ -27,8 +27,12 @@ function update_global_config()
         end
       end
     end
+  else
+    global.secondary_chat.players[player.index].settings = config.player.settings
+  end
 
-    local info = global.secondary_chat.players[player.index].info
+  local info = global.secondary_chat.players[player.index].info
+  if info then
     for table, child_table in pairs( config.global.info ) do
       info[table] = info[table] or {}
       for name, data in pairs( child_table ) do      
@@ -37,30 +41,42 @@ function update_global_config()
         end
       end
     end
-  end
-
-  local settings = global.secondary_chat.global.settings
-  for table, child_table in pairs( config.global.settings ) do
-    settings[table] = settings[table] or {}
-    for name, data in pairs( child_table ) do      
-      if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
-        settings[table][name] = data
-      end
-    end
-  end
-
-  local info = global.secondary_chat.global.info
-  for table, child_table in pairs( config.global.info ) do
-    info[table] = info[table] or {}
-    for name, data in pairs( child_table ) do      
-      if info[table][name] == nil or type(data) ~= type(info[table][name]) then
-        info[table][name] = data
-      end
-    end
+  else
+    global.secondary_chat.players[player.index].info = config.global.info
   end
 end
 
-function update_global_config_player(target)
+function update_global_config()
+  local settings = global.secondary_chat.global.settings
+  if settings then
+    for table, child_table in pairs( config.global.settings ) do
+      settings[table] = settings[table] or {}
+      for name, data in pairs( child_table ) do      
+        if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
+          settings[table][name] = data
+        end
+      end
+    end
+  else
+    global.secondary_chat.global.settings = config.global.settings
+  end
+
+  local info = global.secondary_chat.global.info
+  if info then
+    for table, child_table in pairs( config.global.info ) do
+      info[table] = info[table] or {}
+      for name, data in pairs( child_table ) do      
+        if info[table][name] == nil or type(data) ~= type(info[table][name]) then
+          info[table][name] = data
+        end
+      end
+    end
+  else
+    global.secondary_chat.global.info = config.global.info
+  end
+end
+
+function set_global_config_player(target)
   global.secondary_chat.players[target.index] = {}
   global.secondary_chat.players[target.index].settings = config.player.settings
   global.secondary_chat.players[target.index].info = config.player.info
@@ -75,8 +91,6 @@ function global_init()
   global.secondary_chat.settings = global.secondary_chat.settings or {}
   global.secondary_chat.settings.limit_characters =  global.secondary_chat.settings.limit_characters or 73 * 14 --1022
   global.secondary_chat.players = global.secondary_chat.players or {}
-  global.secondary_chat.players.settings = global.secondary_chat.players.settings or {}
-  global.secondary_chat.players.info = global.secondary_chat.players.info or {}
   global.secondary_chat.global = global.secondary_chat.global or {}
   global.secondary_chat.global.settings = global.secondary_chat.global.settings or {}
   global.secondary_chat.global.info = global.secondary_chat.global.info or {}
@@ -87,7 +101,7 @@ function global_init()
     global.secondary_chat.chats.keys = {}
     global.secondary_chat.chats.list = {}
     global.secondary_chat.chats.data = {}
-    for k, name in pairs( {'all', 'surface', 'faction', 'local', 'allies', 'admins', 'private'} ) do
+    for k, name in pairs( {'all', 'surface', 'faction', 'local', 'allies', 'admins', 'private'} ) do -- TODO: rework
       global.secondary_chat.chats.keys[name] = k
       table.insert(global.secondary_chat.chats.list, {'secondary_chat.to_'..name})
     end
@@ -96,6 +110,5 @@ function global_init()
     --   table.insert(global.secondary_chat.chats.list, {'command-output.'..name})
     -- end
   end
-
   update_global_config()
 end
