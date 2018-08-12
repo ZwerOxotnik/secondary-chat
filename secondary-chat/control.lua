@@ -121,6 +121,7 @@ end
 mod.on_player_created = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   set_global_config_player(player)
 end
 
@@ -218,6 +219,9 @@ mod.on_player_joined_game = function(event)
     end
   else
     set_global_config_player(player)
+    if settings.main.state_chat.state and not global.secondary_chat.state_chat then
+      create_chat_gui(player)
+    end
   end
 
   update_chat_gui()
