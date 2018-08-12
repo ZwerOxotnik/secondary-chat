@@ -147,8 +147,10 @@ mod.on_gui_selection_state_changed = function(event)
   if not (gui and gui.valid) then return end
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
-
-  if gui.name == 'chat_drop_down' and gui.parent.parent.name == 'select_chat' then
+  
+  if gui.parent.name == 'table_filter' then
+    update_chat_and_drop_down(gui.parent.parent.table.chat_drop_down, player)
+  elseif gui.name == 'chat_drop_down' and gui.parent.parent.name == 'select_chat' then
     update_chat_and_drop_down(gui, player)
   end
 end

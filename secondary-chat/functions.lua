@@ -50,6 +50,44 @@ function get_name_chat(index)
   return nil
 end
 
+function get_name_stance(index)
+  for name, index_chat in pairs( gui_state.keys ) do
+    if index_chat == index then
+      return name
+    end
+  end
+  return nil
+end
+
+check_stance = {}
+check_stance['all'] = function()
+  return true
+end
+check_stance['friend'] = function(force, other_force)
+  if (force.get_cease_fire(other_force) and other_force.get_cease_fire(force)) and (force.get_friend(other_force) and other_force.get_friend(force)) then
+    return true
+  end
+  return false
+end
+check_stance['neutral'] = function(force, other_force)
+  if (force.get_cease_fire(other_force) and other_force.get_cease_fire(force)) and (not force.get_friend(other_force) and not other_force.get_friend(force)) then
+    return true
+  end
+  return false
+end
+check_stance['enemy'] = function(force, other_force)
+  if (not force.get_cease_fire(other_force) and not other_force.get_cease_fire(force)) and (not force.get_friend(other_force) and not other_force.get_friend(force)) then
+    return true
+  end
+  return false
+end
+check_stance['specific'] = function(force, other_force)
+  if force.get_cease_fire(other_force) ~= other_force.get_cease_fire(force) or force.get_friend(other_force) ~= other_force.get_friend(force) then
+    return true
+  end
+  return false
+end
+
 function add_command(name, description, f, addit_description)
   if type(f) == "function" then
     if commands.game_commands[name] == nil and commands.commands[name] == nil then

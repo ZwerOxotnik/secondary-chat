@@ -48,8 +48,8 @@ function update_chat(name)
   else
     chat.allow_log = chat.allow_log or false
     chat.gui = chat.gui or {}
-    chat.gui.is_have_state = chat.gui.is_have_state or false
-    chat.gui.is_have_online = chat.gui.is_have_online or false
+    --chat.gui.is_have_state = chat.gui.is_have_state or false
+    --chat.gui.is_have_online = chat.gui.is_have_online or false
     chat.gui.change_list = chat.gui.change_list or change_list[name]
     if chat.gui.change_list ~= nil and type(chat.gui.change_list) ~= 'function' then
       chat.gui.change_list = nil
@@ -219,43 +219,121 @@ end
 
 change_list = {}
 
-change_list['private'] = function(gui, target, select_list, last_target)
-  local items = {}
-  local index = 0
-  local new_selected_index
-  last_target = last_target and game.players[last_target]
-  for k, player in pairs( game.players ) do
-    if target ~= player then 
-      items[k] = player.name
+change_list['private'] = function(gui, target, select_list, last_target, drop_down_online, drop_down_state)
+  if #game.players < 2 then
+    gui.selected_index = 0
+    target.print({'noone-to-reply'})
+    drop_down_online.style.visible = false
+    drop_down_state.style.visible = false
+    return false
+  end
+
+  local list_players = {}
+  if gui_online.keys['all'] == drop_down_online.selected_index then
+    list_players = game.players
+  elseif gui_online.keys['online'] == drop_down_online.selected_index then
+    list_players = game.connected_players
+  else -- gui_online.keys['offline']
+    for _, player in pairs( game.players ) do
+      if not player.connected then
+        table.insert(list_players, player)
+      end
     end
-    index = index + 1
-    if not new_selected_index and last_target and last_target == player then
-      new_selected_index = index
+  end
+
+  local check_stance = check_stance[get_name_stance(drop_down_state.selected_index)]
+  local items = {}
+  local new_selected_index
+  local last_target = last_target and game.players[last_target]
+  local index = 0
+  for _, player in pairs( list_players ) do
+    if check_stance(target.force, player.force) then
+      if target ~= player then
+        index = index + 1
+        table.insert(items, player.name)
+      end
+      if not new_selected_index and last_target and last_target == player then
+        new_selected_index = index
+      end
     end
   end
 
   if #items > 0 then
-    select_list.style.visible = true
     select_list.items = items
     select_list.selected_index = new_selected_index or 1
-    return true
+    drop_down_online.style.visible = true
+    drop_down_state.style.visible = true
   else
-    gui.selected_index = 0
-    target.print({'noone-to-reply'})
-    return false
+    select_list.items = {''}
+    select_list.selected_index = 1
   end
+  select_list.style.visible = true
+  drop_down_online.style.visible = true
+  drop_down_state.style.visible = true
+  return true
 end
 
-change_list['faction'] = function(gui, target, select_list, last_target)
+change_list['faction'] = function(gui, target, select_list, last_target, drop_down_online, drop_down_state)
+  local is_more_than_2_force = function()
+    local count = 0
+    for _, force in pairs( game.forces ) do
+      if #force.players ~= 0 then
+        count = count + 1
+        if count > 1 then
+          return true
+        end
+      end
+    end
+    return false
+  end
+
+  if not is_more_than_2_force() then
+    if select_list.style.visible then
+      select_list.items = {''}
+      gui.selected_index = 1
+      select_list.style.visible = false
+    end
+    drop_down_online.style.visible = false
+    drop_down_state.style.visible = false
+    return true
+  end
+  
+  local list_forces = {}
+  if gui_online.keys['all'] == drop_down_online.selected_index then
+    list_forces = game.forces
+  else
+    local is_online = function( force )
+      for _, player in pairs( force.players ) do
+        if player.connected then return true end
+      end
+      return false
+    end
+
+    if gui_online.keys['online'] == drop_down_online.selected_index then
+      for name, force in pairs( game.forces ) do
+        if is_online(force) then
+          list_forces[name] = force
+        end
+      end
+    else -- gui_online.keys['offline']
+      for name, force in pairs( game.forces ) do
+        if not is_online(force) then
+          list_forces[name] = force
+        end
+      end
+    end
+  end
+
+  local check_stance = check_stance[get_name_stance(drop_down_state.selected_index)]
   local items = {}
-  local index = 0
   local new_selected_index
-  for k, force in pairs( game.forces ) do
-    last_target = last_target and game.forces[last_target]
-    if #force.players > 0 then
-      table.insert(items, k)
+  local last_target = last_target and game.forces[last_target]
+  local index = 0
+  for name, force in pairs( list_forces ) do
+    if #force.players > 0 and check_stance(target.force, force) then
+      table.insert(items, name)
       index = index + 1
-      if not new_selected_index then
+      if new_selected_index == nil then
         if last_target then
           if last_target == force then
             new_selected_index = index
@@ -269,15 +347,15 @@ change_list['faction'] = function(gui, target, select_list, last_target)
     end
   end
 
-  if #items > 1 then
+  if #items > 0 then
     select_list.items = items
     select_list.selected_index = new_selected_index or 1
-    select_list.style.visible = true
-    return true
-  elseif select_list.style.visible then
+  else
     select_list.items = {''}
-    gui.selected_index = 1
-    select_list.style.visible = false
-    return false
+    select_list.selected_index = 1
   end
+  select_list.style.visible = true
+  drop_down_online.style.visible = true
+  drop_down_state.style.visible = true
+  return true
 end
