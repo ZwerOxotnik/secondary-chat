@@ -9,7 +9,6 @@ function update_chat_and_drop_down(gui, target)
     select_list.selected_index = 1
     select_list.style.visible = false
     select_list.items = {''}
-    return false
+    return nil
   end
-  return false
 end
