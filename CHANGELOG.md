@@ -9,6 +9,7 @@
 - Added: private chat
 - Added: between factions chat
 - Added: surface chat
+- Added: filters for chats
 - Added: CHANGELOG.md and README.md and CONTRIBUTING.md
 - Added: shell scripts for interactions with repository on GitLab
 - Added: response on events of scenario PvP
