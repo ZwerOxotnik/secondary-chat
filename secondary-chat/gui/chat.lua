@@ -6,6 +6,7 @@ function destroy_chat_gui(player)
 end
 
 function update_chat_gui()
+  -- Updating of gui
   for _, player in pairs ( game.connected_players ) do
     local table_chat = player.gui.left.table_chat
     if table_chat and table_chat.style.visible ~= false then
@@ -40,6 +41,7 @@ end
 
 function create_chat_gui(player)
   if not global.secondary_chat.players[player.index].settings.main.state_chat.state then return end
+
   local gui = player.gui.left
   local text = ''
   local last_message = ''
@@ -84,10 +86,6 @@ function create_chat_gui(player)
   main_table.style.right_padding = 2
 
   local child_table = main_table.add{type = 'table', name = 'top', column_count = 3}
-  child_table.style.left_padding = 0
-  child_table.style.top_padding = 0
-  child_table.style.bottom_padding = 0
-  child_table.style.right_padding = 0
   child_table.style.align = 'left'
   local input = child_table.add{type = 'textfield', name = 'chat_text_box', text = text}
   input.style.minimal_width = 250
@@ -117,13 +115,9 @@ function create_chat_gui(player)
   button.style.bottom_padding = 3
   button.style.right_padding = 0
   button.style.font_color = player.chat_color
-  button.style.visible = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker16"] ~= nil or remote.interfaces["color-picker"] ~= nil)) 
+  button.style.visible = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker16"] ~= nil or remote.interfaces["color-picker"] ~= nil))
 
   local child_table = main_table.add{type = 'table', name = 'select_chat', column_count = 2}
-  child_table.style.left_padding = 0
-  child_table.style.top_padding = 0
-  child_table.style.bottom_padding = 0
-  child_table.style.right_padding = 0
   local label = child_table.add{type = 'label', caption = {'secondary_chat.send_to'}}
   local table_select = child_table.add{type = 'table', name = 'table', column_count = 3}
   table_select.style.align = 'left'
@@ -142,7 +136,6 @@ function create_chat_gui(player)
   button.style.top_padding = 0
   button.style.bottom_padding = 0
   button.style.right_padding = 0
-  button.style.vertical_align = 'center'
   local label = child_table.add{type = 'label', name ='empty_one', caption = ''}
   label.style.visible = true
   local table_filter = child_table.add{type = 'table', name = 'table_filter', column_count = 2}
@@ -157,19 +150,11 @@ function create_chat_gui(player)
   drop_down_online.style.align = 'left'
 
   local child_table = main_table.add{type = 'table', name = 'notices', column_count = 1}
-  child_table.style.left_padding = 0
-  child_table.style.top_padding = 0
-  child_table.style.bottom_padding = 0
-  child_table.style.right_padding = 0
   child_table.style.align = 'left'
   child_table.style.visible = false
   local label = child_table.add{type = 'label', name = 'main'}
 
   local child_table = main_table.add{type = 'table', name = 'last_messages', column_count = 1}
-  child_table.style.left_padding = 0
-  child_table.style.top_padding = 0
-  child_table.style.bottom_padding = 0
-  child_table.style.right_padding = 0
   child_table.style.align = 'left'
   child_table.style.visible = false
   local textfield = child_table.add{type = 'textfield', name = 'last', text = last_message}
@@ -179,16 +164,8 @@ function create_chat_gui(player)
   textfield.style.align = 'left'
 
   local child_table = main_table.add{type = 'table', name = 'buttons', column_count = 1}
-  child_table.style.left_padding = 0
-  child_table.style.top_padding = 0
-  child_table.style.bottom_padding = 0
-  child_table.style.right_padding = 0
   child_table.style.align = 'left'
   local child_table = main_table.add{type = 'table', name = 'settings', column_count = 1}
-  child_table.style.left_padding = 0
-  child_table.style.top_padding = 0
-  child_table.style.bottom_padding = 0
-  child_table.style.right_padding = 0
   child_table.style.align = 'left'
   child_table.style.visible = false
 
