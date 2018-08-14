@@ -95,6 +95,7 @@ mod.on_configuration_changed = function(event)
 end
 
 mod.on_gui_click = function(event)
+  -- Validation of data
   local gui = event.element
   if not (gui and gui.valid) then return end
   local player = game.players[event.player_index]
@@ -131,6 +132,7 @@ mod.on_player_removed = function(event)
 end
 
 mod.on_gui_checked_state_changed = function(event)
+  -- Validation of data
   local gui = event.element
   if not (gui and gui.valid) then return end
   local player = game.players[event.player_index]
@@ -143,10 +145,12 @@ mod.on_gui_checked_state_changed = function(event)
 end
 
 mod.on_gui_selection_state_changed = function(event)
+  -- Validation of data
   local gui = event.element
   if not (gui and gui.valid) then return end
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
+
   if gui.parent.parent.name == 'select_chat' then
     if gui.parent.name == 'table_filter' then
       update_chat_and_drop_down(gui.parent.parent.table.chat_drop_down, player)
@@ -157,6 +161,7 @@ mod.on_gui_selection_state_changed = function(event)
 end
 
 mod.on_player_promoted = function(event)
+  -- Update gui of settings
   local player = game.players[event.player_index]
   local table_chat = player.gui.left.table_chat
   if table_chat and table_chat.settings.style.visible then
@@ -165,9 +170,11 @@ mod.on_player_promoted = function(event)
 end
 
 mod.on_player_demoted = function(event)
+  -- Validation of data
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
+  -- Clear gui of settings admin
   local table_chat = player.gui.left.table_chat
   if table_chat and table_chat.settings.admin then
     table_chat.settings.admin.clear()
@@ -207,6 +214,7 @@ mod.on_load = function()
 end
 
 mod.on_player_joined_game = function(event)
+  -- Validation of data
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
@@ -231,11 +239,13 @@ mod.on_player_joined_game = function(event)
 end
 
 mod.on_player_left_game = function(event)
+  -- Validation of data
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
   color_picker.destroy_gui(player)
 
+  -- Hide gui
   local table_chat = player.gui.left.table_chat
   if table_chat then
     table_chat.style.visible = false
