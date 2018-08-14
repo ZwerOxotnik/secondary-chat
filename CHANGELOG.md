@@ -6,16 +6,20 @@
 - Added: events "on_console_chat", "toggle" of the mod
 - Added: remote interface "secondary-chat" [**WIP!**]
 - Added: admins chat
+- Added: /admins-send \<message\> - sends a message to admins.
 - Added: private chat
 - Added: between factions chat
 - Added: surface chat
-- Added: filters for chats
+- Added: /surface-send \<message\> - sends a message all players on your surface.
+- Added: filters for a chats
 - Added: CHANGELOG.md and README.md and CONTRIBUTING.md
 - Added: shell scripts for interactions with repository on GitLab
 - Added: response on events of scenario PvP
-- Added: hotkey for send a message (Default: enter)
-- Added: hotkey for send a localised message (Default: SHIFT + ENTER)
-- Added: hotkey for recover a last message (Default: CONTROL + ENTER)
+- Added: hotkey for send a message (Default: Y)
+- Added: hotkey for send a localised message (Default: SHIFT + Y)
+- Added: hotkey for recover a last message (Default: CONTROL + Y)
+- Added: hotkey for send message to private (Default: Middle mouse button), point the cursor at an entity 
+- Added: hotkey for send message to faction (Default: SHIFT + Middle mouse button), point the cursor at an entity
 - Added: settings for chat
 - Added: saving data gui of chat for player
 - Changed: /toggle-chat drop-down
@@ -66,13 +70,13 @@
 
 ### [v1.2.0][v1.2.0]
 
-- Changed: command /toggle-chat [\<all/faction/allied/local\>] disabled or re-enables your own parts of additional chat.
+- Changed: command /toggle-chat [\<all/faction/allied/local\>] - disabled or re-enables your own parts of additional chat.
 
 ## 2018-01-04
 
 ### v1.1.2
 
-- Added: commands /l \<text\> and /local-send \<text\> (sends a message to the nearest players)
+- Added: commands /l \<text\> and /local-send \<text\> - sends a message to the nearest players
 
 ### v1.1.1
 
