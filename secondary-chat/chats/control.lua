@@ -134,10 +134,14 @@ send_message['local'] = function(input_message, player)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local pos_p1 = player.position
   if type(input_message) == "string" and string.len(input_message) <= 80 then
-    if string.len(input_message) <= 25 then
-      player.surface.create_entity{name = "flying-text", position = pos_p1, text = input_message}
+    if script.mod_name ~= 'level' then
+      if string.len(input_message) <= 25 then
+        player.surface.create_entity{name = "flying-text", position = pos_p1, text = input_message}
+      else
+        player.surface.create_entity{name = "flying-text-chat", position = pos_p1, text = input_message}
+      end
     else
-      player.surface.create_entity{name = "flying-text-chat", position = pos_p1, text = input_message}
+      player.surface.create_entity{name = "flying-text", position = pos_p1, text = input_message}
     end
   end
 
@@ -290,7 +294,7 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
   if not is_more_than_2_force() then
     if select_list.style.visible then
       select_list.items = {''}
-      gui.selected_index = 1
+      select_list.selected_index = 1
       select_list.style.visible = false
     end
     drop_down_online.style.visible = false
