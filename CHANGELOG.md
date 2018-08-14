@@ -20,7 +20,7 @@
 - Added: hotkey for recover a last message (Default: CONTROL + Y)
 - Added: hotkey for select a recipient for the private chat (Default: Middle mouse button), point the cursor at an entity
 - Added: hotkey for select a recipient for the faction chat (Default: SHIFT + Middle mouse button), point the cursor at an entity
-- Added: settings for chat
+- Added: settings for chat and for gui
 - Added: saving data gui of chat for player
 - Changed: /toggle-chat drop-down
 - Changed: style of GUI
