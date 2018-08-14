@@ -101,6 +101,8 @@ function update_checkbox(player, element, parametr)
       table_chat.settings.style.visible = element.state
       table_chat.settings.clear()
       player.print({'', '/toggle-chat ', {'secondary_chat.toggle', global.toggle_chat_commands}})
+    elseif parametr == 'drop_down' then
+      toggle_drop_down(player)
     end
   elseif parent == 'admin' then
     global.secondary_chat.global.settings.main[parametr] = element.state
