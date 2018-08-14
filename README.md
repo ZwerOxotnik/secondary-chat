@@ -23,6 +23,8 @@ Top left appear the new gui with drop-down with filters, that sends your message
 | send a message   | Y   |
 | send a localised message   | SHIFT + Y   |
 | recover a last message   | CONTROL + Y   |
+| select a recipient for the private chat  | Middle mouse button  |
+| select a recipient for the faction chat  | SHIFT + Middle mouse button   |
 
 ## Dependencies
 
