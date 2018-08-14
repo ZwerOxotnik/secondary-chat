@@ -1,7 +1,19 @@
 local function send_message_pressed(event)
+  local player = game.players[event.player_index] 
+
   -- Check the visibility of the chat
-  local table_chat = game.players[event.player_index].gui.left.table_chat
-  if not (table_chat and table_chat.style.visible ~= false and table_chat.top and table_chat.top_chat.chat_text_box) then return end
+  local table_chat = player.gui.left.table_chat
+  local select_chat = table_chat.select_chat
+  if table_chat then
+    if not table_chat.style.visible ~= false then
+      global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+      table_chat.style.visible = true
+    end
+  else
+    if not global.secondary_chat.state_chat then return end
+    global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+    create_chat_gui(player)
+  end
 
   if table_chat.top_chat.chat_text_box.text == '' then
     table_chat.top_chat.chat_text_box.focus()
@@ -13,9 +25,20 @@ end
 script.on_event('message-send-to-chat', send_message_pressed)
 
 local function send_locale_pressed(event)
+  local player = game.players[event.player_index]
+
   -- Check the visibility of the chat
   local table_chat = game.players[event.player_index].gui.left.table_chat
-  if not (table_chat and table_chat.style.visible ~= false and table_chat.top and table_chat.top_chat.chat_text_box) then return end
+  if table_chat then
+    if not table_chat.style.visible ~= false then
+      global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+      table_chat.style.visible = true
+    end
+  else
+    if not global.secondary_chat.state_chat then return end
+    global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+    create_chat_gui(player)
+  end
 
   if table_chat.top_chat.chat_text_box.text == '' then
     table_chat.top_chat.chat_text_box.focus()
@@ -27,9 +50,20 @@ end
 script.on_event('locale-send-to-chat', send_locale_pressed)
 
 local function recove_last_message_from_chat_pressed(event)
+  local player = game.players[event.player_index]
+
   -- Check the visibility of the chat
   local table_chat = game.players[event.player_index].gui.left.table_chat
-  if not (table_chat and table_chat.style.visible ~= false and table_chat.top and table_chat.top_chat.chat_text_box) then return end
+  if table_chat then
+    if not table_chat.style.visible ~= false then
+      global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+      table_chat.style.visible = true
+    end
+  else
+    if not global.secondary_chat.state_chat then return end
+    global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+    create_chat_gui(player)
+  end
 
   table_chat.top_chat.chat_text_box.text = table_chat.last_messages.last.text
 end
@@ -46,7 +80,22 @@ local function send_to_private_pressed(event)
   -- Check the visibility of the chat
   local table_chat = player.gui.left.table_chat
   local select_chat = table_chat.select_chat
-  if not (table_chat and table_chat.style.visible ~= false and table_chat.top and table_chat.top_chat.chat_text_box and select_chat.style.visible ~= false) then return end
+  if table_chat then
+    if table_chat.style.visible ~= false then
+      -- temporarily
+      -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
+      -- if select_chat.style.visible == false then
+      --   select_chat.style.visible = true
+      -- end
+    else
+      global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+      table_chat.style.visible = true
+    end
+  else
+    if not global.secondary_chat.state_chat then return end
+    global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+    create_chat_gui(player)
+  end
 
   -- Find a recipient
   local select_drop_down = select_chat.table.select_drop_down
@@ -95,7 +144,22 @@ local function send_to_faction_pressed(event)
   -- Check the visibility of the chat
   local table_chat = player.gui.left.table_chat
   local select_chat = table_chat.select_chat
-  if not (table_chat and table_chat.style.visible ~= false and table_chat.top and table_chat.top_chat.chat_text_box and select_chat.style.visible ~= false) then return end
+  if table_chat then
+    if table_chat.style.visible ~= false then
+      -- temporarily
+      -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
+      -- if select_chat.style.visible == false then
+      --   select_chat.style.visible = true
+      -- end
+    else
+      global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+      table_chat.style.visible = true
+    end
+  else
+    if not global.secondary_chat.state_chat then return end
+    global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+    create_chat_gui(player)
+  end
 
   -- Select a recipient
   select_chat.table.chat_drop_down.selected_index = chats.keys['faction'] 
