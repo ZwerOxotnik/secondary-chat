@@ -20,9 +20,9 @@ Top left appear the new gui with drop-down with filters, that sends your message
 
 | Desription | Hotkey (Default) |
 | -------- | ---- |
-| send a message   | ENTER   |
-| send a localised message   | SHIFT + ENTER   |
-| recover a last message   | CONTROL + ENTER   |
+| send a message   | Y   |
+| send a localised message   | SHIFT + Y   |
+| recover a last message   | CONTROL + Y   |
 
 ## Dependencies
 
