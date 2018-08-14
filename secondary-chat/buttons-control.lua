@@ -7,7 +7,7 @@ local function send_message_pressed(event)
     table_chat.top.chat_text_box.focus()
   else
     event.element = table_chat.select_chat.table.print_in_chat
-    click_gui_chat(event )-- Send the message
+    click_gui_chat(event) -- Send the message
   end
 end
 script.on_event('message-send-to-chat', send_message_pressed)
