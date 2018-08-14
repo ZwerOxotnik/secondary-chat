@@ -51,7 +51,7 @@ function create_chat_gui(player)
 
   if gui.table_chat then
     local table_chat = gui.table_chat
-    text = table_chat.top.chat_text_box.text
+    text = table_chat.top_chat.chat_text_box.text
     last_messages = table_chat.last_messages.last.text
     
     local select_chat = table_chat.select_chat
@@ -85,7 +85,7 @@ function create_chat_gui(player)
   main_table.style.bottom_padding = 2
   main_table.style.right_padding = 2
 
-  local child_table = main_table.add{type = 'table', name = 'top', column_count = 3}
+  local child_table = main_table.add{type = 'table', name = 'top_chat', column_count = 3}
   child_table.style.align = 'left'
   local input = child_table.add{type = 'textfield', name = 'chat_text_box', text = text}
   input.style.minimal_width = 250

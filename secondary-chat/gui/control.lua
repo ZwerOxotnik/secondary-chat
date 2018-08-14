@@ -16,7 +16,7 @@ function click_gui_chat(event, is_localised)
     color_picker.create_gui(player)
   end
 
-  local text_box = table_chat.top.chat_text_box
+  local text_box = table_chat.top_chat.chat_text_box
   if text_box.text == "" then return false end
   local drop_down = table_chat.select_chat.table.chat_drop_down
   local selected_index = (gui.name == "print_in_chat" and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
