@@ -75,6 +75,7 @@ function create_chat_gui(player)
   end
 
   destroy_chat_gui(player)
+
   local main_table = gui.add{type = 'table', name = 'table_chat', column_count = 1}
   main_table.style.maximal_width = 360
   main_table.style.left_padding = 5

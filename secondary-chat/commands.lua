@@ -6,7 +6,7 @@ function toggle_drop_down(player)
       if select_chat.style.visible == nil then select_chat.style.visible = true end
       select_chat.style.visible = not select_chat.style.visible
     else
-      log("not founded 'select_chat' for secondary chat")
+      log("not founded 'select_chat' for the secondary chat")
     end
   else
     create_chat_gui(player)
