@@ -64,7 +64,11 @@ check_stance['all'] = function()
   return true
 end
 check_stance['friend'] = function(force, other_force)
-  if (force.get_cease_fire(other_force) and other_force.get_cease_fire(force)) and (force.get_friend(other_force) and other_force.get_friend(force)) then
+  if force ~= other_force then
+    if (force.get_cease_fire(other_force) and other_force.get_cease_fire(force)) and (force.get_friend(other_force) and other_force.get_friend(force)) then
+      return true
+    end
+  else
     return true
   end
   return false
@@ -76,8 +80,10 @@ check_stance['neutral'] = function(force, other_force)
   return false
 end
 check_stance['enemy'] = function(force, other_force)
-  if (not force.get_cease_fire(other_force) and not other_force.get_cease_fire(force)) and (not force.get_friend(other_force) and not other_force.get_friend(force)) then
-    return true
+  if force ~= other_force then
+    if (not force.get_cease_fire(other_force) and not other_force.get_cease_fire(force)) and (not force.get_friend(other_force) and not other_force.get_friend(force)) then
+      return true
+    end
   end
   return false
 end
