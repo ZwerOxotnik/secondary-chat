@@ -7,6 +7,7 @@ local function find_interface()
       return name
     end
   end
+
   return nil
 end
 
@@ -20,6 +21,7 @@ end
 color_picker.create_gui = function(player)
   local interface = find_interface()
   if not interface then return false end
+
   local center = player.gui.center
   if center.secondary_chat_color_picker_container then
     -- Already opened. Destroy it.
@@ -35,6 +37,7 @@ color_picker.create_gui = function(player)
       show_ok_button = true
     })
   end
+
   return true
 end
 
@@ -42,6 +45,7 @@ end
 color_picker.ok_pressed = function(event)
   local container = event.container
   if container.name ~= 'secondary_chat_color_picker_container' then return false end
+
   local interface = find_interface()
   local player = game.players[event.player_index]
   local color = remote.call(interface, 'get_color', container)
