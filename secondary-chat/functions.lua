@@ -1,11 +1,19 @@
 function is_allow_message(message, sender)
-  if string.len(message) < global.secondary_chat.settings.limit_characters then
+  if sender then
+    if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
+      local notice = sender.gui.left.table_chat.notices.main
+      notice.caption = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
+    elseif string.len(message) < global.secondary_chat.settings.limit_characters then
+      return true
+    else
+      log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
+      sender.print({"", "~~~~ ", {"secondary_chat.long_message"}, " ~~~~"})
+    end
+  elseif string.len(message) < global.secondary_chat.settings.limit_characters then
     return true
-  else
-    log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
-    sender.print({"", "~~~~ ", {"secondary_chat.long_message"}, " ~~~~"})
-    return false
   end
+  
+  return false
 end
 
 function sc_print_in_chat(message, receiver, sender)    
