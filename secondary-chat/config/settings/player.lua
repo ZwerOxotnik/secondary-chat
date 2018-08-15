@@ -6,6 +6,6 @@ return {
     drop_down = {state = true}
   },
   hidden = {
-    allow_write = true
+    allow_write = {state = true}
   }
 }
