@@ -14,7 +14,8 @@ Top left appear the new gui with drop-down with filters, that sends your message
 ## How to open the secondary chat
 
 - variant 1: When the game starts from the character appears.
-- variant 2: write to chat "/toggle-chat".
+- variant 2: Press any hothey of mod
+- variant 3: Write to chat "/toggle-chat".
 
 ## Hotkeys
 
