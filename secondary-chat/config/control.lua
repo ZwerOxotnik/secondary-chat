@@ -5,7 +5,9 @@ config.player.info = require('secondary-chat/config/info/player')
 
 for table, child_table in pairs( config.player.settings ) do
   for name, _ in pairs( child_table ) do
-    config.player.settings[table][name].access = config.player.settings or true
+    if type(config.player.settings[table][name]) == 'table' then
+      config.player.settings[table][name].access = config.player.settings or true
+    end
   end
 end
 
