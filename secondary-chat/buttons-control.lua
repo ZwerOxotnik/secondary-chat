@@ -85,7 +85,7 @@ local function send_to_private_pressed(event)
       -- temporarily
       -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
       -- if select_chat.style.visible == false then
-      --   select_chat.style.visible = true
+      --   create_chat_gui(player)
       -- end
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
@@ -149,7 +149,7 @@ local function send_to_faction_pressed(event)
       -- temporarily
       -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
       -- if select_chat.style.visible == false then
-      --   select_chat.style.visible = true
+      --   create_chat_gui(player)
       -- end
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true

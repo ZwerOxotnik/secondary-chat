@@ -10,7 +10,11 @@ function toggle_drop_down(player)
         table_chat.settings.player.config_table.drop_down_boolean.state = not select_chat.style.visible
       end
 
-      select_chat.style.visible = not select_chat.style.visible
+      if select_chat.style.visible then 
+        select_chat.style.visible = false
+      else
+        create_chat_gui(player)
+      end
     else
       log("not founded 'select_chat' for the secondary chat")
     end
