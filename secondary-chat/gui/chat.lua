@@ -151,7 +151,6 @@ function create_chat_gui(player)
 
   local child_table = main_table.add{type = 'table', name = 'notices', column_count = 1}
   child_table.style.align = 'left'
-  child_table.style.visible = false
   local label = child_table.add{type = 'label', name = 'main'}
 
   local child_table = main_table.add{type = 'table', name = 'last_messages', column_count = 1}
