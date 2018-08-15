@@ -22,6 +22,7 @@ function click_gui_chat(event, is_localised)
   local selected_index = (gui.name == "print_in_chat" and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
                           or chats.keys[string.match(gui.name, "chat_(.+)")] -- For buttons
   if selected_index then
+    table_chat.notices.main.caption = ""
     if not is_allow_message(text_box.text, player) then return end
     local chat_name = get_name_chat(selected_index)
     local send_in_chat = chats.data[chat_name] and chats.data[chat_name].send_message
