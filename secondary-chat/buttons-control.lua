@@ -7,19 +7,19 @@ local function send_message_pressed(event)
   if table_chat then
     if not table_chat.style.visible ~= false then
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
-      table_chat.style.visible = true
+      create_chat_gui(player)
+    else
+      if table_chat.top_chat.chat_text_box.text == '' then
+        table_chat.top_chat.chat_text_box.focus()
+      else
+        event.element = table_chat.select_chat.table.print_in_chat
+        click_gui_chat(event) -- Send the message
+      end
     end
   else
     if not global.secondary_chat.state_chat then return end
     global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
     create_chat_gui(player)
-  end
-
-  if table_chat.top_chat.chat_text_box.text == '' then
-    table_chat.top_chat.chat_text_box.focus()
-  else
-    event.element = table_chat.select_chat.table.print_in_chat
-    click_gui_chat(event) -- Send the message
   end
 end
 script.on_event('message-send-to-chat', send_message_pressed)
@@ -32,19 +32,19 @@ local function send_locale_pressed(event)
   if table_chat then
     if not table_chat.style.visible ~= false then
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
-      table_chat.style.visible = true
+      create_chat_gui(player)
+    else
+      if table_chat.top_chat.chat_text_box.text == '' then
+        table_chat.top_chat.chat_text_box.focus()
+      else
+        event.element = table_chat.select_chat.table.print_in_chat
+        click_gui_chat(event, true) -- Send the message
+      end
     end
   else
     if not global.secondary_chat.state_chat then return end
     global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
     create_chat_gui(player)
-  end
-
-  if table_chat.top_chat.chat_text_box.text == '' then
-    table_chat.top_chat.chat_text_box.focus()
-  else
-    event.element = table_chat.select_chat.table.print_in_chat
-    click_gui_chat(event, true) -- Send the message
   end
 end
 script.on_event('locale-send-to-chat', send_locale_pressed)
@@ -57,15 +57,15 @@ local function recove_last_message_from_chat_pressed(event)
   if table_chat then
     if not table_chat.style.visible ~= false then
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
-      table_chat.style.visible = true
+      create_chat_gui(player)
+    else
+      table_chat.top_chat.chat_text_box.text = table_chat.last_messages.last.text
     end
   else
     if not global.secondary_chat.state_chat then return end
     global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
     create_chat_gui(player)
   end
-
-  table_chat.top_chat.chat_text_box.text = table_chat.last_messages.last.text
 end
 script.on_event('last-message-from-chat', recove_last_message_from_chat_pressed)
 
@@ -85,11 +85,11 @@ local function send_to_private_pressed(event)
       -- temporarily
       -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
       -- if select_chat.style.visible == false then
-      --   create_chat_gui(player)
+      --   select_chat.style.visible = true
       -- end
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
-      table_chat.style.visible = true
+      create_chat_gui(player)
     end
   else
     if not global.secondary_chat.state_chat then return end
@@ -149,11 +149,11 @@ local function send_to_faction_pressed(event)
       -- temporarily
       -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
       -- if select_chat.style.visible == false then
-      --   create_chat_gui(player)
+      --   select_chat.style.visible = true
       -- end
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
-      table_chat.style.visible = true
+      create_chat_gui(player)
     end
   else
     if not global.secondary_chat.state_chat then return end
