@@ -9,6 +9,7 @@ function click_gui_chat(event, is_localised)
   local player = game.players[event.player_index]
   local table_chat = player.gui.left.table_chat
   if not table_chat then return false end
+
   if gui.name == "settings" and gui.parent.parent.name == "table_chat" then
     toggle_settings_chat_gui(player, table_chat)
     return true
@@ -16,13 +17,14 @@ function click_gui_chat(event, is_localised)
     color_picker.create_gui(player)
   end
 
+  table_chat.notices.main.caption = ""
+
   local text_box = table_chat.top_chat.chat_text_box
   if text_box.text == "" then return false end
   local drop_down = table_chat.select_chat.table.chat_drop_down
   local selected_index = (gui.name == "print_in_chat" and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
                           or chats.keys[string.match(gui.name, "chat_(.+)")] -- For buttons
   if selected_index then
-    table_chat.notices.main.caption = ""
     if not is_allow_message(text_box.text, player) then return end
     local chat_name = get_name_chat(selected_index)
     local send_in_chat = chats.data[chat_name] and chats.data[chat_name].send_message
