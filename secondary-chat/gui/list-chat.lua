@@ -1,4 +1,5 @@
 function update_chat_and_drop_down(gui, target)
+  global.secondary_chat.players[target.index].autohide = max_time_autohide
   local select_list = gui.parent.select_drop_down
   local select_chat = gui.parent.parent
   local drop_down_online = select_chat.table_filter.drop_down_online

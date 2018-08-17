@@ -10,6 +10,9 @@ function click_gui_chat(event, is_localised)
   local table_chat = player.gui.left.table_chat
   if not table_chat then return false end
 
+
+  global.secondary_chat.players[player.index].autohide = max_time_autohide
+
   if gui.name == "settings" and gui.parent.parent.name == "table_chat" then
     toggle_settings_chat_gui(player, table_chat)
     return true

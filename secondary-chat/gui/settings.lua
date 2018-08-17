@@ -91,6 +91,8 @@ function toggle_settings_chat_gui(player, table_chat)
 end
 
 function update_checkbox(player, element, parametr)
+  global.secondary_chat.players[player.index].autohide = max_time_autohide
+
   local table_chat = player.gui.left.table_chat
   local parent = element.parent.parent.name
   if parent == 'player' then

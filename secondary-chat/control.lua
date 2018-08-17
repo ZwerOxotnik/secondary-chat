@@ -13,6 +13,8 @@ chat_events =
   toggle = script.generate_event_name()
 }
 
+max_time_autohide = 60 * 60 * 10
+
 color_picker = require('secondary-chat/integrations/color-picker')
 require("secondary-chat/config/control")
 require('secondary-chat/functions')
@@ -250,6 +252,8 @@ mod.on_player_left_game = function(event)
   if table_chat then
     table_chat.style.visible = false
   end
+
+  global.secondary_chat.players[event.player_index].autohide = max_time_autohide
 end
 
 mod.on_player_changed_force = function(event)
@@ -269,6 +273,24 @@ mod.delete = function(event)
   end
   remote.remove_interface('secondary-chat')
   global.secondary_chat = nil
+end
+
+if script.mod_name ~= 'level' then
+  mod.autohide = function(event)
+    local data = global.secondary_chat.players
+    for index, player in pairs( game.connected_players ) do
+      local table_chat = player.gui.left.table_chat
+      if table_chat and table_chat.style.visible ~= false then
+        if data[index].autohide <= 0 then
+          table_chat.style.visible = false
+        else
+          data[index].autohide = data[index].autohide - (60 * 60)
+        end
+      else
+        data[index].autohide = max_time_autohide
+      end
+    end
+  end
 end
 
 return mod

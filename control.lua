@@ -60,6 +60,10 @@ local function on_load()
 end
 script.on_load(on_load)
 
+if script.mod_name ~= 'level' then
+  script.on_nth_tick(60 * 60, secondary_chat.autohide)
+end
+
 local function on_init()
   on_load()
   secondary_chat.on_init()
