@@ -64,7 +64,7 @@ send_message['all'] = function(input_message, player)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
 end
-send_message['surface'] = function(input_message, player)
+send_message['surface'] = function(input_message, player, table_chat)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local message = {"", player.name .. " (", {"secondary_chat.to_surface"}, ")", {"colon"}, " ", input_message}
   local result = false
@@ -77,8 +77,14 @@ send_message['surface'] = function(input_message, player)
 
   if result then
     player.force.print(message, player.chat_color)
-  else 
-    player.print({"noone-to-reply"})
+  else
+    local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"noone-to-reply"}}
+    if table_chat and table_chat.style.visible ~= false then
+      local notice = table_chat.notices.main
+      notice.caption = message
+    else
+      player.print(message)
+    end
   end
   return result
 end
@@ -111,7 +117,13 @@ send_message['faction'] = function(input_message, player)
         end
       end
     else
-      player.print({"multiplayer.no-address", drop_down.items[drop_down.selected_index]})
+      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
+      if table_chat and table_chat.style.visible ~= false then
+        local notice = table_chat.notices.main
+        notice.caption = message
+      else
+        player.print(message)
+      end
     end
     return target
   else
@@ -156,7 +168,7 @@ send_message['local'] = function(input_message, player)
   return true
 end
 
-send_message['allies'] = function(input_message, player)
+send_message['allies'] = function(input_message, player, table_chat)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local message = {"", player.name .. " (", {"secondary_chat.to_allies"}, ")", {"colon"}, " ", input_message}
   local result = false
@@ -169,13 +181,19 @@ send_message['allies'] = function(input_message, player)
 
   if result then
     player.force.print(message, player.chat_color)
-  else 
-    player.print({"noone-to-reply"})
+  else
+    local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"noone-to-reply"}}
+    if table_chat and table_chat.style.visible ~= false then
+      local notice = table_chat.notices.main
+      notice.caption = message
+    else
+      player.print(message)
+    end
   end
   return result
 end
 
-send_message['admins'] = function(input_message, player)
+send_message['admins'] = function(input_message, player, table_chat)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local message
 
@@ -198,9 +216,21 @@ send_message['admins'] = function(input_message, player)
     sc_print_in_chat(message, player, player)
   else
     if player.admin then
-      player.print({"secondary_chat.sole_administrator"})
+      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.sole_administrator"}}
+      if table_chat and table_chat.style.visible ~= false then
+        local notice = table_chat.notices.main
+        notice.caption = message
+      else
+        player.print(message)
+      end
     else
-      player.print({"secondary_chat.admins_not_founded"})
+      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
+      if table_chat and table_chat.style.visible ~= false then
+        local notice = table_chat.notices.main
+        notice.caption = message
+      else
+        player.print(message)
+      end
     end
   end
   return result
@@ -223,10 +253,11 @@ end
 
 change_list = {}
 
-change_list['private'] = function(gui, target, select_list, last_target, drop_down_online, drop_down_state)
+change_list['private'] = function(gui, target, select_list, last_target, drop_down_online, drop_down_state, table_chat)
   if #game.players < 2 then
     gui.selected_index = 0
-    target.print({'noone-to-reply'})
+
+    table_chat.notices.main.caption = {'', {'secondary_chat.attention'}, ' ', {'colon'}, ' ', {'noone-to-reply'}}
     drop_down_online.style.visible = false
     drop_down_state.style.visible = false
     return false

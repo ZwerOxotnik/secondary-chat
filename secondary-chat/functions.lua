@@ -13,7 +13,13 @@ function is_allow_message(message, sender)
       return true
     else
       log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
-      sender.print({"", "~~~~ ", {"secondary_chat.long_message"}, " ~~~~"})
+      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.long_message"}}
+      if table_chat and table_chat.style.visible ~= false then
+        local notice = table_chat.notices.main
+        notice.caption = message
+      else
+        sender.print(message)
+      end
     end
   elseif string.len(message) < global.secondary_chat.settings.limit_characters then
     return true
