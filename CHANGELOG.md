@@ -23,6 +23,7 @@
 - Added: settings for chat and for gui
 - Added: saving data gui of chat for player
 - Added: autohide gui for the mod
+- Added: notices in gui
 - Changed: /toggle-chat drop-down
 - Changed: style of GUI
 - Changed: faction chat
