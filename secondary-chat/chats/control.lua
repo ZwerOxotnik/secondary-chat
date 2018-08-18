@@ -134,7 +134,7 @@ send_message['surface'] = function(input_message, player, table_chat)
   if result then
     player.force.print(message, player.chat_color)
   else
-    local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"noone-to-reply"}}
+    local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
     if table_chat and table_chat.style.visible ~= false then
       local notice = table_chat.notices.main
       notice.caption = message
@@ -173,7 +173,7 @@ send_message['faction'] = function(input_message, player)
         end
       end
     else
-      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
+      local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
       if table_chat and table_chat.style.visible ~= false then
         local notice = table_chat.notices.main
         notice.caption = message
@@ -238,7 +238,7 @@ send_message['allies'] = function(input_message, player, table_chat)
   if result then
     player.force.print(message, player.chat_color)
   else
-    local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"noone-to-reply"}}
+    local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
     if table_chat and table_chat.style.visible ~= false then
       local notice = table_chat.notices.main
       notice.caption = message
@@ -272,7 +272,7 @@ send_message['admins'] = function(input_message, player, table_chat)
     sc_print_in_chat(message, player, player)
   else
     if player.admin then
-      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.sole_administrator"}}
+      local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.sole_administrator"}}
       if table_chat and table_chat.style.visible ~= false then
         local notice = table_chat.notices.main
         notice.caption = message
@@ -280,7 +280,7 @@ send_message['admins'] = function(input_message, player, table_chat)
         player.print(message)
       end
     else
-      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
+      local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
       if table_chat and table_chat.style.visible ~= false then
         local notice = table_chat.notices.main
         notice.caption = message
@@ -313,7 +313,7 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
   if #game.players < 2 then
     gui.selected_index = 0
 
-    table_chat.notices.main.caption = {'', {'secondary_chat.attention'}, ' ', {'colon'}, ' ', {'noone-to-reply'}}
+    table_chat.notices.main.caption = {'', {'secondary_chat.attention'}, {'colon'}, ' ', {'noone-to-reply'}}
     drop_down_online.style.visible = false
     drop_down_state.style.visible = false
     return false

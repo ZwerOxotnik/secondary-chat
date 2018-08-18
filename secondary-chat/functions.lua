@@ -1,7 +1,7 @@
 function is_allow_message(message, sender)
   if sender then
     if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
-      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
+      local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
       local table_chat = sender.gui.left.table_chat
       if table_chat and table_chat.style.visible ~= false then
         local notice = table_chat.notices.main
@@ -13,7 +13,7 @@ function is_allow_message(message, sender)
       return true
     else
       log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
-      local message = {"", {"secondary_chat.attention"}, " ", {"colon"}, " ", {"secondary_chat.long_message"}}
+      local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.long_message"}}
       if table_chat and table_chat.style.visible ~= false then
         local notice = table_chat.notices.main
         notice.caption = message
