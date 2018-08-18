@@ -13,11 +13,13 @@ function click_gui_chat(event, is_localised)
 
   global.secondary_chat.players[player.index].autohide = max_time_autohide
 
-  if gui.name == "settings" and gui.parent.parent.name == "table_chat" then
-    toggle_settings_chat_gui(player, table_chat)
-    return true
-  elseif gui.name == "color" and gui.parent.parent.name == "table_chat" then
-    color_picker.create_gui(player)
+  if gui.parent.name == "icons" and gui.parent.parent.name == "top_chat" then
+    if gui.name == "settings" then
+      toggle_settings_chat_gui(player, table_chat)
+      return true
+    elseif gui.name == "color" then
+      color_picker.create_gui(player)
+    end
   end
 
   table_chat.notices.main.caption = ""

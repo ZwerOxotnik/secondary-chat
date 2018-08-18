@@ -51,7 +51,7 @@ color_picker.ok_pressed = function(event)
   local color = remote.call(interface, 'get_color', container)
   player.chat_color = color
   local table_chat = player.gui.left.table_chat
-  table_chat.top_chat.color.style.font_color = color
+  table_chat.top_chat.icons.color.style.font_color = color
   container.destroy()
   return true
 end

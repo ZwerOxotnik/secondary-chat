@@ -226,7 +226,7 @@ mod.on_player_joined_game = function(event)
     local settings = global.secondary_chat.players[event.player_index].settings
     if table_chat then
       table_chat.style.visible = settings.main.state_chat.state
-      table_chat.top_chat.color.style.visible = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker16"] ~= nil or remote.interfaces["color-picker"] ~= nil))
+      table_chat.top_chat.icons.color.style.visible = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker16"] ~= nil or remote.interfaces["color-picker"] ~= nil))
     elseif settings.main.state_chat.state and not global.secondary_chat.state_chat then
       create_chat_gui(player)
     end

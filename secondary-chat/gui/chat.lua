@@ -79,19 +79,20 @@ function create_chat_gui(player)
   destroy_chat_gui(player)
 
   local main_table = gui.add{type = 'table', name = 'table_chat', column_count = 1}
-  main_table.style.maximal_width = 360
+  main_table.style.maximal_width = 400
   main_table.style.left_padding = 5
   main_table.style.top_padding = 5
   main_table.style.bottom_padding = 2
   main_table.style.right_padding = 2
 
-  local child_table = main_table.add{type = 'table', name = 'top_chat', column_count = 3}
+  local child_table = main_table.add{type = 'table', name = 'top_chat', column_count = 2}
   child_table.style.align = 'left'
   local input = child_table.add{type = 'textfield', name = 'chat_text_box', text = text}
   input.style.minimal_width = 250
-  input.style.maximal_width = main_table.style.maximal_width - 60
+  input.style.maximal_width = 340
   input.style.horizontally_stretchable = true
-  local button = child_table.add{type = 'button', name = 'settings', caption = '⚙'}
+  local table = child_table.add{type = 'table', name = 'icons', column_count = 30}
+  local button = table.add{type = 'button', name = 'settings', caption = '⚙'}
   button.style.maximal_height = 20
   button.style.minimal_height = 20
   button.style.minimal_width = 20
@@ -103,7 +104,7 @@ function create_chat_gui(player)
   button.style.bottom_padding = 0
   button.style.right_padding = 0
   button.tooltip = {"gui-control-settings.title"}
-  local button = child_table.add{type = 'button', name = 'color', caption = '█'}
+  local button = table.add{type = 'button', name = 'color', caption = '█'}
   button.style.maximal_height = 20
   button.style.minimal_height = 20
   button.style.minimal_width = 20
@@ -119,7 +120,7 @@ function create_chat_gui(player)
 
   local child_table = main_table.add{type = 'table', name = 'select_chat', column_count = 2}
   local label = child_table.add{type = 'label', caption = {'secondary_chat.send_to'}}
-  local table_select = child_table.add{type = 'table', name = 'table', column_count = 3}
+  local table_select = child_table.add{type = 'table', name = 'table', column_count = 30}
   table_select.style.align = 'left'
   local select_drop_down = table_select.add{type = 'drop-down', name = 'select_drop_down', items = items.items or {''}, selected_index = index.items or 1}
   select_drop_down.style.visible = (index.items and items.items) or false
@@ -138,7 +139,7 @@ function create_chat_gui(player)
   button.style.right_padding = 0
   local label = child_table.add{type = 'label', name ='empty_one', caption = ''}
   label.style.visible = true
-  local table_filter = child_table.add{type = 'table', name = 'table_filter', column_count = 2}
+  local table_filter = child_table.add{type = 'table', name = 'table_filter', column_count = 30}
   table_filter.style.align = 'left'
   local drop_down_online = table_filter.add{type = 'drop-down', name = 'drop_down_online', items = gui_online.list, selected_index = index.state or 1}
   drop_down_online.style.maximal_width = 240

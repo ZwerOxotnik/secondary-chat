@@ -6,8 +6,8 @@ function toggle_drop_down(player)
       if select_chat.style.visible == nil then select_chat.style.visible = true end
 
       global.secondary_chat.players[player.index].settings.main.state_chat.drop_down = not select_chat.style.visible
-      if table_chat.settings and table_chat.settings.player.config_table then
-        table_chat.settings.player.config_table.drop_down_boolean.state = not select_chat.style.visible
+      if table_chat.icons.settings and table_chat.icons.settings.player.config_table then
+        table_chat.icons.settings.player.config_table.drop_down_boolean.state = not select_chat.style.visible
       end
 
       if select_chat.style.visible then 

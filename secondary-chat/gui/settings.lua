@@ -121,7 +121,7 @@ function update_checkbox(player, element, parametr)
       for _, target in pairs( game.connected_players ) do
         local table_chat = target.gui.left.table_chat
         if table_chat and (table_chat.style.visible or table_chat.style.visible == nil) then
-          table_chat.top_chat.color.style.visible = element.state
+          table_chat.top_chat.icons.color.style.visible = element.state
           if element.state == false then color_picker.destroy_gui(player) end
         end
       end
