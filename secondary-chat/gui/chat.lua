@@ -46,6 +46,7 @@ function create_chat_gui(player)
   local gui = player.gui.left
   local text = ''
   local last_message = ''
+  local notice_text = ''
   local index = {}
   local items = {}
   local visible = {}
@@ -78,6 +79,11 @@ function create_chat_gui(player)
       if drop_down and drop_down.visible and #drop_down.items > 1 then
         items.items = drop_down.items
         index.items = drop_down.selected_index
+      end
+
+      local notices = table_chat.notices
+      if notices then
+        notice_text = notices.main.caption
       end
     end
   end
@@ -162,6 +168,7 @@ function create_chat_gui(player)
   local label = child_table.add{type = 'label', name = 'main'}
   label.style.font = "default-semibold"
   label.style.font_color = {r = 255, g = 140, b = 0}
+  label.caption = notice_text or ''
 
   local child_table = main_table.add{type = 'table', name = 'last_messages', column_count = 1}
   child_table.style.align = 'left'
