@@ -32,7 +32,8 @@ function click_gui_chat(event, is_localised)
   if selected_index then
     if not is_allow_message(text_box.text, player) then return end
     local chat_name = get_name_chat(selected_index)
-    local send_in_chat = chats.data[chat_name] and chats.data[chat_name].send_message
+    local chat = chats.data[chat_name]
+    local send_in_chat = chat and remote.call(chat.interface.name, chat.interface.send_message, chat_name)
     if send_in_chat then
       local bool
       if is_localised then

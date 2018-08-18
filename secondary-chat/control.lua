@@ -70,6 +70,15 @@ remote.add_interface('secondary-chat',
       end
     end
   end,
+  function_send_message = function(name)
+    return send_message[name]
+  end,
+  get_commands = function(name)
+    return get_commands[name]
+  end,
+  function_change_list = function(name)
+    return change_list[name]
+  end,
   --[[add_chat = function(wip)
     
   end,]]

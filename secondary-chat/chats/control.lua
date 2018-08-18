@@ -1,31 +1,73 @@
 data = {}
 data.chat = {}
 
+data.chat['all'] = function()
+  local name = 'all'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+end
+
 data.chat['surface'] = function()
-  chats.data['surface'] = {}
-  chats.data['surface'].gui = {}
-  chats.data['surface'].gui.commands = {{name = 'surface-send', description = 'secondary_chat.surface-send'}}
+  local name = 'surface'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+  chats.data[name].interface.get_commands = 'get_commands'
 end
 
 data.chat['local'] = function()
-  chats.data['local'] = {}
-  chats.data['local'].gui = {}
-  chats.data['local'].gui.commands = {{name = 'l', description = 'secondary_chat.local-send'},
-                                      {name = 'local-send', description = 'secondary_chat.local-send'}}
+  local name = 'local'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+  chats.data[name].interface.get_commands = 'get_commands'
 end
 
 data.chat['allies'] = function()
-  chats.data['allies'] = {}
-  chats.data['allies'].gui = {}
-  chats.data['allies'].gui.commands = {{name = 'a', description = 'secondary_chat.allied-send'},
-                                       {name = 'allied-send', description = 'secondary_chat.allied-send'}}
+  local name = 'allies'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+  chats.data[name].interface.get_commands = 'get_commands'
 end
 
 data.chat['admins'] = function()
-  chats.data['admins'] = {}
-  chats.data['admins'].gui = {}
-  chats.data['admins'].gui.commands = {{name = 'admins-send', description = 'secondary_chat.admins-send'}}
+  local name = 'admins'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+  chats.data[name].interface.get_commands = 'get_commands'
 end
+
+data.chat['private'] = function()
+  local name = 'private'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+  chats.data[name].interface.change_list = 'function_change_list'
+end
+
+data.chat['faction'] = function()
+  local name = 'faction'
+  chats.data[name] = {}
+  chats.data[name].interface = {}
+  chats.data[name].interface.name = 'secondary-chat'
+  chats.data[name].interface.send_message = 'function_send_message'
+  chats.data[name].interface.change_list = 'function_change_list'
+end
+
+get_commands = {}
+get_commands['surface'] = {{name = 'surface-send', description = 'secondary_chat.surface-send'}}
+get_commands['local'] = {{name = 'l', description = 'secondary_chat.local-send'}, {name = 'local-send', description = 'secondary_chat.local-send'}}
+get_commands['allies'] = {{name = 'a', description = 'secondary_chat.allied-send'}, {name = 'allied-send', description = 'secondary_chat.allied-send'}}
+get_commands['admins'] = {{name = 'admins-send', description = 'secondary_chat.admins-send'}}
 
 function init_chats()
   for name, _ in pairs( chats.keys ) do
@@ -41,21 +83,35 @@ function update_chat(name)
   end
 
   local chat = chats.data[name]
-  chat.send_message = chat.send_message or send_message[name]
-  if type(chat.send_message) ~= 'function' then
+  local interface = chat.interface
+
+  if not interface or type(interface.name) ~= 'string' or not remote.interfaces[interface.name] then
     chat = nil
-    log('error: chats[' .. name .. '].send_message ~= function')
-  else
-    chat.allow_log = chat.allow_log or false
-    chat.gui = chat.gui or {}
-    --chat.gui.is_have_state = chat.gui.is_have_state or false
-    --chat.gui.is_have_online = chat.gui.is_have_online or false
-    chat.gui.change_list = chat.gui.change_list or change_list[name]
-    if chat.gui.change_list ~= nil and type(chat.gui.change_list) ~= 'function' then
-      chat.gui.change_list = nil
-      log('error: chats[' .. name .. '].change_list ~= function')
-    end
+    log('error interface: chats[' .. name .. ']')
+    return false
+  elseif type(interface.send_message) ~= 'string' or not remote.interfaces[interface.name][interface.send_message]
+      or type(remote.call(interface.name, interface.send_message, name)) ~= 'function' then
+    chat = nil
+    log('error interface with send_message: chats[' .. name .. ']')
+    return false
   end
+
+  chat.allow_log = chat.allow_log or false
+  --chat.is_have_state = chat.is_have_state or false
+  --chat.is_have_online = chat.is_have_online or false
+
+  if interface.change_list and (type(interface.change_list) ~= 'string' or type(remote.call(interface.name, interface.change_list, name)) ~= 'function') then
+    log('error interface with change_list: chats[' .. name .. ']')
+    interface.change_list = nil
+  end
+
+  if interface.get_commands and (type(interface.get_commands) ~= 'string' or not remote.interfaces[interface.name][interface.get_commands]
+      or type(remote.call(interface.name, interface.get_commands, name)) ~= 'table') then
+    log('error interface with get_commands: chats[' .. name .. ']')
+    interface.get_commands = nil
+  end
+
+  return true
 end
 
 send_message = {}

@@ -62,14 +62,17 @@ end
 
 function add_commands()
   for chat_name, chat in pairs( chats.data ) do
-    if chat.gui.commands then
-      for _, data in pairs( chat.gui.commands ) do
+    if chat.interface.get_commands then
+      local commands = remote.call(chat.interface.name, chat.interface.get_commands, chat_name)
+      for _, data in pairs( commands ) do
         add_command(data.name, data.description, function(cmd)
           local player = game.player
           if player == nil then return end 
           if cmd.parameter ~= nil then
             if not is_allow_message(cmd.parameter, player) then return end
-            chats.data[chat_name].send_message(cmd.parameter, player)
+            local chat = chats.data[chat_name]
+            local send_in_chat = chat and chat.interface.send_message and remote.call(chat.interface.name, chat.interface.send_message, chat_name)
+            send_in_chat(cmd.parameter, player)
           else
             player.print({data.description})
           end
