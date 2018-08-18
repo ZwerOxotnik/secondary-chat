@@ -125,6 +125,19 @@ local function send_to_private_pressed(event)
     select_drop_down.items = {entity.player.name}
   end
 
+  local drop_down_online = select_chat.table_filter.drop_down_online
+  local drop_down_state = select_chat.table_filter.drop_down_state
+  if game.players[select_drop_down.items[1]].connected then
+    if drop_down_online.selected_index == gui_online.keys['offline'] then
+      drop_down_online.selected_index = gui_online.keys['online']
+    end
+  else
+    if drop_down_online.selected_index == gui_online.keys['online'] then
+      drop_down_online.selected_index = gui_online.keys['offline']
+    end
+  end
+  drop_down_state.selected_index = gui_state.keys['all']
+
   -- Select a recipient
   select_chat.table.chat_drop_down.selected_index = chats.keys['private']
   select_drop_down.selected_index = 1
@@ -160,6 +173,19 @@ local function send_to_faction_pressed(event)
     global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
     create_chat_gui(player)
   end
+
+  local drop_down_online = select_chat.table_filter.drop_down_online
+  local drop_down_state = select_chat.table_filter.drop_down_state
+  if #entity.force.connected_players == 0 then
+    if drop_down_online.selected_index == gui_online.keys['online'] then
+      drop_down_online.selected_index = gui_online.keys['offline']
+    end
+  else
+    if drop_down_online.selected_index == gui_online.keys['offline'] then
+      drop_down_online.selected_index = gui_online.keys['online']
+    end
+  end
+  drop_down_state.selected_index = gui_state.keys['all']
 
   -- Select a recipient
   select_chat.table.chat_drop_down.selected_index = chats.keys['faction'] 
