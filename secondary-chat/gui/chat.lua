@@ -79,7 +79,7 @@ function create_chat_gui(player)
   destroy_chat_gui(player)
 
   local main_table = gui.add{type = 'table', name = 'table_chat', column_count = 1}
-  main_table.style.maximal_width = 400
+  main_table.style.maximal_width = 380
   main_table.style.left_padding = 5
   main_table.style.top_padding = 5
   main_table.style.bottom_padding = 2
@@ -89,7 +89,7 @@ function create_chat_gui(player)
   child_table.style.align = 'left'
   local input = child_table.add{type = 'textfield', name = 'chat_text_box', text = text}
   input.style.minimal_width = 250
-  input.style.maximal_width = 340
+  input.style.maximal_width = 300
   input.style.horizontally_stretchable = true
   local table = child_table.add{type = 'table', name = 'icons', column_count = 30}
   local button = table.add{type = 'button', name = 'settings', caption = '⚙'}
@@ -99,7 +99,7 @@ function create_chat_gui(player)
   button.style.maximal_width = 20
   button.style.font = 'default'
   button.style.align = 'left'
-  button.style.left_padding = 2
+  button.style.left_padding = 1
   button.style.top_padding = 0
   button.style.bottom_padding = 0
   button.style.right_padding = 0
@@ -153,6 +153,8 @@ function create_chat_gui(player)
   local child_table = main_table.add{type = 'table', name = 'notices', column_count = 1}
   child_table.style.align = 'left'
   local label = child_table.add{type = 'label', name = 'main'}
+  label.style.font = "default-semibold"
+  label.style.font_color = {r = 255, g = 140, b = 0}
 
   local child_table = main_table.add{type = 'table', name = 'last_messages', column_count = 1}
   child_table.style.align = 'left'
