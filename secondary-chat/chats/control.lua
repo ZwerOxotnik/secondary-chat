@@ -393,22 +393,15 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
   if gui_online.keys['all'] == drop_down_online.selected_index then
     list_forces = game.forces
   else
-    local is_online = function( force )
-      for _, player in pairs( force.players ) do
-        if player.connected then return true end
-      end
-      return false
-    end
-
     if gui_online.keys['online'] == drop_down_online.selected_index then
       for name, force in pairs( game.forces ) do
-        if is_online(force) then
+        if #force.connected_players > 0 then
           list_forces[name] = force
         end
       end
     else -- gui_online.keys['offline']
       for name, force in pairs( game.forces ) do
-        if not is_online(force) then
+        if #force.connected_players == 0 then
           list_forces[name] = force
         end
       end
