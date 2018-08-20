@@ -82,6 +82,9 @@ function set_global_config_player(target)
   global.secondary_chat.players[target.index] = {}
   global.secondary_chat.players[target.index].settings = config.player.settings
   global.secondary_chat.players[target.index].info = config.player.info
+  global.secondary_chat.players[target.index].gui = {}
+  global.secondary_chat.players[target.index].gui.saves = {}
+  global.secondary_chat.players[target.index].gui.saves.hidden = {}
   global.secondary_chat.players[target.index].autohide = max_time_autohide
   global.secondary_chat.players[target.index].blacklist = {}
   if not global.secondary_chat.state_chat then return end
