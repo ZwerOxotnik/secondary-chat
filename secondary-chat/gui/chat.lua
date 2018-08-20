@@ -11,7 +11,8 @@ function update_chat_gui()
   for _, player in pairs ( game.connected_players ) do
     local table_chat = player.gui.left.table_chat
     if table_chat and table_chat.style.visible ~= false then
-      create_chat_gui(player)
+      local drop_down = table_chat.select_chat.table.chat_drop_down
+      update_chat_and_drop_down(drop_down, player)
     end
   end
 end
