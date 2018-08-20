@@ -45,6 +45,8 @@ Please report any issues or feature requests using the Issue tracker on [GitLab]
 - Provides API to let other mods accessing
 - Add blacklist for players
 - Add custom chat logs
+- Add custom quick message
+- Extend settings
 
 ## Where to get the mod
 
