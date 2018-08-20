@@ -1,7 +1,7 @@
 function destroy_chat_gui(player)
   local table_chat = player.gui.left.table_chat
   if table_chat then
-    global.secondary_chat.players[player.index].last_message = table_chat.top_chat.chat_text_box.text
+    global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_text_box.text
     table_chat.destroy()
   end
 end
@@ -57,7 +57,7 @@ function create_chat_gui(player)
     if table_chat then
       text = table_chat.top_chat.chat_text_box.text
     else
-      text = global.secondary_chat.players[player.index].last_message or ''
+      text = global.secondary_chat.players[player.index].gui.saves.hidden.last_message or ''
     end
 
     last_messages = table_chat.last_messages.last.text
@@ -90,7 +90,7 @@ function create_chat_gui(player)
   end
 
   destroy_chat_gui(player)
-  global.secondary_chat.players[player.index].last_message = nil
+  global.secondary_chat.players[player.index].gui.saves.hidden.last_message = nil
 
   local main_table = gui.add{type = 'table', name = 'table_chat', column_count = 1}
   main_table.style.maximal_width = 380
