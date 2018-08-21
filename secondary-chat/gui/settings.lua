@@ -1,3 +1,23 @@
+local function check_and_change_visible_table(table)
+  local is_visible_elements = false
+  for _, child in pairs( table.children ) do
+    if child.type == 'table' then
+      child.style.left_padding = 10
+      if #child.children == 0 then
+        child.style.visible = false
+      else
+        for _, element in pairs( child.children ) do
+          if element.visible ~= false then
+            is_visible_elements = true
+          end
+        end
+      end
+    end
+  end
+
+  table.style.visible = is_visible_elements
+end
+
 function create_settings_chat_of_admin(player, settings)
   local table
   if settings.admin then
@@ -20,22 +40,7 @@ function create_settings_chat_of_admin(player, settings)
     config_table.allow_custom_color_message_boolean.tooltip = {'secondary_chat.connect_color_mod'}
   end
 
-  local is_visible = false
-  for _, child in pairs( table.children ) do
-    if child.type == 'table' then
-      child.style.left_padding = 10
-      if #child.children == 0 then
-        child.style.visible = false
-      else
-        for _, element in pairs( child.children ) do
-          if element.visible or element.visible == nil then
-            is_visible = true
-          end
-        end
-      end
-    end
-  end
-  table.style.visible = is_visible
+  check_and_change_visible_table(table)
 end
 
 function create_settings_chat_of_player(player, settings)
@@ -54,27 +59,12 @@ function create_settings_chat_of_player(player, settings)
   label.style.font = "default-semibold"
   make_config_table_player(table, global.secondary_chat.players[player.index].settings.main)
 
-  local is_visible = false
-  for _, child in pairs( table.children ) do
-    if child.type == 'table' then
-      child.style.left_padding = 10
-      if #child.children == 0 then
-        child.style.visible = false
-      else
-        for _, element in pairs( child.children ) do
-          if element.visible or element.visible == nil then
-            is_visible = true
-          end
-        end
-      end
-    end
-  end
-  table.style.visible = is_visible
+  check_and_change_visible_table(table)
 end
 
 function toggle_settings_chat_gui(player, table_chat)
   local settings = table_chat.settings
-  if #settings.children > 0 then
+  if #settings.children > 0 or settings.style.visible ~= false then
     settings.clear()
     settings.style.visible = false
     table_chat.buttons.style.visible = true
@@ -120,7 +110,7 @@ function update_checkbox(player, element, parametr)
     if parametr == 'allow_custom_color_message' then
       for _, target in pairs( game.connected_players ) do
         local table_chat = target.gui.left.table_chat
-        if table_chat and (table_chat.style.visible or table_chat.style.visible == nil) then
+        if table_chat then
           table_chat.top_chat.icons.color.style.visible = element.state
           if element.state == false then color_picker.destroy_gui(player) end
         end
