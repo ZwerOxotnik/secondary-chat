@@ -63,9 +63,16 @@ get_commands['allies'] = {{name = 'a', description = 'secondary_chat.allied-send
 get_commands['admins'] = {{name = 'admins-send', description = 'secondary_chat.admins-send'}}
 
 function init_chats()
-  for name, _ in pairs( chats.keys ) do
+  for name, _ in pairs( data.chat ) do
     chats.data[name] = {}
     update_chat(name)
+  end
+
+  local index = 1
+  for name, _ in pairs( chats.data ) do
+    chats.keys[name] = index
+    table.insert(chats.list, {'secondary_chat.to_' .. name})
+    index = index + 1
   end
 end
 

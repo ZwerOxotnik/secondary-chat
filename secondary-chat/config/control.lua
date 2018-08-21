@@ -107,14 +107,6 @@ function global_init()
     global.secondary_chat.chats.keys = {}
     global.secondary_chat.chats.list = {}
     global.secondary_chat.chats.data = {}
-    for k, name in pairs( {'all', 'surface', 'faction', 'local', 'allies', 'admins', 'private'} ) do -- TODO: rework
-      global.secondary_chat.chats.keys[name] = k
-      table.insert(global.secondary_chat.chats.list, {'secondary_chat.to_'..name})
-    end
-    -- for k, name in pairs( {''} ) do
-    --   global.secondary_chat.chats.keys[name] = k + #global.secondary_chat.chats.list
-    --   table.insert(global.secondary_chat.chats.list, {'command-output.'..name})
-    -- end
   end
   update_global_config()
 end
