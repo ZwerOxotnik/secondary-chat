@@ -47,6 +47,8 @@ Please report any issues or feature requests using the Issue tracker on [GitLab]
 - Add custom chat logs
 - Add custom quick message
 - Extend settings
+- Add profiles
+- Add export/import
 
 ## Where to get the mod
 
