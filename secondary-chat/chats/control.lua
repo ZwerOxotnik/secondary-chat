@@ -63,16 +63,12 @@ get_commands['allies'] = {{name = 'a', description = 'secondary_chat.allied-send
 get_commands['admins'] = {{name = 'admins-send', description = 'secondary_chat.admins-send'}}
 
 function init_chats()
+  chats.list = {}
+  chats.keys = {}
+  chats.data = {}
   for name, _ in pairs( data.chat ) do
     chats.data[name] = {}
     update_chat(name)
-  end
-
-  local index = 1
-  for name, _ in pairs( chats.data ) do
-    chats.keys[name] = index
-    table.insert(chats.list, {'secondary_chat.to_' .. name})
-    index = index + 1
   end
 end
 
@@ -108,6 +104,9 @@ function update_chat(name)
     log('error interface with get_commands: chats[' .. name .. ']')
     interface.get_commands = nil
   end
+  
+  table.insert(chats.list, {'secondary_chat.to_' .. name})
+  chats.keys[name] = #chats.list
 
   return true
 end
@@ -133,7 +132,7 @@ send_message['surface'] = function(input_message, player, table_chat)
     player.force.print(message, player.chat_color)
   else
     local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
-    if table_chat and table_chat.style.visible ~= false then
+    if table_chat and table_chat.style.visible then
       local notice = table_chat.notices.main
       notice.caption = message
     else
@@ -172,7 +171,7 @@ send_message['faction'] = function(input_message, player)
       end
     else
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
-      if table_chat and table_chat.style.visible ~= false then
+      if table_chat and table_chat.style.visible then
         local notice = table_chat.notices.main
         notice.caption = message
       else
@@ -237,7 +236,7 @@ send_message['allies'] = function(input_message, player, table_chat)
     player.force.print(message, player.chat_color)
   else
     local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
-    if table_chat and table_chat.style.visible ~= false then
+    if table_chat and table_chat.style.visible then
       local notice = table_chat.notices.main
       notice.caption = message
     else
@@ -271,7 +270,7 @@ send_message['admins'] = function(input_message, player, table_chat)
   else
     if player.admin then
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.sole_administrator"}}
-      if table_chat and table_chat.style.visible ~= false then
+      if table_chat and table_chat.style.visible then
         local notice = table_chat.notices.main
         notice.caption = message
       else
@@ -279,7 +278,7 @@ send_message['admins'] = function(input_message, player, table_chat)
       end
     else
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
-      if table_chat and table_chat.style.visible ~= false then
+      if table_chat and table_chat.style.visible then
         local notice = table_chat.notices.main
         notice.caption = message
       else

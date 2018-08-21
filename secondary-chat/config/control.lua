@@ -101,12 +101,6 @@ function global_init()
   global.secondary_chat.global.settings = global.secondary_chat.global.settings or {}
   global.secondary_chat.global.info = global.secondary_chat.global.info or {}
   global.secondary_chat.global.list = global.secondary_chat.global.list or {}
-
-  if global.secondary_chat.chats == nil then
-    global.secondary_chat.chats = {}
-    global.secondary_chat.chats.keys = {}
-    global.secondary_chat.chats.list = {}
-    global.secondary_chat.chats.data = {}
-  end
+  global.secondary_chat.chats = global.secondary_chat.chats or {}
   update_global_config()
 end
