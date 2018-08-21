@@ -1,67 +1,60 @@
 data = {}
 data.chat = {}
 
-data.chat['all'] = function()
-  local name = 'all'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-end
+data.chat['all'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message'
+  }
+}
 
-data.chat['surface'] = function()
-  local name = 'surface'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-  chats.data[name].interface.get_commands = 'get_commands'
-end
+data.chat['surface'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message',
+    get_commands = 'get_commands'
+  }
+}
 
-data.chat['local'] = function()
-  local name = 'local'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-  chats.data[name].interface.get_commands = 'get_commands'
-end
+data.chat['local'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message',
+    get_commands = 'get_commands'
+  }
+}
 
-data.chat['allies'] = function()
-  local name = 'allies'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-  chats.data[name].interface.get_commands = 'get_commands'
-end
+data.chat['allies'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message',
+    get_commands = 'get_commands'
+  }
+}
 
-data.chat['admins'] = function()
-  local name = 'admins'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-  chats.data[name].interface.get_commands = 'get_commands'
-end
+data.chat['admins'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message',
+    get_commands = 'get_commands'
+  }
+}
 
-data.chat['private'] = function()
-  local name = 'private'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-  chats.data[name].interface.change_list = 'function_change_list'
-end
+data.chat['private'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message',
+    change_list = 'function_change_list'
+  }
+}
 
-data.chat['faction'] = function()
-  local name = 'faction'
-  chats.data[name] = {}
-  chats.data[name].interface = {}
-  chats.data[name].interface.name = 'secondary-chat'
-  chats.data[name].interface.send_message = 'function_send_message'
-  chats.data[name].interface.change_list = 'function_change_list'
-end
+data.chat['faction'] = {
+  interface = {
+    name = 'secondary-chat',
+    send_message = 'function_send_message',
+    change_list = 'function_change_list'
+  }
+}
 
 get_commands = {}
 get_commands['surface'] = {{name = 'surface-send', description = 'secondary_chat.surface-send'}}
@@ -77,12 +70,10 @@ function init_chats()
 end
 
 function update_chat(name)
-  update = data.chat[name]
-  if update then
-    update()
-  end
-
+  chats.data[name] = data.chat[name]
   local chat = chats.data[name]
+  if not chat then return false end
+
   local interface = chat.interface
 
   if not interface or type(interface.name) ~= 'string' or not remote.interfaces[interface.name] then
