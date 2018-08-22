@@ -161,8 +161,7 @@ function create_settings_for_everything(player)
   select.draw_horizontal_lines = true
   select.draw_horizontal_line_after_headers = true
   select.style.horizontal_spacing = 5
-  select.style.horizontally_stretchable = true
-  select.style.horizontally_squashable = true
+
   local list = select.add{type = 'table', name = 'list', column_count = 1}
   list.style.visible = true
   local label = list.add{type = 'label', caption = {'secondary_chat_settings.list'}}
@@ -171,8 +170,6 @@ function create_settings_for_everything(player)
   scroll.style.maximal_width = 200
   local list_container = scroll.add{type = 'table', name = 'container', column_count = 1}
   list_container.style.horizontal_spacing = 5
-  list_container.style.horizontally_stretchable = true
-  list_container.style.horizontally_squashable = true
   list_container.style.visible = visible.list or true
   list_container.style.align = 'left'
   update_list_settings(list_container, player)
@@ -188,6 +185,13 @@ function create_settings_for_everything(player)
   local scroll = child_table.add{name = "scrollpane", name = 'scroll', type = "scroll-pane"}
   scroll.style.vertical_align = 'top'
   local settings = scroll.add{type = 'table', name = 'settings', column_count = 1}
+
+  local patreon = main_table.add{type = 'table', name = 'patreon', column_count = 2}
+  patreon.style.vertical_align = 'bottom'
+  patreon.style.align = 'right'
+  local label = patreon.add{type = 'label', caption = {'', 'Patreon', {'colon'}}}
+  local text = patreon.add{type = 'text-box', text = 'https://www.patreon.com/ZwerOxotnik'}
+  text.read_only = true
 
   -- local button = main_table.add{type = 'button', name = 'close', caption = {'gui.close'}}
   -- button.style.align = 'right'
@@ -258,9 +262,6 @@ function click_list_settings(name, player, table)
 
   child_table = table.add{type = 'table', name = name, column_count = 1}
   table_setting[name].update(player, child_table)
-
-  -- local child_table.add{}
-  -- down
 end
 
 function toogle_visible_list(gui, player)
