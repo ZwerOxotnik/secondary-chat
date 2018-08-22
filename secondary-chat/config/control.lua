@@ -17,6 +17,8 @@ config.global.settings = require('secondary-chat/config/settings/global')
 config.global.info = require('secondary-chat/config/info/global')
 
 function update_global_config_player(player) 
+  if not global.secondary_chat.players[player.index] then return end
+
   local settings = global.secondary_chat.players[player.index].settings
   if settings then
     for table, child_table in pairs( config.player.settings ) do

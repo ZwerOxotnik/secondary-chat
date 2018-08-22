@@ -129,13 +129,30 @@ mod.on_player_created = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
-  set_global_config_player(player)
+  --set_global_config_player(player)
 end
 
 mod.on_player_removed = function(event)
   global.secondary_chat.players[event.player_index] = nil
 
   update_chat_gui()
+end
+
+mod.on_gui_text_changed = function(event)
+  -- Validation of data
+  local gui = event.element
+  if not (gui and gui.valid) then return end
+  local player = game.players[event.player_index]
+  if not (player and player.valid) then return end
+
+  if gui.name == 'chat_text_box' and gui.parent.parent.name == 'table_chat' then
+    if string.byte(gui.text, -1) == 10 then
+      if #gui.text > 2 then
+        click_gui_chat(event)
+      end
+      gui.text = ''
+    end
+  end
 end
 
 mod.on_gui_checked_state_changed = function(event)
@@ -201,9 +218,9 @@ mod.on_round_end = function()
   end
 end
 
+
 mod.on_init = function()
   global_init()
-  update_global_config()
 
   chats = global.secondary_chat.chats
   init_chats()
@@ -211,9 +228,12 @@ mod.on_init = function()
 end
 
 mod.on_load = function()
-  if global.secondary_chat and global.secondary_chat.chats then
+  if not game then
     global_init()
     chats = global.secondary_chat.chats
+    if chats.keys then
+      init_chats()
+    end
     add_commands()
   end
 end

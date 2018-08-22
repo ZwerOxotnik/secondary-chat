@@ -48,6 +48,7 @@ function click_gui_chat(event, is_localised)
   if text_box.text == "" then return false end
   local drop_down = table_chat.select_chat.table.chat_drop_down
   local selected_index = (gui.name == "print_in_chat" and gui.parent and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
+                          or (gui.name == "chat_text_box" and gui.parent and gui.parent.parent.name == 'table_chat' and drop_down.selected_index)
                           or chats.keys[string.match(gui.name, "chat_(.+)")] -- For buttons
   if selected_index then
     if not is_allow_message(text_box.text, player) then return end
