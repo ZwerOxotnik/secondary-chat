@@ -11,6 +11,7 @@ script.on_event(defines.events.on_player_joined_game, secondary_chat.on_player_j
 script.on_event(defines.events.on_player_promoted, secondary_chat.on_player_promoted)
 script.on_event(defines.events.on_player_demoted, secondary_chat.on_player_demoted)
 script.on_event(defines.events.on_gui_checked_state_changed, secondary_chat.on_gui_checked_state_changed)
+script.on_event(defines.events.on_player_display_resolution_changed, secondary_chat.on_player_display_resolution_changed)
 
 local function find_interface(interfaces)
   for _, name in pairs( interfaces ) do

@@ -3,18 +3,21 @@ function toggle_drop_down(player)
   if table_chat then
     local select_chat = table_chat.select_chat
     if select_chat then
-      if select_chat.style.visible == nil then select_chat.style.visible = true end
+      local frame = player.gui.center.secondary_chat_settings
+      if frame then
+        local settings = frame.main_table.level_3.scroll.settings
+        if settings.personal then
+          local drop_down = settings.personal.player.config_table.drop_down_boolean
+          drop_down.state = not select_chat.style.visible
+        end
+      end
 
       global.secondary_chat.players[player.index].settings.main.state_chat.drop_down = not select_chat.style.visible
-      if table_chat.icons.settings and table_chat.icons.settings.player.config_table then
-        table_chat.icons.settings.player.config_table.drop_down_boolean.state = not select_chat.style.visible
+      if table_chat.settings and table_chat.settings.player then
+        table_chat.settings.player.config_table.drop_down_boolean.state = not select_chat.style.visible
       end
 
-      if select_chat.style.visible then 
-        select_chat.style.visible = false
-      else
-        create_chat_gui(player)
-      end
+      select_chat.style.visible = not select_chat.style.visible
     else
       log("not founded 'select_chat' for the secondary chat")
     end
@@ -26,7 +29,7 @@ end
 
 local function toggle_chat(cmd)
   local player = game.player
-  if player == nil then return end
+  if not (player and player.valid) then return end
   local table_chat = player.gui.left.table_chat
   if cmd.parameter then
     if table_chat then

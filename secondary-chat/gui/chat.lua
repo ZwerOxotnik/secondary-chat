@@ -10,7 +10,7 @@ function update_chat_gui()
   -- Updating of gui
   for _, player in pairs ( game.connected_players ) do
     local table_chat = player.gui.left.table_chat
-    if table_chat and table_chat.style.visible ~= false then
+    if table_chat and table_chat.style.visible then
       local drop_down = table_chat.select_chat.table.chat_drop_down
       update_chat_and_drop_down(drop_down, player)
     end
@@ -52,14 +52,9 @@ function create_chat_gui(player)
   local items = {}
   local visible = {}
 
-  if gui.table_chat then
-    local table_chat = gui.table_chat
-    if table_chat then
-      text = table_chat.top_chat.chat_text_box.text
-    else
-      text = global.secondary_chat.players[player.index].gui.saves.hidden.last_message or ''
-    end
-
+  local table_chat = gui.table_chat
+  if table_chat then
+    text = table_chat.top_chat.chat_text_box.text
     last_messages = table_chat.last_messages.last.text
     
     local select_chat = table_chat.select_chat
@@ -87,6 +82,8 @@ function create_chat_gui(player)
         notice_text = notices.main.caption
       end
     end
+  else
+    text = global.secondary_chat.players[player.index].gui.saves.hidden.last_message or ''
   end
 
   destroy_chat_gui(player)
@@ -98,9 +95,11 @@ function create_chat_gui(player)
   main_table.style.top_padding = 5
   main_table.style.bottom_padding = 2
   main_table.style.right_padding = 2
+  main_table.style.visible = true
 
   local child_table = main_table.add{type = 'table', name = 'top_chat', column_count = 2}
-  child_table.style.align = 'left'
+  child_table.style.horizontally_stretchable = false
+  child_table.style.horizontally_squashable = false
   local input = child_table.add{type = 'textfield', name = 'chat_text_box', text = text}
   input.style.minimal_width = 250
   input.style.maximal_width = 300
@@ -112,12 +111,16 @@ function create_chat_gui(player)
   button.style.minimal_width = 20
   button.style.maximal_width = 20
   button.style.font = 'default'
-  button.style.align = 'left'
   button.style.left_padding = 1
   button.style.top_padding = 0
   button.style.bottom_padding = 0
   button.style.right_padding = 0
-  button.tooltip = {"gui-control-settings.title"}
+  button.tooltip = 
+  {
+    '', {'gui-control-settings.title'}, {'colon'},
+    '\n', {'controls.mouse-button-1'}, ' - ', {'gui-map-generator.basic-tab-title'},
+    '\n', 'Shift + ', {'controls.mouse-button-1'}, ' - ', {'gui-map-generator.advanced-tab-title'}
+  }
   local button = table.add{type = 'button', name = 'color', caption = '█'}
   button.style.maximal_height = 20
   button.style.minimal_height = 20
@@ -133,6 +136,7 @@ function create_chat_gui(player)
   button.style.visible = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker16"] ~= nil or remote.interfaces["color-picker"] ~= nil))
 
   local child_table = main_table.add{type = 'table', name = 'select_chat', column_count = 2}
+  child_table.style.visible = true
   local label = child_table.add{type = 'label', caption = {'secondary_chat.send_to'}}
   local table_select = child_table.add{type = 'table', name = 'table', column_count = 30}
   table_select.style.align = 'left'
@@ -167,7 +171,7 @@ function create_chat_gui(player)
   local child_table = main_table.add{type = 'table', name = 'notices', column_count = 1}
   child_table.style.align = 'left'
   local label = child_table.add{type = 'label', name = 'main'}
-  label.style.font = "default-semibold"
+  label.style.font = 'default-semibold'
   label.style.font_color = {r = 255, g = 140, b = 0}
   label.caption = notice_text or ''
 

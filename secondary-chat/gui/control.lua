@@ -5,19 +5,40 @@ require("secondary-chat/gui/settings")
 require("secondary-chat/gui/buttons")
 
 function click_gui_chat(event, is_localised)
+    -- Validation of data
   local gui = event.element
+  if not (gui and gui.valid) then return false end
   local player = game.players[event.player_index]
   local table_chat = player.gui.left.table_chat
   if not table_chat then return false end
 
   global.secondary_chat.players[player.index].autohide = max_time_autohide
 
-  if gui.parent.name == "icons" and gui.parent.parent.name == "top_chat" then
-    if gui.name == "settings" then
-      toggle_settings_chat_gui(player, table_chat)
+  if gui.parent then
+    if gui.parent.name == "icons" and gui.parent.parent.name == "top_chat" then
+      table_chat.notices.main.caption = ""
+      if gui.name == "settings" then
+        if event.shift then
+          local frame = player.gui.center.secondary_chat_settings
+          if frame then
+            frame.destroy()
+          else
+            create_settings_for_everything(player)
+          end
+        else
+          toggle_settings_chat_gui(player, table_chat)
+        end
+        return true
+      elseif gui.name == "color" then
+        color_picker.create_gui(player)
+        return true
+      end
+    elseif gui.name == "toogle" and gui.parent.parent.parent and gui.parent.parent.parent.parent.name == "secondary_chat_settings" then
+      toogle_visible_list(gui, player)
       return true
-    elseif gui.name == "color" then
-      color_picker.create_gui(player)
+    elseif gui.parent.name == "container" and gui.parent.parent.parent.name == "list" then
+      click_list_settings(gui.name, player, gui.parent.parent.parent.parent.parent.scroll.settings)
+      return true
     end
   end
 
@@ -26,7 +47,7 @@ function click_gui_chat(event, is_localised)
   local text_box = table_chat.top_chat.chat_text_box
   if text_box.text == "" then return false end
   local drop_down = table_chat.select_chat.table.chat_drop_down
-  local selected_index = (gui.name == "print_in_chat" and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
+  local selected_index = (gui.name == "print_in_chat" and gui.parent and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
                           or chats.keys[string.match(gui.name, "chat_(.+)")] -- For buttons
   if selected_index then
     if not is_allow_message(text_box.text, player) then return end

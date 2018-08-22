@@ -63,12 +63,7 @@ remote.add_interface('secondary-chat',
     
   end,]]--
   update_gui = function()
-    for _, player in pairs( game.connected_players ) do
-      local table_chat = player.gui.left.table_chat
-      if table_chat and table_chat.style.visible ~= false then
-        create_chat_gui(player)
-      end
-    end
+    update_chat_gui()
   end,
   function_send_message = function(name)
     return send_message[name]
@@ -139,6 +134,7 @@ end
 
 mod.on_player_removed = function(event)
   global.secondary_chat.players[event.player_index] = nil
+
   update_chat_gui()
 end
 
@@ -172,12 +168,11 @@ mod.on_gui_selection_state_changed = function(event)
 end
 
 mod.on_player_promoted = function(event)
-  -- Update gui of settings
+  -- Validation of data
   local player = game.players[event.player_index]
-  local table_chat = player.gui.left.table_chat
-  if table_chat and table_chat.settings.style.visible then
-    create_settings_chat_of_admin(player, table_chat.settings)
-  end
+  if not (player and player.valid) then return end
+
+  check_settings(player)
 end
 
 mod.on_player_demoted = function(event)
@@ -185,16 +180,13 @@ mod.on_player_demoted = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
-  -- Clear gui of settings admin
-  local table_chat = player.gui.left.table_chat
-  if table_chat and table_chat.settings.admin then
-    table_chat.settings.admin.clear()
-  end
+  check_settings(player)
 end
 
 mod.on_round_start = function()
   if not global.secondary_chat.state_chat then return end
 
+  -- Create gui of chat
   for _, player in pairs( game.players ) do
     create_chat_gui(player)
   end
@@ -203,6 +195,7 @@ end
 mod.on_round_end = function()
   if not global.secondary_chat.state_chat then return end
 
+  -- Destroy gui of chat
   for _, player in pairs( game.players ) do
     destroy_chat_gui(player)
   end
@@ -219,6 +212,7 @@ end
 
 mod.on_load = function()
   if global.secondary_chat and global.secondary_chat.chats then
+    global_init()
     chats = global.secondary_chat.chats
     add_commands()
   end
@@ -231,6 +225,13 @@ mod.on_player_joined_game = function(event)
 
   if global.secondary_chat.players[event.player_index] then
     color_picker.destroy_gui(player)
+
+    -- Remove settings
+    local frame = player.gui.center.secondary_chat_settings
+    if frame then
+      frame.destroy()
+    end
+
     local table_chat = player.gui.left.table_chat
     local settings = global.secondary_chat.players[event.player_index].settings
     if table_chat then
@@ -241,9 +242,6 @@ mod.on_player_joined_game = function(event)
     end
   else
     set_global_config_player(player)
-    if settings.main.state_chat.state and not global.secondary_chat.state_chat then
-      create_chat_gui(player)
-    end
   end
 
   update_chat_gui()
@@ -256,10 +254,16 @@ mod.on_player_left_game = function(event)
 
   color_picker.destroy_gui(player)
 
-  -- Hide gui
+  -- Hide chat
   local table_chat = player.gui.left.table_chat
   if table_chat then
     table_chat.style.visible = false
+  end
+
+  -- Remove settings
+  local frame = player.gui.center.secondary_chat_settings
+  if frame then
+    frame.destroy()
   end
 
   global.secondary_chat.players[event.player_index].autohide = max_time_autohide
@@ -271,6 +275,10 @@ end
 
 mod.on_forces_merging = function(event)
   update_chat_gui()
+end
+
+mod.on_player_display_resolution_changed = function(event)
+  check_settings_frame_size(event)
 end
 
 -- For soft-mods, scenarios, interfaces
@@ -289,7 +297,7 @@ if script.mod_name ~= 'level' then
     local data = global.secondary_chat.players
     for index, player in pairs( game.connected_players ) do
       local table_chat = player.gui.left.table_chat
-      if table_chat and table_chat.style.visible ~= false then
+      if table_chat and table_chat.style.visible then
         if data[index].autohide <= 0 then
           table_chat.style.visible = false
         else
