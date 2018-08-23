@@ -103,7 +103,7 @@ function create_chat_gui(player)
   local input = child_table.add{type = 'text-box', name = 'chat_text_box', text = text}
   input.style.minimal_width = 250
   input.style.maximal_width = 300
-  input.style.maximal_height = 28
+  input.style.maximal_height = 32
   local table = child_table.add{type = 'table', name = 'icons', column_count = 30}
   local button = table.add{type = 'button', name = 'settings', caption = '⚙'}
   button.style.maximal_height = 20
