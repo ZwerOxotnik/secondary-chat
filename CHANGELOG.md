@@ -25,6 +25,7 @@
 - Added: autohide gui for the mod
 - Added: notices in gui
 - Added: sending message in gui by enter
+- Added: localization in Spanish
 - Changed: /toggle-chat drop-down
 - Changed: style of GUI
 - Changed: faction chat
