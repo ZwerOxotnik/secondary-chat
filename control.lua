@@ -37,6 +37,7 @@ end
 
 local function on_load()
   secondary_chat.on_load()
+
   -- Searching events "on_round_start" and "on_round_end"
   for interface, _ in pairs( remote.interfaces ) do
     local function_name = "get_event_name"
@@ -51,6 +52,7 @@ local function on_load()
       end
     end
   end
+
   -- Searching event "on_ok_button_clicked" from a mod "color-picker"
   local interface = find_interface({"color-picker", "color-picker16"})
   if interface then
@@ -67,7 +69,8 @@ if script.mod_name ~= 'level' then
 end
 
 local function on_init()
-  on_load()
   secondary_chat.on_init()
+
+  on_load()
 end
 script.on_init(on_init)

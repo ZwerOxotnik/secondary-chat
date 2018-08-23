@@ -229,7 +229,6 @@ end
 
 mod.on_load = function()
   if not game then
-    global_init()
     chats = global.secondary_chat.chats
     if chats.keys then
       init_chats()
