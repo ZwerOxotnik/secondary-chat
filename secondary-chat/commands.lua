@@ -89,5 +89,5 @@ function add_commands()
     global.toggle_chat_commands = global.toggle_chat_commands .. name .. '/'
   end
 
-  add_command("toggle-chat", "toggle", toggle_chat, global.toggle_chat_commands)
+  add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, global.toggle_chat_commands)
 end
