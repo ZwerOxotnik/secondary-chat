@@ -91,6 +91,9 @@ function update_checkbox(player, element, parametr)
       table_chat.settings.style.visible = element.state
       table_chat.settings.clear()
       player.print({'', '/toggle-chat ', {'secondary_chat.toggle', global.toggle_chat_commands}})
+      if script.mod_name ~= 'level' then
+        player.print({'secondary_chat.or_use_hotkeys'})
+      end
     elseif parametr == 'drop_down' then
       toggle_drop_down(player)
     end
