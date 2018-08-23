@@ -114,10 +114,10 @@ check_stance['specific'] = function(force, other_force)
   return false
 end
 
-function add_command(name, description, f, addit_description)
-  if type(f) == "function" then
+function add_command(name, description, func, addit_description)
+  if type(func) == "function" then
     if commands.game_commands[name] == nil and commands.commands[name] == nil then
-      commands.add_command(name, {description, addit_description}, f)
+      commands.add_command(name, {description, addit_description}, func)
       return true
     else
       log("command '" .. name .. "' not added for secondary-chat")
