@@ -39,7 +39,7 @@
 
 ### [v1.3.0][v1.3.0]
 
-- Added: New GUI secondary chat
+- Added: New GUI for chat
 - Changed: command /toggle-chat [\<all/faction/allied/local/drop-down\>]
 - Changed: (**temporary**) When you change the faction, depending on the presence of allies, the button "send to allies" **NOT** changes
 
@@ -56,7 +56,7 @@
 - Addded: raise event "on_console_chat"
 - Changed: (local chat) If length message < 80 then create "flying text"
 - Changed: locale for message in chat
-- Fixed: secondary chat is not closed when using /toggle-chat
+- Fixed: the chat is not closed when using /toggle-chat
 - Optimized code
 
 ### [v1.2.2][v1.2.2]
