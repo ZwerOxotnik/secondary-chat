@@ -1,4 +1,4 @@
-# Secondary chat
+# Chat of extended interaction
 
 This mod was created for the game [Factorio][Factorio] and adds gui of chat, new commands, new types of chat.
 Top left appear the new gui with drop-down with filters, that sends your message from the text field to the chat.
@@ -11,7 +11,7 @@ Top left appear the new gui with drop-down with filters, that sends your message
 - /admins-send \<message\> - sends a message to admins.
 - /toggle-chat [\<all/faction/allied/local/surface/admins/drop-down\>] - disabled or re-enables your own parts of additional chat.
 
-## How to open the secondary chat
+## How to open the chat
 
 - variant 1: When the game starts from the character appears.
 - variant 2: Press any hothey of mod
