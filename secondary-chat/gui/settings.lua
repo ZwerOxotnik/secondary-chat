@@ -90,6 +90,7 @@ function update_checkbox(player, element, parametr)
       table_chat.buttons.style.visible = not element.state
       table_chat.settings.style.visible = element.state
       table_chat.settings.clear()
+
       player.print({'', '/toggle-chat ', {'secondary_chat.toggle', global.toggle_chat_commands}})
       if script.mod_name ~= 'level' then
         player.print({'secondary_chat.or_use_hotkeys'})
@@ -237,6 +238,7 @@ table_setting['personal'] = {}
 table_setting['statistics'] = {}
 table_setting['global'] = {}
 table_setting['players'] = {}
+--table_setting['translation'] = {}
 
 table_setting['personal'].update = function(player, table)
   create_settings_chat_of_player(player, table)
