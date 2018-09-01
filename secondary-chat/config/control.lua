@@ -1,22 +1,22 @@
 configs = {}
-
-configs.player = {}
-configs.player.settings = require('secondary-chat/config/settings/player')
-configs.player.info = require('secondary-chat/config/info/player')
-
-configs.global = {}
-configs.global.settings = require('secondary-chat/config/settings/global')
-configs.global.info = require('secondary-chat/config/info/global')
+configs.global = require('secondary-chat/config/global')
+configs.player = require('secondary-chat/config/player')
 
 function update_global_config_player(player)
   if global.secondary_chat.players[player.index] == nil then
-    global.secondary_chat.players[player.index] = configs.player
+    set_global_config_player(player)
     return 
   end
 
+  global.secondary_chat.players[player.index].gui = global.secondary_chat.players[player.index].gui or {}
+  global.secondary_chat.players[player.index].gui.saves = global.secondary_chat.players[player.index].gui.saves or {}
+  global.secondary_chat.players[player.index].gui.saves.hidden = global.secondary_chat.players[player.index].gui.saves.hidden or {}
+  global.secondary_chat.players[player.index].autohide = max_time_autohide
+  global.secondary_chat.players[player.index].blacklist = global.secondary_chat.players[player.index].blacklist or {}
+
   local settings = global.secondary_chat.players[player.index].settings
   if settings then
-    for table, child_table in pairs( configs.player.settings ) do
+    for table, child_table in pairs( configs.player.get_settings() ) do
       settings[table] = settings[table] or {}
       for name, data in pairs( child_table ) do
         if settings[table][name].state == nil or type(data.state) ~= type(settings[table][name]) then
@@ -28,12 +28,12 @@ function update_global_config_player(player)
       end
     end
   else
-    global.secondary_chat.players[player.index].settings = configs.player.settings
+    global.secondary_chat.players[player.index].settings = configs.player.get_settings()
   end
 
   local info = global.secondary_chat.players[player.index].info
   if info then
-    for table, child_table in pairs( configs.global.info ) do
+    for table, child_table in pairs( configs.global.get_info() ) do
       info[table] = info[table] or {}
       for name, data in pairs( child_table ) do      
         if info[table][name] == nil or type(data) ~= type(info[table][name]) then
@@ -42,49 +42,59 @@ function update_global_config_player(player)
       end
     end
   else
-    global.secondary_chat.players[player.index].info = configs.global.info
+    global.secondary_chat.players[player.index].info = configs.global.get_info()
+  end
+
+  if player.connected then
+    if not global.secondary_chat.state_chat then return end
+    create_chat_gui(player)
   end
 end
 
 function update_global_config()
   if global.secondary_chat.global == nil then
-    global.secondary_chat.global = configs.global
-    return
-  end
-
-  local settings = global.secondary_chat.global.settings
-  if settings then
-    for table, child_table in pairs( configs.global.settings ) do
-      settings[table] = settings[table] or {}
-      for name, data in pairs( child_table ) do      
-        if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
-          settings[table][name] = data
+    global.secondary_chat.global = {}
+    global.secondary_chat.global.settings = configs.global.get_settings()
+    global.secondary_chat.global.info = configs.global.get_info()
+  else
+    local settings = global.secondary_chat.global.settings
+    if settings then
+      for table, child_table in pairs( configs.global.get_settings() ) do
+        settings[table] = settings[table] or {}
+        for name, data in pairs( child_table ) do      
+          if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
+            settings[table][name] = data
+          end
         end
       end
+    else
+      global.secondary_chat.global.settings = configs.global.get_settings()
     end
-  else
-    global.secondary_chat.global.settings = configs.global.settings
-  end
 
-  local info = global.secondary_chat.global.info
-  if info then
-    for table, child_table in pairs( configs.global.info ) do
-      info[table] = info[table] or {}
-      for name, data in pairs( child_table ) do      
-        if info[table][name] == nil or type(data) ~= type(info[table][name]) then
-          info[table][name] = data
+    local info = global.secondary_chat.global.info
+    if info then
+      for table, child_table in pairs( configs.global.get_info() ) do
+        info[table] = info[table] or {}
+        for name, data in pairs( child_table ) do      
+          if info[table][name] == nil or type(data) ~= type(info[table][name]) then
+            info[table][name] = data
+          end
         end
       end
+    else
+      global.secondary_chat.global.info = configs.global.get_info()
     end
-  else
-    global.secondary_chat.global.info = configs.global.info
   end
+
+  global.secondary_chat.global.mutes = global.secondary_chat.global.mutes or {}
+  global.secondary_chat.global.list = global.secondary_chat.global.list or {}
 end
 
 function set_global_config_player(target)
   local index = target.index
   global.secondary_chat.players[index] = {}
-  global.secondary_chat.players[index] = configs.player
+  global.secondary_chat.players[index].settings = configs.player.get_settings()
+  global.secondary_chat.players[index].info = configs.player.get_info()
   global.secondary_chat.players[index].gui = {}
   global.secondary_chat.players[index].gui.saves = {}
   global.secondary_chat.players[index].gui.saves.hidden = {}
@@ -101,12 +111,11 @@ function global_init()
   global.secondary_chat.settings = global.secondary_chat.settings or {}
   global.secondary_chat.settings.limit_characters = global.secondary_chat.settings.limit_characters or 73 * 14 --1022
   global.secondary_chat.players = global.secondary_chat.players or {}
-  for i in (pairs(game.players)) do
-    global.secondary_chat.players[i] = global.secondary_chat.players[i] or configs.player
+  if game then
+    for _, player in pairs( game.players ) do
+      update_global_config_player(player)
+    end
   end
-  global.secondary_chat.global = global.secondary_chat.global or {}
-  global.secondary_chat.global.settings = global.secondary_chat.global.settings or configs.global.settings
-  global.secondary_chat.global.info = global.secondary_chat.global.info or configs.global.info
-  global.secondary_chat.global.list = global.secondary_chat.global.list or {}
+  update_global_config()
   global.secondary_chat.chats = global.secondary_chat.chats or {}
 end
