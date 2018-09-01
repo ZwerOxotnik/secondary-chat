@@ -1,15 +1,15 @@
 # Chat of extended interaction
 
-This mod was created for the game [Factorio][Factorio] and adds gui of chat, new commands, new types of chat.
-Top left appear the new gui with drop-down with filters, that sends your message from the text field to the chat.
+This mod was created for the game [Factorio][Factorio] and adds gui of chat, new commands, new types of chat, new interactions.
+Top left appear the new gui with drop-down with filters and other functions, that sends your message from the text field to the chat and can simplify the interaction of other elements and simplify receiving a information.
 
 ## Commands
 
-- /a \<message\> or /allied-send \<message\> - sends a message to the allies.
-- /l \<message\> or /local-send \<message\> - sends a message to the nearest players.
-- /surface-send \<message\> - sends a message all players on your surface.
-- /admins-send \<message\> - sends a message to admins.
-- /toggle-chat [\<all/faction/allied/local/surface/admins/drop-down\>] - disabled or re-enables your own parts of additional chat.
+- /a \<message\> or /allied-send \<message\> - Sends a message to the allies.
+- /l \<message\> or /local-send \<message\> - Sends a message to the nearest players.
+- /surface-send \<message\> - Sends a message all players on your surface.
+- /admins-send \<message\> - Sends a message to admins.
+- /toggle-chat [\<all/faction/allied/local/surface/admins/drop-down\>] - Disabled or re-enables your own parts of additional chat.
 
 ## How to open the chat
 
