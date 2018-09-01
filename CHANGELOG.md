@@ -26,6 +26,7 @@
 - Added: notices in gui
 - Added: sending message in gui by enter
 - Added: localization in Spanish
+- Added: muting
 - Changed: /toggle-chat drop-down
 - Changed: style of GUI
 - Changed: faction chat
