@@ -13,6 +13,8 @@ script.on_event(defines.events.on_player_demoted, secondary_chat.on_player_demot
 script.on_event(defines.events.on_gui_checked_state_changed, secondary_chat.on_gui_checked_state_changed)
 script.on_event(defines.events.on_player_display_resolution_changed, secondary_chat.on_player_display_resolution_changed)
 script.on_event(defines.events.on_gui_text_changed, secondary_chat.on_gui_text_changed)
+script.on_event(defines.events.on_player_muted, secondary_chat.on_player_muted)
+script.on_event(defines.events.on_player_unmuted, secondary_chat.on_player_unmuted)
 
 local function find_interface(interfaces)
   for _, name in pairs( interfaces ) do
