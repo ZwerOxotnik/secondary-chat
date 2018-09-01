@@ -6,11 +6,11 @@
 - Added: events "on_console_chat", "toggle" of the mod
 - Added: remote interface "secondary-chat" [**WIP!**]
 - Added: admins chat
-- Added: /admins-send \<message\> - sends a message to admins.
+- Added: /admins-send \<message\> - Sends a message to admins.
 - Added: private chat
 - Added: between factions chat
 - Added: surface chat
-- Added: /surface-send \<message\> - sends a message all players on your surface.
+- Added: /surface-send \<message\> - Sends a message all players on your surface.
 - Added: filters for a chats
 - Added: CHANGELOG.md and README.md and CONTRIBUTING.md
 - Added: shell scripts for interactions with repository on GitLab
