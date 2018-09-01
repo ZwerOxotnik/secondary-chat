@@ -6,7 +6,7 @@
     "author": "ZwerOxotnik",
     "contact": "zweroxotnik@gmail.com",
     "homepage": "https://mods.factorio.com/mod/secondary-chat",
-    "description": "Adds gui of chat, new commands, new types of chat",
+    "description": "Adds gui of chat, new commands, new types of chat, new interactions",
     "dependencies": 
     [
         "? color-picker16",
