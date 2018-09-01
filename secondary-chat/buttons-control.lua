@@ -49,7 +49,7 @@ local function send_locale_pressed(event)
 end
 script.on_event('locale-send-to-chat', send_locale_pressed)
 
-local function recove_last_message_from_chat_pressed(event)
+local function recover_last_message_from_chat_pressed(event)
   local player = game.players[event.player_index]
 
   -- Check the visibility of the chat
@@ -67,7 +67,7 @@ local function recove_last_message_from_chat_pressed(event)
     create_chat_gui(player)
   end
 end
-script.on_event('last-message-from-chat', recove_last_message_from_chat_pressed)
+script.on_event('last-message-from-chat', recover_last_message_from_chat_pressed)
 
 local function send_to_private_pressed(event)
   if not chats.keys['private'] then return end -- Return if private chat does not exist
