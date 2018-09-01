@@ -31,7 +31,7 @@ remote.add_interface('secondary-chat',
     return chat_events[name]
   end,
   toggle = function(new_bool)
-    if new_bool == nil then return end
+    if type(new_bool) ~= 'boolean' then return end
 
     local bool = {}
     bool.new = new_bool
@@ -134,6 +134,7 @@ end
 
 mod.on_player_removed = function(event)
   global.secondary_chat.players[event.player_index] = nil
+  global.secondary_chat.global.mutes[event.player_index] = nil
 
   update_chat_gui()
 end
@@ -148,6 +149,7 @@ mod.on_gui_text_changed = function(event)
   if gui.name == 'chat_text_box' and gui.parent.parent.name == 'table_chat' then
     if string.byte(gui.text, -1) == 10 then
       if #gui.text > 2 then
+        event.element = gui.parent.parent.select_chat.table.print_in_chat
         click_gui_chat(event)
       end
       gui.text = ''
@@ -229,8 +231,12 @@ end
 
 mod.on_load = function()
   if not game then
+    if global.secondary_chat == nil then
+      global_init()
+    end
+
     chats = global.secondary_chat.chats
-    if chats.keys then
+    if chats.keys == nil then
       init_chats()
     end
     add_commands()
@@ -327,6 +333,18 @@ if script.mod_name ~= 'level' then
       end
     end
   end
+end
+
+mod.on_player_muted = function(event)
+  -- Validation of data
+  local player = game.players[event.player_index]
+  if not (player and player.valid) then return end
+
+  global.secondary_chat.global.mutes[event.player_index] = true
+end
+
+mod.on_player_unmuted = function(event)  
+  global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
 return mod
