@@ -12,7 +12,7 @@ function toggle_drop_down(player)
         end
       end
 
-      global.secondary_chat.players[player.index].settings.main.state_chat.drop_down = not select_chat.style.visible
+      global.secondary_chat.players[player.index].settings.main.drop_down.state = not select_chat.style.visible
       if table_chat.settings and table_chat.settings.player then
         table_chat.settings.player.config_table.drop_down_boolean.state = not select_chat.style.visible
       end
@@ -22,14 +22,16 @@ function toggle_drop_down(player)
       log("not founded 'select_chat' for the secondary chat")
     end
   else
-    global.secondary_chat.players[player.index].settings.main.state_chat.drop_down = true
+    global.secondary_chat.players[player.index].settings.main.drop_down.state = true
     create_chat_gui(player)
   end
 end
 
 local function toggle_chat(cmd)
+  -- Validation of data
   local player = game.player
   if not (player and player.valid) then return end
+
   local table_chat = player.gui.left.table_chat
   if cmd.parameter then
     if table_chat then
@@ -69,7 +71,7 @@ function add_commands()
       local commands = remote.call(chat.interface.name, chat.interface.get_commands, chat_name)
       for _, data in pairs( commands ) do
         add_command(data.name, data.description, function(cmd)
-          local player = game.player
+          local player = game.players[cmd.player_index]
           if player == nil then return end 
           if cmd.parameter ~= nil then
             if not is_allow_message(cmd.parameter, player) then return end
