@@ -1,20 +1,14 @@
 local secondary_chat = require("secondary-chat/control")
 
 script.on_configuration_changed(secondary_chat.on_configuration_changed)
-script.on_event(defines.events.on_gui_click, secondary_chat.on_gui_click)
-script.on_event(defines.events.on_player_created, secondary_chat.on_player_created)
-script.on_event(defines.events.on_player_removed, secondary_chat.on_player_removed)
-script.on_event(defines.events.on_gui_selection_state_changed, secondary_chat.on_gui_selection_state_changed)
-script.on_event(defines.events.on_forces_merging, secondary_chat.on_forces_merging)
-script.on_event(defines.events.on_player_changed_force, secondary_chat.on_player_changed_force)
-script.on_event(defines.events.on_player_joined_game, secondary_chat.on_player_joined_game)
-script.on_event(defines.events.on_player_promoted, secondary_chat.on_player_promoted)
-script.on_event(defines.events.on_player_demoted, secondary_chat.on_player_demoted)
-script.on_event(defines.events.on_gui_checked_state_changed, secondary_chat.on_gui_checked_state_changed)
-script.on_event(defines.events.on_player_display_resolution_changed, secondary_chat.on_player_display_resolution_changed)
-script.on_event(defines.events.on_gui_text_changed, secondary_chat.on_gui_text_changed)
-script.on_event(defines.events.on_player_muted, secondary_chat.on_player_muted)
-script.on_event(defines.events.on_player_unmuted, secondary_chat.on_player_unmuted)
+
+-- Handle all events of game for secondary_chat
+for name, func in pairs( secondary_chat ) do
+  local event = defines.events[name]
+  if event then
+    script.on_event(event, func)
+  end
+end
 
 local function find_interface(interfaces)
   for _, name in pairs( interfaces ) do
