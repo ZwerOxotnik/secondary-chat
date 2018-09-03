@@ -97,7 +97,6 @@ mod.on_configuration_changed = function(event)
   for _, player in pairs( game.players ) do
     update_global_config_player(player)
   end
-  init_chats()
 end
 
 mod.on_gui_click = function(event)
