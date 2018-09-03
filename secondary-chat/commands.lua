@@ -27,7 +27,7 @@ function toggle_drop_down(player)
   end
 end
 
-local function toggle_chat(cmd)
+function toggle_chat(cmd)
   -- Validation of data
   local player = game.player
   if not (player and player.valid) then return end
