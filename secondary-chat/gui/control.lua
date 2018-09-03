@@ -44,7 +44,7 @@ function click_gui_chat(event, is_localised)
 
   table_chat.notices.main.caption = ""
 
-  local text_box = table_chat.top_chat.chat_text_box
+  local text_box = table_chat.top_chat.chat_table.chat_text_box
   if text_box.text == "" then return false end
   local drop_down = table_chat.select_chat.table.chat_drop_down
   local selected_index = (gui.name == "print_in_chat" and gui.parent and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
@@ -64,11 +64,14 @@ function click_gui_chat(event, is_localised)
 
       if bool then
         table_chat.last_messages.last.text = text_box.text
+
         script.raise_event(chat_events.on_console_chat, {player_index = event.player_index, message = text_box.text, chat = chat_name})
+       
         text_box.text = ""
         if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
           text_box.focus()
         end
+
         return true
       end
     else

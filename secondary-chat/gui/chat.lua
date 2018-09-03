@@ -1,7 +1,7 @@
 function destroy_chat_gui(player)
   local table_chat = player.gui.left.table_chat
   if table_chat then
-    global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_text_box.text
+    global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
     table_chat.destroy()
   end
 end
@@ -41,6 +41,17 @@ for k, name in pairs( {'all', 'online', 'offline'} ) do
   table.insert(gui_online.list, {'secondary_chat.show_'..name})
 end
 
+function create_chat_text_box(parent, text)
+  if parent.chat_text_box then
+    parent.chat_text_box.destroy()
+  end
+  
+  local text_box = parent.add{type = 'text-box', name = 'chat_text_box', text = text}
+  text_box.style.minimal_width = 250
+  text_box.style.maximal_width = 300
+  text_box.style.maximal_height = 32
+end
+
 function create_chat_gui(player)
   if not global.secondary_chat.players[player.index].settings.main.state_chat.state then return end
 
@@ -54,7 +65,7 @@ function create_chat_gui(player)
 
   local table_chat = gui.table_chat
   if table_chat then
-    text = table_chat.top_chat.chat_text_box.text
+    text = table_chat.top_chat.chat_table.chat_text_box.text
     last_messages = table_chat.last_messages.last.text
     
     local select_chat = table_chat.select_chat
@@ -100,10 +111,8 @@ function create_chat_gui(player)
   local child_table = main_table.add{type = 'table', name = 'top_chat', column_count = 2}
   child_table.style.horizontally_stretchable = false
   child_table.style.horizontally_squashable = false
-  local input = child_table.add{type = 'text-box', name = 'chat_text_box', text = text}
-  input.style.minimal_width = 250
-  input.style.maximal_width = 300
-  input.style.maximal_height = 32
+  local chat = child_table.add{type = 'table', name = 'chat_table', column_count = 1}
+  create_chat_text_box(chat, text)
   local table = child_table.add{type = 'table', name = 'icons', column_count = 30}
   local button = table.add{type = 'button', name = 'settings', caption = '⚙'}
   button.style.maximal_height = 20

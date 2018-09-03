@@ -6,8 +6,8 @@ local function send_message_pressed(event)
   local select_chat = table_chat.select_chat
   if table_chat then
     if table_chat.style.visible then
-      if table_chat.top_chat.chat_text_box.text == '' then
-        table_chat.top_chat.chat_text_box.focus()
+      if table_chat.top_chat.chat_table.chat_text_box.text == '' then
+        table_chat.top_chat.chat_table.chat_text_box.focus()
       else
         event.element = table_chat.select_chat.table.print_in_chat
         click_gui_chat(event) -- Send the message
@@ -31,8 +31,8 @@ local function send_locale_pressed(event)
   local table_chat = game.players[event.player_index].gui.left.table_chat
   if table_chat then
     if table_chat.style.visible then
-      if table_chat.top_chat.chat_text_box.text == '' then
-        table_chat.top_chat.chat_text_box.focus()
+      if table_chat.top_chat.chat_table.chat_text_box.text == '' then
+        table_chat.top_chat.chat_table.chat_text_box.focus()
       else
         event.element = table_chat.select_chat.table.print_in_chat
         click_gui_chat(event, true) -- Send the message
@@ -56,7 +56,7 @@ local function recover_last_message_from_chat_pressed(event)
   local table_chat = game.players[event.player_index].gui.left.table_chat
   if table_chat then
     if table_chat.style.visible then
-      table_chat.top_chat.chat_text_box.text = table_chat.last_messages.last.text
+      table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
       create_chat_gui(player)
@@ -83,7 +83,7 @@ local function send_to_private_pressed(event)
   if table_chat then
     if table_chat.style.visible then
       -- temporarily
-      -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
+      -- if not (table_chat.top_chat and table_chat.top_chat.chat_table.chat_text_box) then return end
       -- if select_chat.style.visible == false then
       --   select_chat.style.visible = true
       -- end
@@ -142,7 +142,7 @@ local function send_to_private_pressed(event)
   select_chat.table.chat_drop_down.selected_index = chats.keys['private']
   select_drop_down.selected_index = 1
   update_chat_and_drop_down(select_chat.table.chat_drop_down, player)
-  table_chat.top_chat.chat_text_box.focus()
+  table_chat.top_chat.chat_table.chat_text_box.focus()
 end
 script.on_event('send_to_private', send_to_private_pressed)
 
@@ -160,7 +160,7 @@ local function send_to_faction_pressed(event)
   if table_chat then
     if table_chat.style.visible then
       -- temporarily
-      -- if not (table_chat.top_chat and table_chat.top_chat.chat_text_box) then return end
+      -- if not (table_chat.top_chat and table_chat.top_chat.chat_table.chat_text_box) then return end
       -- if select_chat.style.visible == false then
       --   select_chat.style.visible = true
       -- end
@@ -192,6 +192,6 @@ local function send_to_faction_pressed(event)
   select_chat.table.select_drop_down.items = {entity.force.name}
   select_chat.table.select_drop_down.selected_index = 1
   update_chat_and_drop_down(select_chat.table.chat_drop_down, player)
-  table_chat.top_chat.chat_text_box.focus()
+  table_chat.top_chat.chat_table.chat_text_box.focus()
 end
 script.on_event('send_to_faction', send_to_faction_pressed)

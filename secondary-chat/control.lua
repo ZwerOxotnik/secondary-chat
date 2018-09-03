@@ -112,7 +112,7 @@ mod.on_gui_click = function(event)
       click_gui_chat(event, true)
     elseif event.control then
       local table_chat = player.gui.left.table_chat
-      table_chat.top_chat.chat_text_box.text = table_chat.last_messages.last.text
+      table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
     else
       click_gui_chat(event)
     end
@@ -146,13 +146,19 @@ mod.on_gui_text_changed = function(event)
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
-  if gui.name == 'chat_text_box' and gui.parent.parent.name == 'table_chat' then
+  if gui.name == 'chat_text_box' and gui.parent.parent.parent.name == 'table_chat' then
     if string.byte(gui.text, -1) == 10 then
       if #gui.text > 2 then
-        event.element = gui.parent.parent.select_chat.table.print_in_chat
+        event.element = gui.parent.parent.parent.select_chat.table.print_in_chat
         click_gui_chat(event)
       end
-      gui.text = ''
+
+      -- unfocus for the gui
+      create_chat_text_box(gui.parent)
+
+      if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
+        text_box.focus()
+      end
     end
   end
 end
