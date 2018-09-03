@@ -125,7 +125,7 @@ end
 
 function add_command(name, description, func, addit_description)
   if type(func) == "function" then
-    if commands.game_commands[name] == nil and commands.commands[name] == nil then
+    if type(description) == "string" and (commands.game_commands[name] == nil and commands.commands[name] == nil) then
       commands.add_command(name, {description, addit_description}, func)
       return true
     else
@@ -134,6 +134,7 @@ function add_command(name, description, func, addit_description)
     end
   else
     log("Function for '" .. name .. "' not found for secondary-chat")
+    return false
   end
 end
 
