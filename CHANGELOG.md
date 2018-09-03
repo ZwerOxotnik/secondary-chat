@@ -33,6 +33,7 @@
 - Changed: improved localization
 - Changed: improved compatibility with scenarios, mods, soft-mods
 - Changed: text field in gui not be cleared if message not be sended
+- Changed: title
 - Fixed: text in text field disappears when the interface was updated
 - Code refactoring
 
