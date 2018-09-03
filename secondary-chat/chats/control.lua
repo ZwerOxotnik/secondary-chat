@@ -68,12 +68,12 @@ function init_chats()
   chats.data = {}
   for name, _ in pairs( data.chat ) do
     chats.data[name] = {}
-    update_chat(name)
+    update_chat(name, data.chat[name])
   end
 end
 
-function update_chat(name)
-  chats.data[name] = data.chat[name]
+function update_chat(name, main_data)
+  chats.data[name] = main_data
   local chat = chats.data[name]
   if not chat then return false end
 
