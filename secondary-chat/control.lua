@@ -7,6 +7,7 @@
 local mod = {}
 
 chats = {}
+
 chat_events =
 {
   on_console_chat = script.generate_event_name(),
@@ -122,13 +123,6 @@ end
 
 mod.color_picker_ok_pressed = function(event)
   color_picker.ok_pressed(event)
-end
-
-mod.on_player_created = function(event)
-  local player = game.players[event.player_index]
-  if not (player and player.valid) then return end
-
-  --set_global_config_player(player)
 end
 
 mod.on_player_removed = function(event)
@@ -272,7 +266,7 @@ mod.on_player_joined_game = function(event)
       create_chat_gui(player)
     end
   else
-    set_global_config_player(player)
+    update_global_config_player(player)
   end
 
   update_chat_gui()
