@@ -3,32 +3,16 @@ function is_allow_message(message, sender)
     local table_chat = sender.gui.left.table_chat
     if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
-      if table_chat and table_chat.style.visible then
-        local notice = table_chat.notices.main
-        notice.caption = message
-      else
-        sender.print(message)
-      end
+      send_notice(message, sender)
     elseif global.secondary_chat.global.mutes[sender.index] then
       local message = {"command-help.mutes"}
-      if table_chat and table_chat.style.visible then
-        local notice = table_chat.notices.main
-        notice.caption = message
-      else
-        sender.print(message)
-      end
+      send_notice(message, sender)
     elseif string.len(message) < global.secondary_chat.settings.limit_characters then
       return true
     else
       log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.long_message"}}
-      
-      if table_chat and table_chat.style.visible then
-        local notice = table_chat.notices.main
-        notice.caption = message
-      else
-        sender.print(message)
-      end
+      send_notice(message, sender)
     end
   elseif string.len(message) < global.secondary_chat.settings.limit_characters then
     return true
@@ -135,6 +119,16 @@ function add_command(name, description, func, addit_description)
   else
     log("Function for '" .. name .. "' not found for secondary-chat")
     return false
+  end
+end
+
+function send_notice(message, player)
+  local table_chat = player.gui.left.table_chat
+  if table_chat and table_chat.style.visible then
+    local notice = table_chat.notices.main
+    notice.caption = message
+  else
+    player.print(message)
   end
 end
 

@@ -132,12 +132,7 @@ send_message['surface'] = function(input_message, player, table_chat)
     player.force.print(message, player.chat_color)
   else
     local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
-    if table_chat and table_chat.style.visible then
-      local notice = table_chat.notices.main
-      notice.caption = message
-    else
-      player.print(message)
-    end
+    send_notice(message, player)
   end
   return result
 end
@@ -171,12 +166,7 @@ send_message['faction'] = function(input_message, player)
       end
     else
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
-      if table_chat and table_chat.style.visible then
-        local notice = table_chat.notices.main
-        notice.caption = message
-      else
-        player.print(message)
-      end
+      send_notice(message, player)
     end
     return target
   else
@@ -236,12 +226,7 @@ send_message['allies'] = function(input_message, player, table_chat)
     player.force.print(message, player.chat_color)
   else
     local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
-    if table_chat and table_chat.style.visible then
-      local notice = table_chat.notices.main
-      notice.caption = message
-    else
-      player.print(message)
-    end
+    send_notice(message, player)
   end
   return result
 end
@@ -270,20 +255,10 @@ send_message['admins'] = function(input_message, player, table_chat)
   else
     if player.admin then
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.sole_administrator"}}
-      if table_chat and table_chat.style.visible then
-        local notice = table_chat.notices.main
-        notice.caption = message
-      else
-        player.print(message)
-      end
+      send_notice(message, player)
     else
       local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
-      if table_chat and table_chat.style.visible then
-        local notice = table_chat.notices.main
-        notice.caption = message
-      else
-        player.print(message)
-      end
+      send_notice(message, player)
     end
   end
   return result
