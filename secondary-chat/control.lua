@@ -229,9 +229,9 @@ end
 mod.on_init = function()
   global_init()
 
-  chats = global.secondary_chat.chats
-  init_chats()
-  add_commands()
+  if global.secondary_chat.state_chat == true then
+    add_commands()
+  end
 end
 
 mod.on_load = function()
@@ -240,11 +240,9 @@ mod.on_load = function()
       global_init()
     end
 
-    chats = global.secondary_chat.chats
-    if chats.keys == nil then
-      init_chats()
+    if global.secondary_chat.state_chat == true then
+      add_commands()
     end
-    add_commands()
   end
 end
 

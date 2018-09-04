@@ -107,15 +107,22 @@ end
 
 function global_init()
   global.secondary_chat = global.secondary_chat or {}
+  global.secondary_chat.chats = global.secondary_chat.chats or {}
+  global.secondary_chat.players = global.secondary_chat.players or {}
   global.secondary_chat.state_chat = global.secondary_chat.state_chat or true
   global.secondary_chat.settings = global.secondary_chat.settings or {}
   global.secondary_chat.settings.limit_characters = global.secondary_chat.settings.limit_characters or 73 * 14 --1022
-  global.secondary_chat.players = global.secondary_chat.players or {}
+
+  update_global_config()
+
+  chats = global.secondary_chat.chats
+  if chats.keys == nil then
+    init_chats()
+  end
+
   if game then
     for _, player in pairs( game.players ) do
       update_global_config_player(player)
     end
   end
-  update_global_config()
-  global.secondary_chat.chats = global.secondary_chat.chats or {}
 end
