@@ -50,6 +50,8 @@ function create_chat_text_box(parent, text)
   text_box.style.minimal_width = 250
   text_box.style.maximal_width = 300
   text_box.style.maximal_height = 32
+
+  return text_box
 end
 
 function create_chat_gui(player)

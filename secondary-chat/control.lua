@@ -150,13 +150,16 @@ mod.on_gui_text_changed = function(event)
       if #gui.text > 2 then
         event.element = gui.parent.parent.parent.select_chat.table.print_in_chat
         click_gui_chat(event)
-      end
 
-      -- unfocus for the gui
-      create_chat_text_box(gui.parent)
+        -- unfocus for the gui
+        text_box = create_chat_text_box(gui.parent)
 
-      if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
-        text_box.focus()
+        if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
+          text_box.focus()
+        end
+      else
+        -- unfocus for the gui
+        create_chat_text_box(gui.parent)
       end
     end
   end
