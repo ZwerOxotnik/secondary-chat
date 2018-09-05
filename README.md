@@ -21,11 +21,11 @@ Top left appear the new gui with drop-down with filters and other functions, tha
 
 | Desription | Hotkey (Default) |
 | -------- | ---- |
-| send a message   | Y   |
-| send a localised message   | SHIFT + Y   |
-| recover a last message   | CONTROL + Y   |
-| select a recipient for the private chat  | Middle mouse button  |
-| select a recipient for the faction chat  | SHIFT + Middle mouse button   |
+| Send a message   | Y   |
+| Send a localised message   | SHIFT + Y   |
+| Recover a last message   | CONTROL + Y   |
+| Select a recipient for the private chat  | Middle mouse button  |
+| Select a recipient for the faction chat  | SHIFT + Middle mouse button   |
 
 ## Dependencies
 
