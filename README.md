@@ -43,10 +43,12 @@ Please report any issues or feature requests using the Issue tracker on [GitLab]
 - Completely alter and add new features
 - Integration with other mods and etc.
 - Provides API to let other mods accessing
+- Extend settings for players, admins
+- Change advanced settings
 - Add blacklist for players
 - Add custom chat logs
 - Add custom quick message
-- Extend settings
+- Add settings for chats
 - Add profiles
 - Add export/import
 
