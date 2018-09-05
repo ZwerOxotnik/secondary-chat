@@ -105,7 +105,7 @@ function update_chat(name, main_data)
     interface.get_commands = nil
   end
   
-  table.insert(chats.list, {'secondary_chat.to_' .. name})
+  table.insert(chats.list, {'secondary_chat_list.' .. name})
   chats.keys[name] = #chats.list
 
   return true
@@ -119,7 +119,7 @@ send_message['all'] = function(input_message, player)
 end
 send_message['surface'] = function(input_message, player, table_chat)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-  local message = {"", player.name .. " (", {"secondary_chat.to_surface"}, ")", {"colon"}, " ", input_message}
+  local message = {"", player.name .. " (", {"secondary_chat_list.surface"}, ")", {"colon"}, " ", input_message}
   local result = false
   for index, target in pairs ( game.players ) do
     if target.surface == player.surface and index ~= player.index then
@@ -204,7 +204,7 @@ send_message['local'] = function(input_message, player)
     if player.surface == another_player.surface then
       local pos_p2 = another_player.position
       if ((pos_p1.x - pos_p2.x)^2 + (pos_p1.y - pos_p2.y)^2)^(0.5) <= 116 then
-        sc_print_in_chat({"", player.name .. " (", {"secondary_chat.to_local"}, ")", {"colon"}, " ", input_message}, another_player, player)
+        sc_print_in_chat({"", player.name .. " (", {"secondary_chat_list.local"}, ")", {"colon"}, " ", input_message}, another_player, player)
       end
     end
   end
@@ -213,7 +213,7 @@ end
 
 send_message['allies'] = function(input_message, player, table_chat)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-  local message = {"", player.name .. " (", {"secondary_chat.to_allies"}, ")", {"colon"}, " ", input_message}
+  local message = {"", player.name .. " (", {"secondary_chat_list.allies"}, ")", {"colon"}, " ", input_message}
   local result = false
   for _, force in pairs (game.forces) do
     if #force.players ~= 0 and player.force.get_friend(force) then
@@ -236,7 +236,7 @@ send_message['admins'] = function(input_message, player, table_chat)
   local message
 
   if player.admin then
-    message = {"", player.name .. " (", {"secondary_chat.to_admins"}, ")", {"colon"}, " ", input_message}
+    message = {"", player.name .. " (", {"secondary_chat_list.admins"}, ")", {"colon"}, " ", input_message}
   else
     message = {"", player.name .. " (", {"secondary_chat.from_not_admin"}, ")", {"colon"}, " ", input_message}
   end
@@ -250,7 +250,7 @@ send_message['admins'] = function(input_message, player, table_chat)
   end
 
   if result then
-    message = {"", player.name .. " (", {"secondary_chat.to_admins"}, ")", {"colon"}, " ", input_message}
+    message = {"", player.name .. " (", {"secondary_chat_list.admins"}, ")", {"colon"}, " ", input_message}
     sc_print_in_chat(message, player, player)
   else
     if player.admin then

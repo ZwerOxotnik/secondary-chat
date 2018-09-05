@@ -6,7 +6,7 @@ function toggle_chat_part(input_name)
   if button then
     button.destroy()
   else
-    local button = flow.add{type = 'button', name = name_button, caption = {'', {'secondary_chat.send_to'}, ' ', {'secondary_chat.to_' .. input_name}}}
+    local button = flow.add{type = 'button', name = name_button, caption = {'', {'secondary_chat.send_to'}, ' ', {'secondary_chat_list.' .. input_name}}}
     button.style.font = 'default'
     button.style.top_padding = 0
     button.style.bottom_padding = 0
