@@ -144,7 +144,7 @@ local function send_to_private_pressed(event)
   update_chat_and_drop_down(select_chat.table.chat_drop_down, player)
   table_chat.top_chat.chat_table.chat_text_box.focus()
 end
-script.on_event('send_to_private', send_to_private_pressed)
+script.on_event('send-to-private', send_to_private_pressed)
 
 local function send_to_faction_pressed(event)
   if not chats.keys['faction'] then return end -- Return if faction chat does not exist
@@ -194,4 +194,4 @@ local function send_to_faction_pressed(event)
   update_chat_and_drop_down(select_chat.table.chat_drop_down, player)
   table_chat.top_chat.chat_table.chat_text_box.focus()
 end
-script.on_event('send_to_faction', send_to_faction_pressed)
+script.on_event('send-to-faction', send_to_faction_pressed)

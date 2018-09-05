@@ -30,14 +30,14 @@ data:extend(
   },
   {
     type = 'custom-input',
-    name = 'send_to_private',
+    name = 'send-to-private',
     key_sequence = 'mouse-button-3',
     consuming = 'game-only',
     enabled = true
   },
   {
     type = 'custom-input',
-    name = 'send_to_faction',
+    name = 'send-to-faction',
     key_sequence = 'SHIFT + mouse-button-3',
     consuming = 'game-only',
     enabled = true
