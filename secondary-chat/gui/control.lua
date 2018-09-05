@@ -57,9 +57,9 @@ function click_gui_chat(event, is_localised)
     if send_in_chat then
       local bool
       if is_localised then
-        bool = send_in_chat({text_box.text}, player, table_chat)
+        bool = send_in_chat({text_box.text}, player)
       else 
-        bool = send_in_chat(text_box.text, player, table_chat)
+        bool = send_in_chat(text_box.text, player)
       end
 
       if bool then

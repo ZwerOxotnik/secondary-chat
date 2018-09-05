@@ -117,7 +117,7 @@ send_message['all'] = function(input_message, player)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
 end
-send_message['surface'] = function(input_message, player, table_chat)
+send_message['surface'] = function(input_message, player)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local message = {"", player.name .. " (", {"secondary_chat_list.surface"}, ")", {"colon"}, " ", input_message}
   local result = false
@@ -211,7 +211,7 @@ send_message['local'] = function(input_message, player)
   return true
 end
 
-send_message['allies'] = function(input_message, player, table_chat)
+send_message['allies'] = function(input_message, player)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local message = {"", player.name .. " (", {"secondary_chat_list.allies"}, ")", {"colon"}, " ", input_message}
   local result = false
@@ -231,7 +231,7 @@ send_message['allies'] = function(input_message, player, table_chat)
   return result
 end
 
-send_message['admins'] = function(input_message, player, table_chat)
+send_message['admins'] = function(input_message, player)
   script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
   local message
 
@@ -286,6 +286,7 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
     gui.selected_index = 0
 
     table_chat.notices.main.caption = {'', {'secondary_chat.attention'}, {'colon'}, ' ', {'noone-to-reply'}}
+
     drop_down_online.style.visible = false
     drop_down_state.style.visible = false
     return false
