@@ -42,11 +42,13 @@ for k, name in pairs( {'all', 'online', 'offline'} ) do
 end
 
 function create_chat_text_box(parent, text)
-  if parent.chat_text_box then
-    parent.chat_text_box.destroy()
+  local name = 'chat_text_box'
+
+  if parent[name] then
+    parent[name].destroy()
   end
   
-  local text_box = parent.add{type = 'text-box', name = 'chat_text_box', text = text}
+  local text_box = parent.add{type = 'text-box', name = name, text = text}
   text_box.style.minimal_width = 250
   text_box.style.maximal_width = 300
   text_box.style.maximal_height = 32
