@@ -25,7 +25,8 @@
 - Added: autohide gui for the mod
 - Added: notices in gui
 - Added: sending message in gui by enter
-- Added: localization in Spanish
+- Added: Ukrainian localization (localization by HAKER PLAY)
+- Added: Spanish localization
 - Added: muting
 - Changed: /toggle-chat drop-down
 - Changed: style of GUI
