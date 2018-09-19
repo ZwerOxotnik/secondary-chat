@@ -60,7 +60,7 @@ Please report any issues or feature requests using the Issue tracker on [GitLab]
 
 You can either download a zip archive from [mods.factorio.com][homepage] or the [GitLab repository](https://gitlab.com/ZwerOxotnik/secondary-chat/tags).
 
-##Special thanks
+## Special thanks
 
 - **MeteorSbor** - tester
 - **HAKER PLAY** - translator
