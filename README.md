@@ -44,17 +44,26 @@ Please report any issues or feature requests using the Issue tracker on [GitLab]
 - Integration with other mods and etc.
 - Provides API to let other mods accessing
 - Extend settings for players, admins
+- Add and change new events
+- Change chat structure
 - Change advanced settings
+- Add new localizations
+- Add Polish localization
 - Add blacklist for players
 - Add custom chat logs
 - Add custom quick message
 - Add settings for chats
 - Add profiles
-- Add export/import
+- Add export/import of settings
 
 ## Where to get the mod
 
 You can either download a zip archive from [mods.factorio.com][homepage] or the [GitLab repository](https://gitlab.com/ZwerOxotnik/secondary-chat/tags).
+
+##Special thanks
+
+- **MeteorSbor** - tester
+- **HAKER PLAY** - translator
 
 ## Contribute
 
@@ -72,7 +81,7 @@ If you have downloaded a zip archive:
 
 For more information, see [Installing Mods on the Factorio wiki](https://wiki.factorio.com/index.php?title=Installing_Mods).
 
-Alternatively, if you have downloaded the source archive:
+Alternatively, if you have downloaded the source archive (GitLab):
 
 - copy the mod directory into your factorio mods directory
 - rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 2.0.0)
