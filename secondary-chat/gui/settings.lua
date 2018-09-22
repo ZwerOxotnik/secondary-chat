@@ -37,7 +37,7 @@ function create_settings_chat_of_admin(player, settings)
   local config_table = table.config_table
   config_table.allow_custom_color_message_boolean.enabled = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker16"] ~= nil or remote.interfaces["color-picker"] ~= nil))
   if not config_table.allow_custom_color_message_boolean.enabled then
-    config_table.allow_custom_color_message_boolean.tooltip = {'secondary_chat.connect_color_mod'}
+    config_table.allow_custom_color_message_boolean.tooltip = {'', {'secondary_chat.connect_mod'}, {'colon'},' "Color picker"'}
   end
 
   check_and_change_visible_table(table)
