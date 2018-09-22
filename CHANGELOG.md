@@ -27,6 +27,8 @@
 - Added: sending message in gui by enter
 - Added: Ukrainian localization (localization by HAKER PLAY)
 - Added: Spanish localization
+- Added: Romanian localization (localization by anonymous#1)
+- Added: Italian localization (localization by anonymous#1)
 - Added: muting
 - Changed: /toggle-chat drop-down
 - Changed: style of GUI
