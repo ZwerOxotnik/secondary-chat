@@ -1,7 +1,7 @@
 function destroy_chat_gui(player)
   local table_chat = player.gui.left.table_chat
   if table_chat then
-    if #global.secondary_chat.players ~= 0 then
+    if global.secondary_chat.players[player.index] then
       global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
     end
 
