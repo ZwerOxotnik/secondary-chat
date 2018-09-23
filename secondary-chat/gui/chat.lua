@@ -1,7 +1,11 @@
 function destroy_chat_gui(player)
   local table_chat = player.gui.left.table_chat
   if table_chat then
-    global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
+    if #global.secondary_chat.players ~= 0 then
+      global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
+    end
+
+    script.raise_event(chat_events.on_pre_delete_gui_chat, {player_index = player.index, container = table_chat})
     table_chat.destroy()
   end
 end
@@ -101,7 +105,14 @@ function create_chat_gui(player)
     text = global.secondary_chat.players[player.index].gui.saves.hidden.last_message or ''
   end
 
-  destroy_chat_gui(player)
+  local is_new = true
+  local table_chat = player.gui.left.table_chat
+  if table_chat then
+    global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
+    table_chat.destroy()
+    is_new = false
+  end
+
   global.secondary_chat.players[player.index].gui.saves.hidden.last_message = nil
 
   local main_table = gui.add{type = 'table', name = 'table_chat', column_count = 1}
@@ -204,4 +215,10 @@ function create_chat_gui(player)
   child_table.style.visible = false
 
   update_chat_and_drop_down(drop_down_chat, player)
+
+  if is_new then
+    script.raise_event(chat_events.on_create_gui_chat, {player_index = player.index, container = main_table})
+  else
+    script.raise_event(chat_events.on_update_gui_chat, {player_index = player.index, container = main_table})
+  end
 end

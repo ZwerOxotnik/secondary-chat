@@ -8,14 +8,9 @@ local mod = {}
 
 chats = {}
 
-chat_events =
-{
-  on_console_chat = script.generate_event_name(),
-  toggle = script.generate_event_name()
-}
+max_time_autohide = 60 * 60 * 10 -- 10 min
 
-max_time_autohide = 60 * 60 * 10
-
+require('secondary-chat/events')
 color_picker = require('secondary-chat/integrations/color-picker')
 require("secondary-chat/config/control")
 require('secondary-chat/functions')
@@ -23,78 +18,13 @@ require('secondary-chat/gui/control')
 require('secondary-chat/commands')
 require('secondary-chat/chats/control')
 if script.mod_name ~= 'level' then
-  require('secondary-chat/buttons-control')
+  require('secondary-chat/mod-buttons')
 end
-
-remote.add_interface('secondary-chat',
-{
-  get_event_name = function(name)
-    return chat_events[name]
-  end,
-  toggle = function(new_bool)
-    if type(new_bool) ~= 'boolean' then return end
-
-    local bool = {}
-    bool.new = new_bool
-    bool.old = global.secondary_chat.state_chat or false
-
-    if bool.new == true and bool.old == false then
-      add_commands()
-      for _, player in pairs( game.players ) do
-        create_chat_gui(player)
-      end
-      script.raise_event(chat_events.toggle, {state = true})
-    elseif bool.new == false and bool.old == true then
-      remove_commands()
-      script.raise_event(chat_events.toggle, {state = false})
-    else
-      return false
-    end
-
-    global.secondary_chat.state_chat = bool.new
-    return true
-  end,
-  get_state = function()
-    return global.secondary_chat.state_chat
-  end,
-  --[[get_settings = function(wip)
-    
-  end,]]
-  --[[set_settings = function(wip)
-    
-  end,]]--
-  update_gui = function()
-    update_chat_gui()
-  end,
-  function_send_message = function(name)
-    return send_message[name]
-  end,
-  get_commands = function(name)
-    return get_commands[name]
-  end,
-  function_change_list = function(name)
-    return change_list[name]
-  end,
-  --[[add_chat = function(wip)
-    
-  end,]]
-  --[[remove_chat = function(wip)
-    
-  end,]]
-  --[[update_chat = function(wip)
-    
-  end,]]
-  --[[add_command = function(wip)
-    
-  end,]]
-  --[[remove_command = function(wip)
-    
-  end]]
-  -- etc.
-})
+require('secondary-chat/interface')
 
 mod.on_configuration_changed = function(event)
   update_global_config()
+
   for _, player in pairs( game.players ) do
     update_global_config_player(player)
   end
@@ -272,6 +202,15 @@ mod.on_player_joined_game = function(event)
   update_chat_gui()
 end
 
+mod.on_player_created = function(event)
+  -- Delete previous chat GUI
+  if #global.secondary_chat.players == 0 then
+    for _, player in pairs( game.players ) do
+      destroy_chat_gui(player)
+    end
+  end
+end
+
 mod.on_player_left_game = function(event)
   -- Validation of data
   local player = game.players[event.player_index]
@@ -308,6 +247,8 @@ end
 
 -- For soft-mods, scenarios, interfaces
 mod.delete = function(event)
+  script.raise_event(chat_events.on_remove_mod)
+
   remove_commands()
   for _, player in pairs( game.players ) do
     destroy_chat_gui(player)
@@ -325,6 +266,7 @@ if script.mod_name ~= 'level' then
       if table_chat and table_chat.style.visible then
         if data[index].autohide <= 0 then
           table_chat.style.visible = false
+          script.raise_event(chat_events.on_hide_gui_chat, {player_index = index, container = table_chat})
         else
           data[index].autohide = data[index].autohide - (60 * 60)
         end

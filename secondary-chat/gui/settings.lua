@@ -78,15 +78,21 @@ function toggle_settings_chat_gui(player, table_chat)
 end
 
 function update_checkbox(player, element, parametr)
+  global.secondary_chat.players[player.index].autohide = max_time_autohide
+
   local table_chat = player.gui.left.table_chat
   local parent = element.parent.parent.name
   if parent == 'player' then
-    global.secondary_chat.players[player.index].autohide = max_time_autohide
-
     global.secondary_chat.players[player.index].settings.main[parametr].state = element.state
 
     if parametr == 'state_chat' then
-      table_chat.style.visible = element.state
+      if element.state then
+        script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
+        table_chat.style.visible = true
+      else
+        script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
+        table_chat.style.visible = false
+      end
       table_chat.buttons.style.visible = not element.state
       table_chat.settings.style.visible = element.state
       table_chat.settings.clear()
@@ -120,6 +126,8 @@ function update_checkbox(player, element, parametr)
       end
     end
   end
+
+  script.raise_event(chat_events.on_changed_parameter_setting, {player_index = player.index, parameter = element, container = parent})
 end
 
 function destroy_settings_gui(player)
@@ -231,6 +239,8 @@ function update_list_settings(container, player)
       add(container, data.name, data.caption)
     end
   end
+
+  script.raise_event(chat_events.on_update_gui_list_settings, {player_index = player.index, container = container})
 end
 
 table_setting = {}
@@ -267,6 +277,7 @@ function click_list_settings(name, player, table)
 
   child_table = table.add{type = 'table', name = name, column_count = 1}
   table_setting[name].update(player, child_table)
+  script.raise_event(chat_events.on_update_gui_container_settings, {player_index = player.index, container = child_table})
 end
 
 function toogle_visible_list(gui, player)

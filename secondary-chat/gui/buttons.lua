@@ -1,9 +1,9 @@
-function toggle_chat_part(name)
-  local player = game.player
+function toggle_chat_part(name, player)
   local flow = player.gui.left.table_chat.buttons
   local table_name = 'table_' .. name
   local main_table = flow[table_name]
   if main_table then
+    script.raise_event(chat_events.on_pre_delete_button, {player_index = player.index, container = main_table})
     main_table.destroy()
   else
     local main_table = flow.add{type = 'table', name = table_name, column_count = 1}
@@ -12,5 +12,7 @@ function toggle_chat_part(name)
     button.style.font = 'default'
     button.style.top_padding = 0
     button.style.bottom_padding = 0
+
+    script.raise_event(chat_events.on_create_button, {player_index = player.index, container = main_table})
   end
 end

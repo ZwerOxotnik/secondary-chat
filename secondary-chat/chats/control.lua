@@ -108,6 +108,8 @@ function update_chat(name, main_data)
   table.insert(chats.list, {'secondary_chat_list.' .. name})
   chats.keys[name] = #chats.list
 
+  script.raise_event(chat_events.on_add_chat, {chat_name = name})
+
   return true
 end
 

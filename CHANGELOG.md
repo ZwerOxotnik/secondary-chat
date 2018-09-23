@@ -3,8 +3,8 @@
 ### v2.0.0 WIP
 
 - Added: auto focus after send message
-- Added: events "on_console_chat", "toggle" of the mod
-- Added: remote interface "secondary-chat" [**WIP!**]
+- Added: events "on_send_message", "on_toggle", "on_remove_mod", "on_update_gui_chat", "on_create_gui_chat", "on_pre_delete_gui_chat", "on_hide_gui_chat", "on_unhide_gui_chat", "on_create_button", "on_pre_delete_button", "on_add_chat", "on_delete_chat", "on_changed_parameter_setting", "on_update_gui_list_settings", "on_update_gui_container_settings" of the mod
+- Added: remote interface "secondary-chat"
 - Added: admins chat
 - Added: /admins-send \<message\> - Sends a message to admins.
 - Added: private chat

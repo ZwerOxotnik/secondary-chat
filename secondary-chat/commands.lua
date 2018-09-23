@@ -38,7 +38,7 @@ function toggle_chat(cmd)
       local parameter = string.lower(cmd.parameter)
       local index = chats.keys[parameter]
       if index then
-        toggle_chat_part(parameter)
+        toggle_chat_part(parameter, player)
       elseif parameter == "drop-down" then
         toggle_drop_down(player)
       else
@@ -49,8 +49,13 @@ function toggle_chat(cmd)
     end
   else
     if table_chat then
-      if table_chat.style.visible == nil then table_chat.style.visible = true end
-      table_chat.style.visible = not table_chat.style.visible
+      if table_chat.style.visible then
+        script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
+        table_chat.style.visible = false
+      else
+        script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
+        table_chat.style.visible = true
+      end
       global.secondary_chat.players[player.index].settings.main.state_chat.state = table_chat.style.visible
     else
       create_chat_gui(game.player)
@@ -72,7 +77,7 @@ function add_commands()
       for _, data in pairs( commands ) do
         add_command(data.name, data.description, function(cmd)
           local player = game.players[cmd.player_index]
-          if player == nil then return end 
+          if not player then return end 
           if cmd.parameter ~= nil then
             if not is_allow_message(cmd.parameter, player) then return end
             local chat = chats.data[chat_name]
