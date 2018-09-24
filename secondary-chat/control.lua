@@ -165,6 +165,8 @@ mod.on_load = function()
   if not game then
     if global.secondary_chat == nil then
       global_init()
+    else
+      chats = global.secondary_chat.chats
     end
 
     if global.secondary_chat.state_chat == true then
