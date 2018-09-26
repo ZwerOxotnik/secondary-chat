@@ -49,7 +49,7 @@ function make_config_table_player(gui, config, is_fast_menu)
     config_table.clear()
   else
     local column_count = 2
-    if is_fast_menu then column_count = 3 end
+    if not is_fast_menu then column_count = 3 end
     config_table = gui.add{type = 'table', name = 'config_table', column_count = column_count}
     config_table.style.column_alignments[column_count] = 'right'
   end
@@ -57,8 +57,8 @@ function make_config_table_player(gui, config, is_fast_menu)
   local items = game.item_prototypes
   for k, data in pairs (config) do
     if data.access and (not is_fast_menu or (is_fast_menu and data.allow_show_fast)) then
-      if is_fast_menu then 
-        config_table.add{type = 'checkbox', name = k..'_is_allow_show_fast', state = data.allow_show_fast}
+      if not is_fast_menu then 
+        config_table.add{type = 'checkbox', name = k..'-allow_show_fast', state = data.allow_show_fast}
       end
 
       local label = config_table.add{type = 'label', name = k}
