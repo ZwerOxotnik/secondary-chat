@@ -11,7 +11,7 @@ end
 config.get_settings = function()
   return {
     main = {
-      state_chat = {state = true, access = true, allow_save = true},
+      state_chat = {state = true, access = true, allow_save = false},
       with_tag = {state = true, access = true, allow_save = true},
       auto_focus = {state = false, access = true, allow_save = true},
       drop_down = {state = true, access = true, allow_save = true}
