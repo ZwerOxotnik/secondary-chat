@@ -6,7 +6,7 @@
 
 local mod = {}
 
-build = 100 -- Always to increment number when changing the code
+build = 101 -- Always to increment number when changing the code
 chats = {}
 
 max_time_autohide = 60 * 60 * 10 -- 10 min
