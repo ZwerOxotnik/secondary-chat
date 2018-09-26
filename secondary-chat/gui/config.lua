@@ -1,14 +1,3 @@
-local localised_names =
-{
-
-}
-
--- '' for no tooltip
-local localised_tooltips = 
-{
-  
-}
-
 function make_config_table(gui, config)
   local config_table = gui.config_table
   if config_table then
@@ -20,6 +9,7 @@ function make_config_table(gui, config)
   local items = game.item_prototypes
   for k, data in pairs (config) do
     local label = config_table.add{type = 'label', name = k}
+
     if tonumber(data) then
       local input = config_table.add{type = 'textfield', name = k..'_box'}
       input.text = data
@@ -34,7 +24,7 @@ function make_config_table(gui, config)
           if items[option] then
             menu.add_item(items[option].localised_name)
           else
-            menu.add_item(localised_names[option] or {option})
+            menu.add_item({option})
           end
           if option == data.selected then index = j end
         end
@@ -48,23 +38,31 @@ function make_config_table(gui, config)
         end
       end
     end
-    label.caption = {'', localised_names[k] or {'secondary_chat.' .. k}, {'colon'}}
-    label.tooltip = localised_tooltips[k] or ''
+
+    label.caption = {'', {'secondary_chat.' .. k}, {'colon'}}
   end
 end
 
-function make_config_table_player(gui, config)
+function make_config_table_player(gui, config, is_fast_menu)
   local config_table = gui.config_table
   if config_table then
     config_table.clear()
   else
-    config_table = gui.add{type = 'table', name = 'config_table', column_count = 2}
-    config_table.style.column_alignments[2] = 'right'
+    local column_count = 2
+    if is_fast_menu then column_count = 3 end
+    config_table = gui.add{type = 'table', name = 'config_table', column_count = column_count}
+    config_table.style.column_alignments[column_count] = 'right'
   end
+
   local items = game.item_prototypes
   for k, data in pairs (config) do
-    if data.access then
+    if data.access and (not is_fast_menu or (is_fast_menu and data.allow_save)) then
+      if is_fast_menu then 
+        config_table.add{type = 'checkbox', name = k..'_is_allow_save', state = data.allow_save}
+      end
+
       local label = config_table.add{type = 'label', name = k}
+
       if tonumber(data.state) then
         local input = config_table.add{type = 'textfield', name = k..'_box'}
         input.text = data.state
@@ -79,7 +77,7 @@ function make_config_table_player(gui, config)
             if items[option] then
               menu.add_item(items[option].localised_name)
             else
-              menu.add_item(localised_names[option] or {option})
+              menu.add_item({option})
             end
             if option == data.selected then index = j end
           end
@@ -93,8 +91,8 @@ function make_config_table_player(gui, config)
           end
         end
       end
-      label.caption = {'', localised_names[k] or {'secondary_chat.' .. k}, {'colon'}}
-      label.tooltip = localised_tooltips[k] or ''
+
+      label.caption = {'', {'secondary_chat.' .. k}, {'colon'}}
     end
   end
 end
