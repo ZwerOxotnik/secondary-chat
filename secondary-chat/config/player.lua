@@ -11,13 +11,13 @@ end
 config.get_settings = function()
   return {
     main = {
-      state_chat = {state = true, access = true, allow_save = false},
-      with_tag = {state = true, access = true, allow_save = true},
-      auto_focus = {state = false, access = true, allow_save = true},
-      drop_down = {state = true, access = true, allow_save = true}
+      state_chat = {state = true, access = true, allow_show_fast = false},
+      with_tag = {state = true, access = true, allow_show_fast = true},
+      auto_focus = {state = false, access = true, allow_show_fast = true},
+      drop_down = {state = true, access = true, allow_show_fast = true}
     },
     hidden = {
-      allow_write = {state = true, allow_save = false}
+      allow_write = {state = true, allow_show_fast = false}
     }
   }
 end
