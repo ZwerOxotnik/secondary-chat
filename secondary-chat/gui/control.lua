@@ -6,19 +6,19 @@ require("secondary-chat/gui/buttons")
 
 function press_button_send_chat(event)
   if event.shift then
-    click_gui_chat(event, true)
+    player_send_message(event, true)
   elseif event.control then
+    local player = game.players[event.player_index]
     local table_chat = player.gui.left.table_chat
     table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
   else
-    click_gui_chat(event)
+    player_send_message(event)
   end
 end
 
-function click_gui_chat(event, is_localised)
+function click_gui_chat(event)
   -- Validation of data
   local gui = event.element
-  if not (gui and gui.valid) then return false end
   local player = game.players[event.player_index]
   local table_chat = player.gui.left.table_chat
   if not table_chat then return false end
@@ -52,6 +52,12 @@ function click_gui_chat(event, is_localised)
       return true
     end
   end
+end
+
+function player_send_message(event, is_localised)
+  local gui = event.element
+  local player = game.players[event.player_index]
+  local table_chat = player.gui.left.table_chat
 
   table_chat.notices.main.caption = ""
 

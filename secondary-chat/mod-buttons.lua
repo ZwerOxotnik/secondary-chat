@@ -10,7 +10,7 @@ local function send_message_pressed(event)
         table_chat.top_chat.chat_table.chat_text_box.focus()
       else
         event.element = table_chat.select_chat.table.print_in_chat
-        click_gui_chat(event) -- Send the message
+        player_send_message(event)
       end
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
@@ -35,7 +35,7 @@ local function send_locale_pressed(event)
         table_chat.top_chat.chat_table.chat_text_box.focus()
       else
         event.element = table_chat.select_chat.table.print_in_chat
-        click_gui_chat(event, true) -- Send the message
+        player_send_message(event, true)
       end
     else
       global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
