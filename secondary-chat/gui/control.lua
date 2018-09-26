@@ -4,6 +4,17 @@ require("secondary-chat/gui/list-chat")
 require("secondary-chat/gui/settings")
 require("secondary-chat/gui/buttons")
 
+function press_button_send_chat(event)
+  if event.shift then
+    click_gui_chat(event, true)
+  elseif event.control then
+    local table_chat = player.gui.left.table_chat
+    table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
+  else
+    click_gui_chat(event)
+  end
+end
+
 function click_gui_chat(event, is_localised)
   -- Validation of data
   local gui = event.element

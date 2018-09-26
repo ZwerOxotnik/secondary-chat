@@ -38,14 +38,7 @@ mod.on_gui_click = function(event)
   if not (player and player.valid) then return end
 
   if (gui.name == "print_in_chat" or string.match(gui.name, "chat_(.+)")) then
-    if event.shift then
-      click_gui_chat(event, true)
-    elseif event.control then
-      local table_chat = player.gui.left.table_chat
-      table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
-    else
-      click_gui_chat(event)
-    end
+    press_button_send_chat(event)
   else
     click_gui_chat(event)
   end
