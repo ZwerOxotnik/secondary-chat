@@ -20,7 +20,7 @@ function update_global_config_player(player)
         end
       end
     else
-      global.secondary_chat.players[player_index].settings = configs.player.get_settings()
+      global.secondary_chat.players[player_index].settings = global.secondary_chat.default.player.settings
     end
 
     local info = global.secondary_chat.players[player_index].info
@@ -38,7 +38,7 @@ function update_global_config_player(player)
     end
   else
     global.secondary_chat.players[player_index] = {}
-    global.secondary_chat.players[player_index].settings = configs.player.get_settings()
+    global.secondary_chat.players[player_index].settings = global.secondary_chat.default.player.settings
     global.secondary_chat.players[player_index].info = configs.global.get_info()
   end
 
@@ -55,6 +55,23 @@ function update_global_config_player(player)
 end
 
 function update_global_config()
+  local settings = global.secondary_chat.default.player.settings
+  if settings then
+    for table, child_table in pairs( configs.player.get_settings() ) do
+      settings[table] = settings[table] or {}
+      for name, data in pairs( child_table ) do
+        if settings[table][name].state == nil or type(data.state) ~= type(settings[table][name]) then
+          settings[table][name] = data
+        end
+        if settings[table][name].access == nil then
+          settings[table][name].access = data.access or true
+        end
+      end
+    end
+  else
+    global.secondary_chat.default.player.settings = configs.player.get_settings()
+  end
+
   if global.secondary_chat.global == nil then
     global.secondary_chat.global = {}
     global.secondary_chat.global.settings = configs.global.get_settings()
@@ -101,6 +118,9 @@ function global_init()
   global.secondary_chat.chats = global.secondary_chat.chats or {}
   global.secondary_chat.players = global.secondary_chat.players or {}
   global.secondary_chat.state_chat = global.secondary_chat.state_chat or true
+  global.secondary_chat.default = {}
+  global.secondary_chat.default.player = {}
+  global.secondary_chat.default.player.settings = configs.player.get_settings()
   global.secondary_chat.settings = global.secondary_chat.settings or {}
   global.secondary_chat.settings.limit_characters = global.secondary_chat.settings.limit_characters or 73 * 14 --1022
 
