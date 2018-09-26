@@ -50,8 +50,8 @@ function toggle_chat(cmd)
   else
     if table_chat then
       if table_chat.style.visible then
-        script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
         table_chat.style.visible = false
+        script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
       else
         script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
         table_chat.style.visible = true
