@@ -85,13 +85,16 @@ end
 mod.on_gui_checked_state_changed = function(event)
   -- Validation of data
   local gui = event.element
-  if not (gui and gui.valid) then return end
+  if not (gui and gui.valid and gui.parent.parent.parent) then return end
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
 
-  local parametr = string.match(gui.name, "(.+)_boolean")
-  if parametr then
-    update_checkbox(player, gui, parametr)
+  if gui.parent.name == 'config_table' and (gui.parent.parent.parent.name == 'settings' or gui.parent.parent.parent.parent.name == 'settings') then
+    local parametr = string.match(gui.name, "(.+)_boolean")
+    if parametr then
+      update_checkbox(player, gui, parametr)
+      return
+    end
   end
 end
 
