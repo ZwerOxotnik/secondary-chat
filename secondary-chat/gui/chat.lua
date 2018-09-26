@@ -143,7 +143,8 @@ function create_chat_gui(player)
   {
     '', {'gui-control-settings.title'}, {'colon'},
     '\n', {'controls.mouse-button-1'}, ' - ', {'gui-map-generator.basic-tab-title'},
-    '\n', 'Shift + ', {'controls.mouse-button-1'}, ' - ', {'gui-map-generator.advanced-tab-title'}
+    '\n', 'Shift + ', {'controls.mouse-button-1'}, ' - ', {'gui-map-generator.advanced-tab-title'},
+    '\n', 'Alt + ', {'controls.mouse-button-1'}, ' - ', {'secondary_chat.hide'}
   }
   local button = table.add{type = 'button', name = 'color', caption = '█'}
   button.style.maximal_height = 20
