@@ -6,7 +6,11 @@ script.on_configuration_changed(secondary_chat.on_configuration_changed)
 for name, func in pairs( secondary_chat ) do
   local event = defines.events[name]
   if event then
-    script.on_event(event, func)
+    if script.get_event_handler(event) == nil then
+      script.on_event(event, func)
+    else
+      log("event '" .. name .. "' can't be handle")
+    end
   end
 end
 
@@ -16,6 +20,7 @@ local function find_interface(interfaces)
       return name
     end
   end
+
   return nil
 end
 
