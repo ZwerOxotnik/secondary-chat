@@ -43,7 +43,7 @@ function create_settings_chat_of_admin(player, settings)
   check_and_change_visible_table(table)
 end
 
-function create_settings_chat_of_player(player, settings)
+function create_settings_chat_of_player(player, settings, is_fast_menu)
   local table
   if settings.player then
     table = settings.player
@@ -57,7 +57,7 @@ function create_settings_chat_of_player(player, settings)
   table.style.right_padding = 0
   local label = table.add{type = 'label', caption = {'gui-map-generator.basic-tab-title'}}
   label.style.font = "default-semibold"
-  make_config_table_player(table, global.secondary_chat.players[player.index].settings.main)
+  make_config_table_player(table, global.secondary_chat.players[player.index].settings.main, is_fast_menu)
 
   check_and_change_visible_table(table)
 end
@@ -73,7 +73,7 @@ function toggle_settings_chat_gui(player, table_chat)
     table_chat.buttons.style.visible = false
     local label = settings.add{type = 'label', caption = {'permissions-help.help-list', player.name}}
     label.style.font = "default-bold"
-    create_settings_chat_of_player(player, settings)
+    create_settings_chat_of_player(player, settings, true)
   end
 end
 
