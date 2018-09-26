@@ -38,7 +38,8 @@ function click_gui_chat(event)
           end
         elseif event.alt then
           table_chat.style.visible = false
-          script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
+          global.secondary_chat.players[event.player_index].settings.main.state_chat.state = false
+          script.raise_event(chat_events.on_hide_gui_chat, {player_index = event.player_index, container = table_chat})
         else
           toggle_settings_chat_gui(player, table_chat)
         end
