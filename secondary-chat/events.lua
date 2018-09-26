@@ -19,7 +19,7 @@ chat_events =
   on_toggle = script.generate_event_name(),
 
   -- Called when delete secondary-chat.
-  on_remove_mod = script.generate_event_name(),
+  on_pre_remove_mod = script.generate_event_name(),
 
   -- Called when update for player GUI of chat.
   --	Contains:

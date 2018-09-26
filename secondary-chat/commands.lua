@@ -53,8 +53,8 @@ function toggle_chat(cmd)
         table_chat.style.visible = false
         script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
       else
-        script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
         table_chat.style.visible = true
+        script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
       end
       global.secondary_chat.players[player.index].settings.main.state_chat.state = table_chat.style.visible
     else

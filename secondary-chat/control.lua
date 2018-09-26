@@ -251,7 +251,7 @@ end
 
 -- For soft-mods, scenarios, interfaces
 mod.delete = function(event)
-  script.raise_event(chat_events.on_remove_mod)
+  script.raise_event(chat_events.on_pre_remove_mod)
 
   remove_commands()
   for _, player in pairs( game.players ) do

@@ -86,12 +86,12 @@ function player_send_message(event, is_localised)
       if bool then
         table_chat.last_messages.last.text = text_box.text
 
-        script.raise_event(chat_events.on_send_message, {player_index = event.player_index, message = text_box.text, chat = chat_name})
-
         text_box.text = ""
         if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
           text_box.focus()
         end
+
+        script.raise_event(chat_events.on_send_message, {player_index = event.player_index, message = text_box.text, chat = chat_name})
 
         return true
       end
