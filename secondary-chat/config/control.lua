@@ -95,6 +95,9 @@ end
 
 function global_init()
   global.secondary_chat = global.secondary_chat or {}
+  if script.mod_name == 'level' then
+    global.secondary_chat.build = global.secondary_chat.chats or build
+  end
   global.secondary_chat.chats = global.secondary_chat.chats or {}
   global.secondary_chat.players = global.secondary_chat.players or {}
   global.secondary_chat.state_chat = global.secondary_chat.state_chat or true

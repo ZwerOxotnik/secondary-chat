@@ -6,6 +6,7 @@
 
 local mod = {}
 
+build = 100 -- Always to increment number when changing the code
 chats = {}
 
 max_time_autohide = 60 * 60 * 10 -- 10 min
@@ -178,6 +179,15 @@ mod.on_load = function()
 end
 
 mod.on_player_joined_game = function(event)
+  if script.mod_name == 'level' and global.secondary_chat.build ~= build then
+    global.secondary_chat.build = build
+
+    update_global_config()
+    for _, player in pairs( game.players ) do
+      update_global_config_player(player)
+    end
+  end
+
   -- Validation of data
   local player = game.players[event.player_index]
   if not (player and player.valid) then return end
