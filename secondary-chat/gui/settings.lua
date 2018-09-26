@@ -86,21 +86,21 @@ function update_checkbox(player, element, parameter)
     global.secondary_chat.players[player.index].settings.main[parameter].state = element.state
 
     if parameter == 'state_chat' then
-      if element.state then
-        script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
-        table_chat.style.visible = true
-      else
-        script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
-        table_chat.style.visible = false
-      end
+      table_chat.style.visible = element.state
       table_chat.buttons.style.visible = not element.state
-      table_chat.settings.style.visible = element.state
+      table_chat.settings.style.visible = not element.state
       table_chat.settings.clear()
 
       player.print({'', '/toggle-chat ', {'secondary_chat.toggle', global.toggle_chat_commands}})
       if script.mod_name ~= 'level' then
         player.print({'secondary_chat.or_use_hotkeys'})
       end
+
+      local name = 'on_hide_gui_chat'
+      if element.state then
+        name = 'on_unhide_gui_chat'
+      end
+      script.raise_event(chat_events[name], {player_index = player.index, container = table_chat})
     elseif parameter == 'drop_down' then
       toggle_drop_down(player)
     end
