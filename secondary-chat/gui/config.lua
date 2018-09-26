@@ -96,3 +96,41 @@ function make_config_table_player(gui, config, is_fast_menu)
     end
   end
 end
+
+function add_element_config_fast(data, config_table, name)
+  local items = game.item_prototypes
+  if data.access then
+    local label = config_table.add{type = 'label', name = name}
+
+    if tonumber(data.state) then
+      local input = config_table.add{type = 'textfield', name = name..'_box'}
+      input.text = data.state
+      input.style.maximal_width = 100
+    elseif tostring(type(data.state)) == 'boolean' then
+      config_table.add{type = 'checkbox', name = name..'_boolean', state = data.state}
+    else
+      local menu = config_table.add{type = 'drop-down', name = name..'_dropdown'}
+      local index
+      if data.options then
+        for j, option in pairs (data.options) do
+          if items[option] then
+            menu.add_item(items[option].localised_name)
+          else
+            menu.add_item({option})
+          end
+          if option == data.selected then index = j end
+        end
+        menu.selected_index = index or 1
+      else
+        log('bug >'..data..'< with add_element_config_fast')
+        for _, player in pairs (game.connected_players) do
+          if player.admin then
+            game.print('bug >'..data..'< with add_element_config_fast')
+          end
+        end
+      end
+    end
+
+    label.caption = {'', {'secondary_chat.' .. name}, {'colon'}}
+  end
+end

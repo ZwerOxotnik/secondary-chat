@@ -77,15 +77,15 @@ function toggle_settings_chat_gui(player, table_chat)
   end
 end
 
-function update_checkbox(player, element, parametr)
+function update_checkbox(player, element, parameter)
   global.secondary_chat.players[player.index].autohide = max_time_autohide
 
   local table_chat = player.gui.left.table_chat
-  local parent = element.parent.parent.name
-  if parent == 'player' then
-    global.secondary_chat.players[player.index].settings.main[parametr].state = element.state
+  local container = element.parent.parent
+  if container.name == 'player' then
+    global.secondary_chat.players[player.index].settings.main[parameter].state = element.state
 
-    if parametr == 'state_chat' then
+    if parameter == 'state_chat' then
       if element.state then
         script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
         table_chat.style.visible = true
@@ -101,11 +101,11 @@ function update_checkbox(player, element, parametr)
       if script.mod_name ~= 'level' then
         player.print({'secondary_chat.or_use_hotkeys'})
       end
-    elseif parametr == 'drop_down' then
+    elseif parameter == 'drop_down' then
       toggle_drop_down(player)
     end
-  elseif parent == 'admin' then
-    global.secondary_chat.global.settings.main[parametr] = element.state
+  elseif container.name == 'admin' then
+    global.secondary_chat.global.settings.main[parameter] = element.state
 
     for _, target in pairs( game.connected_players ) do
       if target.admin then
@@ -116,7 +116,7 @@ function update_checkbox(player, element, parametr)
       end
     end
 
-    if parametr == 'allow_custom_color_message' then
+    if parameter == 'allow_custom_color_message' then
       for _, target in pairs( game.connected_players ) do
         local table_chat = target.gui.left.table_chat
         if table_chat then
@@ -127,7 +127,31 @@ function update_checkbox(player, element, parametr)
     end
   end
 
-  script.raise_event(chat_events.on_changed_parameter_setting, {player_index = player.index, parameter = element, container = parent})
+  script.raise_event(chat_events.on_changed_parameter_setting, {player_index = player.index, parameter = element, container = container})
+end
+
+function update_allow_show_fast(player, element, parameter)
+  global.secondary_chat.players[player.index].autohide = max_time_autohide
+  global.secondary_chat.players[player.index].settings.main[parameter].allow_show_fast = element.state
+
+  local container = element.parent.parent
+  local table_chat = player.gui.left.table_chat
+  if table_chat.settings[container.name] then
+    local gui_settings = table_chat.settings[container.name].config_table
+    if #gui_settings.children_names > 0 then
+      local element_fast_menu = gui_settings[parameter]
+      if element.state then
+        if not element_fast_menu then
+          add_element_config_fast(global.secondary_chat.players[player.index].settings.main[parameter], gui_settings, parameter)
+        end
+      elseif element_fast_menu then
+        element_fast_menu.destroy()
+        gui_settings[parameter .. '_boolean'].destroy()
+      end
+    end
+  end
+
+  script.raise_event(chat_events.on_changed_parameter_setting, {player_index = player.index, parameter = element, container = container})
 end
 
 function destroy_settings_gui(player)

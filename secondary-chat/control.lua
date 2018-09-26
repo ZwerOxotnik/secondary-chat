@@ -90,10 +90,16 @@ mod.on_gui_checked_state_changed = function(event)
   if not (player and player.valid) then return end
 
   if gui.parent.name == 'config_table' and (gui.parent.parent.parent.name == 'settings' or gui.parent.parent.parent.parent.name == 'settings') then
-    local parametr = string.match(gui.name, "(.+)_boolean")
-    if parametr then
-      update_checkbox(player, gui, parametr)
+    local parameter = string.match(gui.name, "(.+)_boolean")
+    if parameter then
+      update_checkbox(player, gui, parameter)
       return
+    end
+
+    local parameter = string.match(gui.name, "(.+)-allow_show_fast") 
+    if parameter then 
+      update_allow_show_fast(player, gui, parameter) 
+      return 
     end
   end
 end
