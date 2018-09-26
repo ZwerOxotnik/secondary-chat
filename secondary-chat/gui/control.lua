@@ -36,6 +36,9 @@ function click_gui_chat(event)
           else
             create_settings_for_everything(player)
           end
+        elseif event.alt then
+          table_chat.style.visible = false
+          script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
         else
           toggle_settings_chat_gui(player, table_chat)
         end
