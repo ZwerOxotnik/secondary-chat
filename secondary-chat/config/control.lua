@@ -20,7 +20,17 @@ function update_global_config_player(player)
         end
       end
     else
-      global.secondary_chat.players[player_index].settings = global.secondary_chat.default.player.settings
+      global.secondary_chat.players[player_index].settings = {}
+      local settings = global.secondary_chat.players[player_index].settings
+      for table, child_table in pairs( global.secondary_chat.default.player.settings ) do
+        settings[table] = {}
+        for name_property, parameter in pairs( child_table ) do
+          settings[table][name_property] = {}
+          for name_parameter, data in pairs( parameter ) do
+            settings[table][name_property][name_parameter] = data
+          end
+        end
+      end
     end
 
     local info = global.secondary_chat.players[player_index].info
@@ -38,7 +48,17 @@ function update_global_config_player(player)
     end
   else
     global.secondary_chat.players[player_index] = {}
-    global.secondary_chat.players[player_index].settings = global.secondary_chat.default.player.settings
+    global.secondary_chat.players[player_index].settings = {}
+    local settings = global.secondary_chat.players[player_index].settings
+    for table, child_table in pairs( global.secondary_chat.default.player.settings ) do
+      settings[table] = {}
+      for name_property, parameter in pairs( child_table ) do
+        settings[table][name_property] = {}
+        for name_parameter, data in pairs( parameter ) do
+          settings[table][name_property][name_parameter] = data
+        end
+      end
+    end
     global.secondary_chat.players[player_index].info = configs.global.get_info()
   end
 
