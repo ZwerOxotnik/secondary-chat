@@ -182,10 +182,7 @@ mod.on_player_joined_game = function(event)
   if script.mod_name == 'level' and global.secondary_chat.build ~= build then
     global.secondary_chat.build = build
 
-    update_global_config()
-    for _, player in pairs( game.players ) do
-      update_global_config_player(player)
-    end
+    global_init()
   end
 
   -- Validation of data
