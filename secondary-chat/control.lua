@@ -67,7 +67,7 @@ mod.on_gui_text_changed = function(event)
     if string.byte(gui.text, -1) == 10 then
       if #gui.text > 2 then
         event.element = gui.parent.parent.parent.select_chat.table.print_in_chat
-        click_gui_chat(event)
+        player_send_message(event)
 
         -- unfocus for the gui
         text_box = create_chat_text_box(gui.parent)
