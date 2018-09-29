@@ -136,7 +136,7 @@ function update_allow_show_fast(player, element, parameter)
 
   local container = element.parent.parent
   local table_chat = player.gui.left.table_chat
-  if table_chat.settings[container.name] then
+  if table_chat and table_chat.settings[container.name] then
     local gui_settings = table_chat.settings[container.name].config_table
     if #gui_settings.children_names > 0 then
       local element_fast_menu = gui_settings[parameter]
