@@ -93,6 +93,13 @@ function make_config_table_player(gui, config, is_fast_menu)
       end
 
       label.caption = {'', {'secondary_chat.' .. k}, {'colon'}}
+      if data.tooltip then
+        if tostring(type(data.tooltip)) == 'boolean' then
+          label.tooltip = {k .. '_tooltip'}
+        else
+          label.tooltip = data.tooltip
+        end
+      end
     end
   end
 end
@@ -132,5 +139,12 @@ function add_element_config_fast(data, config_table, name)
     end
 
     label.caption = {'', {'secondary_chat.' .. name}, {'colon'}}
+    if data.tooltip then
+      if tostring(type(data.tooltip)) == 'boolean' then
+        label.tooltip = {name .. '_tooltip'}
+      else
+        label.tooltip = data.tooltip
+      end
+    end
   end
 end
