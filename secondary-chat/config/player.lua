@@ -8,6 +8,13 @@ config.get_info = function()
   }
 end
 
+-- List of player settings.
+--  Parameters (each with its own name):: table:
+--    Parameters contains:
+--      state :: boolean (optional): current state of parameter.
+--      access :: boolean (optional): player have access to parameter.
+--      allow_show_fast :: boolean (optional): show parameter in the fast menu.
+--      tooltip :: string/boolean/LocalisedString (optional): tooltip of parameter.
 config.get_settings = function()
   return {
     main = {
