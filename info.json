@@ -1,15 +1,15 @@
 {
     "name": "secondary-chat",
-    "version": "1.16.9",
-    "factorio_version": "0.16",
-    "title": "Chat of extended interaction [experimental]",
+    "version": "1.18.0",
+    "factorio_version": "0.17",
+    "title": "Chat of extended interaction",
     "author": "ZwerOxotnik",
-    "contact": "zweroxotnik@gmail.com",
-    "homepage": "https://mods.factorio.com/mod/secondary-chat",
+    "contact": "zweroxotnik@gmail.com, https://steamcommunity.com/id/ZwerOxotnik",
+    "source": "https://gitlab.com/ZwerOxotnik/secondary-chat",
+    "homepage": "https://forums.factorio.com/viewtopic.php?f=190&t=64625",
     "description": "Adds gui of chat, new commands, new types of chat, new interactions",
     "dependencies": 
     [
-        "? color-picker16",
         "? color-picker"
     ]
 }

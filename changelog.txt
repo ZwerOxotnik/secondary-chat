@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.18.0
+Date: 2019-03-03
+  Major features:
+    - Added response on events of scenario PvP
+    - Added events "on_send_message", "on_toggle", "on_pre_remove_mod", "on_update_gui_chat", "on_create_gui_chat", "on_pre_delete_gui_chat", "on_hide_gui_chat", "on_unhide_gui_chat", "on_create_button", "on_pre_delete_button", "on_add_chat", "on_delete_chat", "on_changed_parameter_setting", "on_update_gui_list_settings", "on_update_gui_container_settings" of the mod
+    - Added remote interface "secondary-chat"
+    - Added admins chat
+    - Added /admins-send <message> - Sends a message to admins.
+    - Added private chat
+    - Added between factions chat
+    - Added surface chat
+    - Added /surface-send <message> - Sends a message all players on your surface.
+    - Added filters for chats
+  Features:
+    - Added auto focus after send message
+    - Added hotkey for send a message (Default: Y)
+    - Added hotkey for send a localised message (Default: SHIFT + Y)
+    - Added hotkey for recover a last message (Default: CONTROL + Y)
+    - Added hotkey for select a recipient for the private chat (Default: Middle mouse button), point the cursor at an entity
+    - Added hotkey for select a recipient for the faction chat (Default: SHIFT + Middle mouse button), point the cursor at an entity
+    - Added settings for a chat and for a gui
+    - Added saving GUI chat data for a player
+    - Added autohide gui for the mod
+    - Added notices in gui
+    - Added sending message in gui by enter
+    - Added Ukrainian localization (localization by HAKER PLAY)
+    - Added Spanish localization
+    - Added Romanian localization (localization by anonymous#1)
+    - Added Italian localization (localization by anonymous#1)
+    - Added muting
+  Changes:
+    - Changed /toggle-chat drop-down
+    - Changed style of GUI
+    - Changed faction chat
+    - Changed improved localization
+    - Changed improved compatibility with scenarios, mods, soft-mods, game
+    - Changed text field in gui not be cleared if message not be sended
+    - Changed title
+  Bugfixes:
+    - Fixed text in text field disappears when the interface was updated
+  Notes
+    - Updated for Factorio 0.17
+    - Code refactoring (not finished)

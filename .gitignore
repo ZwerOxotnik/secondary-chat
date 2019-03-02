@@ -36,14 +36,6 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
-# VisualStudioCode #
-####################
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
 # KomodoEdit #
 ##############
 *.komodoproject
@@ -124,3 +116,5 @@ typings/
 .vuepress/dist
 # Serverless directories
 .serverless
+# Visual studio directories
+.vscode
