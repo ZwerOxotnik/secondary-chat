@@ -5,16 +5,16 @@ function is_allow_message(message, sender)
 	if sender then
 		local table_chat = sender.gui.left.table_chat
 		if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
-			local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
+			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
 			send_notice(message, sender)
 		elseif global.secondary_chat.global.mutes[sender.index] then
-			local message = {"command-help.mutes"}
+			message = {"command-help.mutes"}
 			send_notice(message, sender)
 		elseif string.len(message) < global.secondary_chat.settings.limit_characters then
 			return true
 		else
 			log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
-			local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.long_message"}}
+			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.long_message"}}
 			send_notice(message, sender)
 		end
 	elseif string.len(message) < global.secondary_chat.settings.limit_characters then
@@ -24,7 +24,7 @@ function is_allow_message(message, sender)
 	return false
 end
 
-function sc_print_in_chat(message, receiver, sender)    
+function sc_print_in_chat(message, receiver, sender)
 	-- TODO: blacklist
 	receiver.print(message, sender.chat_color)
 	return true
@@ -116,6 +116,20 @@ function send_notice(message, player)
 		local notice = table_chat.notices.main
 		notice.caption = message
 	else
-		player.print(message)
+		if player.afk_time < 1800 or type(message) ~= "string" or string.len(message) > 60 then
+			player.print(message)
+		else
+			rendering.draw_text({
+				text = message,
+				surface = player.surface,
+				target = player.character or player.position,
+				target_offset = {0, -1.4},
+				color = {1, 1, 1},
+				time_to_live = 110,
+				players = {player},
+				alignment = "left",
+				scale_with_zoom = true
+			})
+		end
 	end
 end

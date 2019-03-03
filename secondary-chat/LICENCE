@@ -1,8 +1,10 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 
-This work is licensed under the European Union Public License (EUPL)
+This project is licensed under the European Union Public License (EUPL)
 The license is available in the 23 official languages of the EU. The English version is included here.
 Please see https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12 for official translations of the other languages.
+
+EUPL Guidelines for users and developers: https://joinup.ec.europa.eu/software/page/eupl/eupl-guidelines
 
 -------------------------------------------------------------
 EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -13,23 +15,23 @@ terms of this Licence. Any use of the Work, other than as authorised under this 
 use is covered by a right of the copyright holder of the Work). 
 The Work is provided under the terms of this Licence when the Licensor (as defined below) has placed the following 
 notice immediately following the copyright notice for the Work: 
-                          Licensed under the EUPL
+                          Licensed under the EUPL 
 or has expressed by any other means his willingness to license under the EUPL. 
 
 1.Definitions 
-In this Licence, the following terms have the following meaning: 
+In this Licence, the following terms have the following meaning:
 — ‘The Licence’:this Licence.
-— ‘The Original Work’:the work or software distributed or communicated by the Licensor under this Licence, available 
+— ‘The Original Work’:the work or software distributed or communicated by the Licensor under this Licence, available
 as Source Code and also as Executable Code as the case may be. 
 — ‘Derivative Works’:the works or software that could be created by the Licensee, based upon the Original Work or 
 modifications thereof. This Licence does not define the extent of modification or dependence on the Original Work 
 required in order to classify a work as a Derivative Work; this extent is determined by copyright law applicable in 
 the country mentioned in Article 15. 
-— ‘The Work’:the Original Work or its Derivative Works.
+— ‘The Work’:the Original Work or its Derivative Works. 
 — ‘The Source Code’:the human-readable form of the Work which is the most convenient for people to study and 
 modify. 
 — ‘The Executable Code’:any code which has generally been compiled and which is meant to be interpreted by 
-a computer as a program. 
+a computer as a program.
 — ‘The Licensor’:the natural or legal person that distributes or communicates the Work under the Licence. 
 — ‘Contributor(s)’:any natural or legal person who modifies the Work under the Licence, or otherwise contributes to 
 the creation of a Derivative Work. 
@@ -41,7 +43,7 @@ functionalities at the disposal of any other natural or legal person.
 
 2.Scope of the rights granted by the Licence 
 The Licensor hereby grants You a worldwide, royalty-free, non-exclusive, sublicensable licence to do the following, for
-the duration of copyright vested in the Original Work: 
+the duration of copyright vested in the Original Work:
 — use the Work in any circumstance and for all usage, 
 — reproduce the Work, 
 — modify the Work, and make Derivative Works based upon the Work,
@@ -64,14 +66,14 @@ each copy of the Work that the Licensor distributes or indicates, in a notice fo
 the Work, a repository where the Source Code is easily and freely accessible for as long as the Licensor continues to 
 distribute or communicate the Work. 
 
-4.Limitations on copyright 
-Nothing in this Licence is intended to deprive the Licensee of the benefits from any exception or limitation to the 
+4.Limitations on copyright
+Nothing in this Licence is intended to deprive the Licensee of the benefits from any exception or limitation to the
 exclusive rights of the rights owners in the Work, of the exhaustion of those rights or of other applicable limitations
 thereto.
 
 5.Obligations of the Licensee 
 The grant of the rights mentioned above is subject to some restrictions and obligations imposed on the Licensee. Those 
-obligations are the following: 
+obligations are the following:
 
 Attribution right: The Licensee shall keep intact all copyright, patent or trademarks notices and all notices that refer to 
 the Licence and to the disclaimer of warranties. The Licensee must include a copy of such notices and a copy of the 
@@ -119,7 +121,7 @@ Except in the cases of wilful misconduct or damages directly caused to natural p
 liable for any direct or indirect, material or moral, damages of any kind, arising out of the Licence or of the use of the
 Work, including without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, loss 
 of data or any commercial damage, even if the Licensor has been advised of the possibility of such damage. However, 
-the Licensor will be liable under statutory product liability laws as far such laws apply to the Work. 
+the Licensor will be liable under statutory product liability laws as far such laws apply to the Work.
 
 9.Additional agreements 
 While distributing the Work, You may choose to conclude an additional agreement, defining obligations or services 
@@ -143,7 +145,7 @@ by offering to download the Work from a remote location) the distribution channe
 must at least provide to the public the information requested by the applicable law regarding the Licensor, the Licence 
 and the way it may be accessible, concluded, stored and reproduced by the Licensee. 
 
-12.Termination of the Licence 
+12.Termination of the Licence
 The Licence and the rights granted hereunder will terminate automatically upon any breach by the Licensee of the terms
 of the Licence. 
 Such a termination will not terminate the licences of any person who has received the Work from the Licensee under 
@@ -164,12 +166,12 @@ advantage of the linguistic version of their choice.
 14.Jurisdiction 
 Without prejudice to specific agreement between parties, 
 — any litigation resulting from the interpretation of this License, arising between the European Union institutions,
-bodies, offices or agencies, as a Licensor, and any Licensee, will be subject to the jurisdiction of the Court of Justice 
+bodies, offices or agencies, as a Licensor, and any Licensee, will be subject to the jurisdiction of the Court of Justice
 of the European Union, as laid down in article 272 of the Treaty on the Functioning of the European Union,
 — any litigation arising between other parties and resulting from the interpretation of this License, will be subject to 
 the exclusive jurisdiction of the competent court where the Licensor resides or conducts its primary business. 
 
-15.Applicable Law 
+15.Applicable Law
 Without prejudice to specific agreement between parties, 
 — this Licence shall be governed by the law of the European Union Member State where the Licensor has his seat, 
 resides or has his registered office, 

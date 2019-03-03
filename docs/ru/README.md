@@ -18,6 +18,7 @@
     * [Комманды](#commands)
 * [Зависимости](#dependencies)
     * [Необязательные](#optional)
+    * [Встроенные](#embedded)
 * [Сообщить об ошибки](#issue)
 * [Запросить функцию](#feature)
 * [Установка](#installing)
@@ -26,8 +27,8 @@
 
 ## <a name="overview"></a> Введение
 
-Add gui of chat, new commands, new types of chat, new interactions.
-Top left appear the new gui with drop-down with filters and other functions, that sends your сообщение from the text field to the chat and can simplify the interaction of other elements and simplify receiving a information.
+Добавляет графический интерфейс чата, новые команды, новые типы чата, новые взаимодействия.
+Слева вверху отображается новый графический интерфейс с выпадающим меню, с фильтрами и другими функциями, которые отправляют ваше сообщение из текстового поля в чат и могут упростить взаимодействие с другими элементами.
 
 ## <a name="faq"></a> FAQ (часто задаваемые вопросы)
 
@@ -65,6 +66,10 @@ Top left appear the new gui with drop-down with filters and other functions, tha
 
 * [Color picker](https://forums.factorio.com/viewtopic.php?f=97&t=30657)
 
+### <a name="embedded"></a> Встроенные
+
+* Event listener: [mods.factorio.com](https://mods.factorio.com/mod/event-listener), [GitLab](https://gitlab.com/ZwerOxotnik/event-listener), [homepage](https://forums.factorio.com/viewtopic.php?f=190&t=64621)
+
 ## <a name="issue"></a> Нашли ошибку?
 
 Пожалуйста, сообщайте о любых проблемах или ошибках в документации, вы можете помочь нам
@@ -95,7 +100,9 @@ Top left appear the new gui with drop-down with filters and other functions, tha
 
 ## <a name="license"></a> Лицензия
 
-Лицензировано под EUPL, версия 1.2 только (смотри "[LICENCE](/LICENCE)" файл)
+Этот проект защищен авторским правом © 2018-2019 ZwerOxotnik \<zweroxotnik@gmail.com\>.
+
+Использование исходного кода, включенного здесь, регламентируется European Union Public License v. 1.2 только. Смотрите [LICENCE](/LICENCE) файл для разбора. Пожалуйста, взгляните также и на уведомления о лицензиях сторонних компонентов в файле [THIRD-PARTY-NOTICES.txt](/THIRD-PARTY-NOTICES.txt).
 
 [homepage]: http://mods.factorio.com/mod/secondary-chat
 [Factorio]: https://factorio.com/

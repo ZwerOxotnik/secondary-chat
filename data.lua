@@ -4,13 +4,6 @@
 data:extend(
 { 
 	{
-		type = 'flying-text',
-		name = 'flying-text-chat',
-		flags = {'not-on-map'},
-		time_to_live = 350,
-		speed = 0.01
-	},
-	{
 		type = 'custom-input',
 		name = 'message-send-to-chat',
 		key_sequence = 'Y',

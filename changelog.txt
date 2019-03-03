@@ -1,10 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.19.0
+Date: 2019-03-03
+  Changes:
+    - Output of local chat
+    - Output of notice
+    - Added module «Event listener»
+    - Bugfixes
+---------------------------------------------------------------------------------------------------
 Version: 1.18.0
 Date: 2019-03-03
   Major features:
-    - Added response on events of scenario PvP
-    - Added events "on_send_message", "on_toggle", "on_pre_remove_mod", "on_update_gui_chat", "on_create_gui_chat", "on_pre_delete_gui_chat", "on_hide_gui_chat", "on_unhide_gui_chat", "on_create_button", "on_pre_delete_button", "on_add_chat", "on_delete_chat", "on_changed_parameter_setting", "on_update_gui_list_settings", "on_update_gui_container_settings" of the mod
-    - Added remote interface "secondary-chat"
     - Added admins chat
     - Added /admins-send <message> - Sends a message to admins.
     - Added private chat
@@ -12,6 +17,9 @@ Date: 2019-03-03
     - Added surface chat
     - Added /surface-send <message> - Sends a message all players on your surface.
     - Added filters for chats
+    - Added response on events of scenario PvP
+    - Added events "on_send_message", "on_toggle", "on_pre_remove_mod", "on_update_gui_chat", "on_create_gui_chat", "on_pre_delete_gui_chat", "on_hide_gui_chat", "on_unhide_gui_chat", "on_create_button", "on_pre_delete_button", "on_add_chat", "on_delete_chat", "on_changed_parameter_setting", "on_update_gui_list_settings", "on_update_gui_container_settings" of the mod
+    - Added remote interface "secondary-chat"
   Features:
     - Added auto focus after send message
     - Added hotkey for send a message (Default: Y)
@@ -39,6 +47,6 @@ Date: 2019-03-03
     - Changed title
   Bugfixes:
     - Fixed text in text field disappears when the interface was updated
-  Notes
+  Notes:
     - Updated for Factorio 0.17
     - Code refactoring (not finished)

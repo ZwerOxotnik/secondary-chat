@@ -2,6 +2,13 @@
 
 ## 2018-03-03
 
+### [v1.19.0][v1.19.0]
+
+* Added: module «[Event listener](https://gitlab.com/ZwerOxotnik/event-listener)»
+* Changed: output of local chat
+* Changed: output of notice
+* Bugfixes
+
 ### [v1.18.0][v1.18.0]
 
 * Updated for Factorio 0.17
@@ -105,6 +112,7 @@
 
 * First release for 0.16
 
+[v1.19.0]:  https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.0.zip
 [v1.18.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.18.0.zip
 [v1.3.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.3.0.zip
 [v1.2.4]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.2.4.zip

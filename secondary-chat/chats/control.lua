@@ -170,7 +170,7 @@ send_message['faction'] = function(input_message, player)
 				end
 			end
 		else
-			local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
+			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"multiplayer.no-address", drop_down.items[drop_down.selected_index]}}
 			send_notice(message, player)
 		end
 		return target
@@ -193,26 +193,41 @@ end
 send_message['local'] = function(input_message, player)
 	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
 	local pos_p1 = player.position
-	if type(input_message) == "string" and string.len(input_message) <= 80 then
-		if script.mod_name ~= 'level' then
-			if string.len(input_message) <= 25 then
-				player.surface.create_entity{name = "flying-text", position = pos_p1, text = input_message}
-			else
-				player.surface.create_entity{name = "flying-text-chat", position = pos_p1, text = input_message}
+	local text_length = string.len(input_message)
+	local is_draw = false
+	if type(input_message) == "string" and text_length <= 130 then
+		is_draw = true
+	end
+
+	local targets = {}
+	for _, near_player in pairs (game.connected_players) do
+		if player.surface == near_player.surface then
+			local pos_p2 = near_player.position
+			if ((pos_p1.x - pos_p2.x)^2 + (pos_p1.y - pos_p2.y)^2)^(0.5) <= 116 then
+				sc_print_in_chat({"", player.name .. " (", {"secondary_chat_list.local"}, ")", {"colon"}, " ", input_message}, near_player, player)
+				if is_draw then
+					table.insert(targets, near_player)
+				end
 			end
-		else
-			player.surface.create_entity{name = "flying-text", position = pos_p1, text = input_message}
 		end
 	end
 
-	for _, another_player in pairs (game.connected_players) do
-		if player.surface == another_player.surface then
-			local pos_p2 = another_player.position
-			if ((pos_p1.x - pos_p2.x)^2 + (pos_p1.y - pos_p2.y)^2)^(0.5) <= 116 then
-				sc_print_in_chat({"", player.name .. " (", {"secondary_chat_list.local"}, ")", {"colon"}, " ", input_message}, another_player, player)
-			end
-		end
+	if is_draw then
+		rendering.draw_text({
+			text = input_message,
+			surface = player.surface,
+			target = player.character or player.position,
+			target_offset = {0, -2.2},
+			color = {1, 1, 1},
+			time_to_live = 80 + text_length,
+			-- forces = player.force,
+			players = targets,
+			-- visible = true,
+			alignment = "center",
+			scale_with_zoom = true
+		})
 	end
+
 	return true
 end
 
@@ -313,7 +328,7 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
 	local check_stance = check_stance[get_name_stance(drop_down_state.selected_index)]
 	local items = {}
 	local new_selected_index
-	local last_target = last_target and game.players[last_target]
+	last_target = last_target and game.players[last_target]
 	local index = 0
 	for _, player in pairs( list_players ) do
 		if check_stance(target.force, player.force) then
@@ -366,7 +381,7 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
 		drop_down_state.visible = false
 		return true
 	end
-	
+
 	local list_forces = {}
 	if gui_online.keys['all'] == drop_down_online.selected_index then
 		list_forces = game.forces
@@ -389,7 +404,7 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
 	local check_stance = check_stance[get_name_stance(drop_down_state.selected_index)]
 	local items = {}
 	local new_selected_index
-	local last_target = last_target and game.forces[last_target]
+	last_target = last_target and game.forces[last_target]
 	local index = 0
 	for name, force in pairs( list_forces ) do
 		if #force.players > 0 and check_stance(target.force, force) then

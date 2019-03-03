@@ -2,17 +2,17 @@
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 local function send_message_pressed(event)
-	local player = game.players[event.player_index] 
+	local player = game.players[event.player_index]
 
 	-- Check the visibility of the chat
 	local table_chat = player.gui.left.table_chat
-	local select_chat = table_chat.select_chat
 	if table_chat then
+	local select_chat = table_chat.select_chat
 		if table_chat.visible then
 			if table_chat.top_chat.chat_table.chat_text_box.text == '' then
 				table_chat.top_chat.chat_table.chat_text_box.focus()
 			else
-				event.element = table_chat.select_chat.table.print_in_chat
+				event.element = select_chat.table.print_in_chat
 				player_send_message(event)
 			end
 		else
@@ -191,7 +191,7 @@ local function send_to_faction_pressed(event)
 	drop_down_state.selected_index = gui_state.keys['all']
 
 	-- Select a recipient
-	select_chat.table.chat_drop_down.selected_index = chats.keys['faction'] 
+	select_chat.table.chat_drop_down.selected_index = chats.keys['faction']
 	select_chat.table.select_drop_down.items = {entity.force.name}
 	select_chat.table.select_drop_down.selected_index = 1
 	update_chat_and_drop_down(select_chat.table.chat_drop_down, player)

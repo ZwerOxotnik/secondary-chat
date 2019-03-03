@@ -9,8 +9,8 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 Description: Adds gui of chat, new commands, new types of chat, new interactions.
 ]]--
 
-local mod = {}
-build = 1200 -- Always to increment the number when change the code
+local module = {}
+BUILD = 1300 -- Always to increment the number when change the code
 
 chats = {}
 
@@ -28,7 +28,7 @@ if script.mod_name ~= 'level' then
 end
 require('secondary-chat/interface')
 
-mod.on_configuration_changed = function()
+local function on_configuration_changed()
 	update_global_config()
 
 	for _, player in pairs( game.players ) do
@@ -36,7 +36,7 @@ mod.on_configuration_changed = function()
 	end
 end
 
-mod.on_gui_click = function(event)
+local function on_gui_click(event)
 	-- Validation of data
 	local gui = event.element
 	if not (gui and gui.valid) then return end
@@ -50,11 +50,11 @@ mod.on_gui_click = function(event)
 	end
 end
 
-mod.color_picker_ok_pressed = function(event)
+module.color_picker_ok_pressed = function(event)
 	color_picker.ok_pressed(event)
 end
 
-mod.on_player_removed = function(event)
+local function on_player_removed(event)
 	script.raise_event(chat_events.on_pre_delete_player_data, {player_index = event.player_index})
 
 	global.secondary_chat.players[event.player_index] = nil
@@ -63,7 +63,7 @@ mod.on_player_removed = function(event)
 	update_chat_gui()
 end
 
-mod.on_gui_text_changed = function(event)
+local function on_gui_text_changed(event)
 	-- Validation of data
 	local gui = event.element
 	if not (gui and gui.valid) then return end
@@ -90,7 +90,7 @@ mod.on_gui_text_changed = function(event)
 	end
 end
 
-mod.on_gui_checked_state_changed = function(event)
+local function on_gui_checked_state_changed(event)
 	-- Validation of data
 	local gui = event.element
 	if not (gui and gui.valid and gui.parent.parent.parent) then return end
@@ -112,7 +112,7 @@ mod.on_gui_checked_state_changed = function(event)
 	end
 end
 
-mod.on_gui_selection_state_changed = function(event)
+local function on_gui_selection_state_changed(event)
 	-- Validation of data
 	local gui = event.element
 	if not (gui and gui.valid) then return end
@@ -128,7 +128,7 @@ mod.on_gui_selection_state_changed = function(event)
 	end
 end
 
-mod.on_player_promoted = function(event)
+local function on_player_promoted(event)
 	-- Validation of data
 	local player = game.players[event.player_index]
 	if not (player and player.valid) then return end
@@ -136,7 +136,7 @@ mod.on_player_promoted = function(event)
 	check_settings(player)
 end
 
-mod.on_player_demoted = function(event)
+local function on_player_demoted(event)
 	-- Validation of data
 	local player = game.players[event.player_index]
 	if not (player and player.valid) then return end
@@ -144,34 +144,7 @@ mod.on_player_demoted = function(event)
 	check_settings(player)
 end
 
-mod.on_round_start = function()
-	if not global.secondary_chat.state_chat then return end
-
-	-- Create gui of chat
-	for _, player in pairs( game.players ) do
-		create_chat_gui(player)
-	end
-end
-
-mod.on_round_end = function()
-	if not global.secondary_chat.state_chat then return end
-
-	-- Destroy gui of chat
-	for _, player in pairs( game.players ) do
-		destroy_chat_gui(player)
-	end
-end
-
-
-mod.on_init = function()
-	global_init()
-
-	if global.secondary_chat.state_chat == true then
-		add_commands()
-	end
-end
-
-mod.on_load = function()
+local function on_load()
 	if not game then
 		if global.secondary_chat == nil then
 			global_init()
@@ -183,12 +156,72 @@ mod.on_load = function()
 			add_commands()
 		end
 	end
+
+	local on_round_start = function()
+		if not global.secondary_chat.state_chat then return end
+
+		-- Create gui of chat
+		for _, player in pairs( game.players ) do
+			create_chat_gui(player)
+		end
+	end
+	local on_round_end = function()
+		if not global.secondary_chat.state_chat then return end
+
+		-- Destroy gui of chat
+		for _, player in pairs( game.players ) do
+			destroy_chat_gui(player)
+		end
+	end
+
+	-- Searching events "on_round_start" and "on_round_end"
+	for interface, _ in pairs( remote.interfaces ) do
+		local function_name = "get_event_name"
+		if remote.interfaces[interface][function_name] then
+			local ID_1 = remote.call(interface, function_name, "on_round_start")
+			local ID_2 = remote.call(interface, function_name, "on_round_end")
+			if (type(ID_1) == "number") and (type(ID_2) == "number") then
+				if (script.get_event_handler(ID_1) == nil) and (script.get_event_handler(ID_2) == nil) then
+					script.on_event(ID_1, on_round_start)
+					script.on_event(ID_2, on_round_end)
+				end
+			end
+		end
+	end
+
+    local function pick_interface(interfaces)
+        for _, name in pairs( interfaces ) do
+            if remote.interfaces[name] then
+                return name
+            end
+        end
+
+        return nil
+    end
+
+	-- Searching event "on_ok_button_clicked" from a mod "color-picker"
+	local interface = pick_interface({"color-picker"})
+	if interface then
+		local ID_1 = remote.call(interface, "on_ok_button_clicked")
+		if (type(ID_1) == "number" and script.get_event_handler(ID_1) == nil) then
+			script.on_event(ID_1, modules.secondary_chat.color_picker_ok_pressed)
+		end
+	end
 end
 
-mod.on_player_joined_game = function(event)
-	if script.mod_name == 'level' and global.secondary_chat.build ~= build then
+local function on_init()
+	on_load()
+	global_init()
+
+	if global.secondary_chat.state_chat == true then
+		add_commands()
+	end
+end
+
+local function on_player_joined_game(event)
+	if script.mod_name == 'level' and global.secondary_chat.build ~= BUILD then
 		global_init()
-		global.secondary_chat.build = build
+		global.secondary_chat.build = BUILD
 	end
 
 	-- Validation of data
@@ -219,7 +252,7 @@ mod.on_player_joined_game = function(event)
 	update_chat_gui()
 end
 
-mod.on_player_created = function()
+local function on_player_created()
 	-- Delete previous chat GUI
 	if #global.secondary_chat.players == 0 then
 		for _, player in pairs( game.players ) do
@@ -228,7 +261,7 @@ mod.on_player_created = function()
 	end
 end
 
-mod.on_player_left_game = function(event)
+local function on_player_left_game(event)
 	-- Validation of data
 	local player = game.players[event.player_index]
 	if not (player and player.valid) then return end
@@ -250,20 +283,8 @@ mod.on_player_left_game = function(event)
 	global.secondary_chat.players[event.player_index].autohide = max_time_autohide
 end
 
-mod.on_player_changed_force = function(event)
-	update_chat_gui()
-end
-
-mod.on_forces_merging = function(event)
-	update_chat_gui()
-end
-
-mod.on_player_display_resolution_changed = function(event)
-	check_settings_frame_size(event)
-end
-
 -- For soft-mods, scenarios, interfaces
-mod.delete = function(event)
+module.delete = function(event)
 	script.raise_event(chat_events.on_pre_remove_mod)
 
 	remove_commands()
@@ -275,26 +296,7 @@ mod.delete = function(event)
 	global.secondary_chat = nil
 end
 
-if script.mod_name ~= 'level' then
-	mod.autohide = function(event)
-		local data = global.secondary_chat.players
-		for index, player in pairs( game.connected_players ) do
-			local table_chat = player.gui.left.table_chat
-			if table_chat and table_chat.visible then
-				if data[index].autohide <= 0 then
-					table_chat.visible = false
-					script.raise_event(chat_events.on_hide_gui_chat, {player_index = index, container = table_chat})
-				else
-					data[index].autohide = data[index].autohide - (60 * 60)
-				end
-			else
-				data[index].autohide = max_time_autohide
-			end
-		end
-	end
-end
-
-mod.on_player_muted = function(event)
+local function on_player_muted(event)
 	-- Validation of data
 	local player = game.players[event.player_index]
 	if not (player and player.valid) then return end
@@ -302,8 +304,50 @@ mod.on_player_muted = function(event)
 	global.secondary_chat.global.mutes[event.player_index] = true
 end
 
-mod.on_player_unmuted = function(event)  
+local function on_player_unmuted(event)
 	global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
-return mod
+module.events = {
+	on_init = on_init,
+	on_load = on_load,
+	on_configuration_changed = on_configuration_changed,
+	on_gui_selection_state_changed = on_gui_selection_state_changed,
+	on_player_display_resolution_changed = check_settings_frame_size,
+	on_gui_checked_state_changed = on_gui_checked_state_changed,
+	on_gui_text_changed = on_gui_text_changed,
+	on_gui_click = on_gui_click,
+	on_player_created = on_player_created,
+	on_player_removed = on_player_removed,
+	on_player_joined_game = on_player_joined_game,
+	on_player_left_game = on_player_left_game,
+	on_player_changed_force = update_chat_gui,
+	on_forces_merging = update_chat_gui,
+	on_player_promoted = on_player_promoted,
+	on_player_demoted = on_player_demoted,
+	on_player_muted = on_player_muted,
+	on_player_unmuted = on_player_unmuted,
+}
+
+if script.mod_name ~= 'level' then
+	module.custom_events = {
+		autohide = function(event)
+			local data = global.secondary_chat.players
+			for index, player in pairs( game.connected_players ) do
+				local table_chat = player.gui.left.table_chat
+				if table_chat and table_chat.visible then
+					if data[index].autohide <= 0 then
+						table_chat.visible = false
+						script.raise_event(chat_events.on_hide_gui_chat, {player_index = index, container = table_chat})
+					else
+						data[index].autohide = data[index].autohide - (60 * 60)
+					end
+				else
+					data[index].autohide = max_time_autohide
+				end
+			end
+		end
+	}
+end
+
+return module
