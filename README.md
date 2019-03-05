@@ -17,8 +17,8 @@ Read this in another language | [English](/README.md) | [Русский](/docs/r
     * [Where to get the mod?](#get-mod)
     * [Commands](#commands)
 * [Dependencies](#dependencies)
+    * [Required](#required)
     * [Optional](#optional)
-    * [Embedded](#embedded)
 * [Issues](#issue)
 * [Features](#feature)
 * [Future plans](#Future-plans)
@@ -63,13 +63,13 @@ You can either download a zip archive from [mods.factorio.com][homepage] or the 
 
 ## Dependencies
 
+### Required
+
+* [Event listener](https://mods.factorio.com/mod/event-listener)
+
 ### Optional
 
 * [Color picker](https://forums.factorio.com/viewtopic.php?f=97&t=30657)
-
-### Embedded
-
-* Event listener: [mods.factorio.com](https://mods.factorio.com/mod/event-listener), [GitLab](https://gitlab.com/ZwerOxotnik/event-listener), [homepage](https://forums.factorio.com/viewtopic.php?f=190&t=64621)
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -117,13 +117,13 @@ For more information, see [Installing Mods on the Factorio wiki](https://wiki.fa
 If you have downloaded the source archive (GitLab):
 
 * copy the mod directory into your factorio mods directory
-* rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 1.19.0)
+* rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 1.19.1)
 
 ## License
 
 This project is copyright © 2017-2019 ZwerOxotnik \<zweroxotnik@gmail.com\>.
 
-Use of the source code included here is governed by the European Union Public License v. 1.2 only. See the [LICENCE](/LICENCE) file for details. Please also have a look at the [notices about licenses of third-party components](/THIRD-PARTY-NOTICES.txt).
+Use of the source code included here is governed by the European Union Public License v. 1.2 only. See the [LICENCE](/LICENCE) file for details.
 
 [homepage]: http://mods.factorio.com/mod/secondary-chat
 [Factorio]: https://factorio.com/

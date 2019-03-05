@@ -17,8 +17,8 @@
     * [Где получить мод?](#get-mod)
     * [Комманды](#commands)
 * [Зависимости](#dependencies)
+    * [Необходимые](#required)
     * [Необязательные](#optional)
-    * [Встроенные](#embedded)
 * [Сообщить об ошибки](#issue)
 * [Запросить функцию](#feature)
 * [Установка](#installing)
@@ -62,13 +62,13 @@
 
 ## <a name="Optional"></a> Зависимости
 
+### <a name="required"></a> Необходимые
+
+* [Event listener](https://mods.factorio.com/mod/event-listener)
+
 ### <a name="embedded"></a> Необязательные
 
 * [Color picker](https://forums.factorio.com/viewtopic.php?f=97&t=30657)
-
-### <a name="embedded"></a> Встроенные
-
-* Event listener: [mods.factorio.com](https://mods.factorio.com/mod/event-listener), [GitLab](https://gitlab.com/ZwerOxotnik/event-listener), [homepage](https://forums.factorio.com/viewtopic.php?f=190&t=64621)
 
 ## <a name="issue"></a> Нашли ошибку?
 
@@ -90,7 +90,7 @@
 Если вы скачали исходный архив (GitLab):
 
 * скопируйте данный мод в директорию модов Factorio
-* переименуйте данный мод в secondary-chat_*версия*, где *версия* это версия мода, которую вы скачали (например, 1.18.0)
+* переименуйте данный мод в secondary-chat_*версия*, где *версия* это версия мода, которую вы скачали (например, 1.19.1)
 
 ## <a name="special-thanks"></a> Особая благодарность
 
@@ -102,7 +102,7 @@
 
 Этот проект защищен авторским правом © 2018-2019 ZwerOxotnik \<zweroxotnik@gmail.com\>.
 
-Использование исходного кода, включенного здесь, регламентируется European Union Public License v. 1.2 только. Смотрите [LICENCE](/LICENCE) файл для разбора. Пожалуйста, взгляните также и на уведомления о лицензиях сторонних компонентов в файле [THIRD-PARTY-NOTICES.txt](/THIRD-PARTY-NOTICES.txt).
+Использование исходного кода, включенного здесь, регламентируется European Union Public License v. 1.2 только. Смотрите [LICENCE](/LICENCE) файл для разбора.
 
 [homepage]: http://mods.factorio.com/mod/secondary-chat
 [Factorio]: https://factorio.com/

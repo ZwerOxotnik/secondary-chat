@@ -1,8 +1,8 @@
 {
     "name": "secondary-chat",
-    "version": "1.19.0",
+    "version": "1.19.1",
     "factorio_version": "0.17",
-    "title": "Chat of extended interaction",
+    "title": "[color=orange]Chat of extended interaction[/color] [technology=rocket-control-unit]",
     "author": "ZwerOxotnik",
     "contact": "zweroxotnik@gmail.com, https://steamcommunity.com/id/ZwerOxotnik",
     "source": "https://gitlab.com/ZwerOxotnik/secondary-chat",
@@ -10,6 +10,7 @@
     "description": "Adds gui of chat, new commands, new types of chat, new interactions",
     "dependencies": 
     [
+        "event-listener >= 0.4.2",
         "? color-picker"
     ]
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2019-03-05
+
+### [v1.19.1][v1.19.1]
+
+* Another dependencies
+
 ## 2018-03-03
 
 ### [v1.19.0][v1.19.0]
@@ -112,6 +118,7 @@
 
 * First release for 0.16
 
+[v1.19.1]:  https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.1.zip
 [v1.19.0]:  https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.0.zip
 [v1.18.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.18.0.zip
 [v1.3.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.3.0.zip

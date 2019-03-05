@@ -2,15 +2,20 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.18.0 (2019-03-03)
+Version: 1.19.1 (2019-03-05)
+
+Description: Adds gui of chat, new commands, new types of chat, new interactions.
+
+You can write and receive any information on the links below.
 Source: https://gitlab.com/ZwerOxotnik/secondary-chat
 Mod portal: https://mods.factorio.com/mod/secondary-chat
 Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
-Description: Adds gui of chat, new commands, new types of chat, new interactions.
+
 ]]--
 
 local module = {}
-BUILD = 1300 -- Always to increment the number when change the code
+module.version = "1.19.1"
+local BUILD = 1400 -- Always to increment the number when change the code
 
 chats = {}
 
