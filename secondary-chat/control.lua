@@ -14,8 +14,8 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.19.1"
-local BUILD = 1400 -- Always to increment the number when change the code
+module.version = "1.19.2"
+local BUILD = 1500 -- Always to increment the number when change the code
 
 chats = {}
 
@@ -149,14 +149,9 @@ local function on_player_demoted(event)
 	check_settings(player)
 end
 
-local function on_load()
+local function load()
+	chats = global.secondary_chat.chats
 	if not game then
-		if global.secondary_chat == nil then
-			global_init()
-		else
-			chats = global.secondary_chat.chats
-		end
-
 		if global.secondary_chat.state_chat == true then
 			add_commands()
 		end
@@ -214,9 +209,9 @@ local function on_load()
 	end
 end
 
-local function on_init()
-	on_load()
+local function init()
 	global_init()
+	load()
 
 	if global.secondary_chat.state_chat == true then
 		add_commands()
@@ -314,8 +309,8 @@ local function on_player_unmuted(event)
 end
 
 module.events = {
-	on_init = on_init,
-	on_load = on_load,
+	on_init = init,
+	on_load = load,
 	on_configuration_changed = on_configuration_changed,
 	on_gui_selection_state_changed = on_gui_selection_state_changed,
 	on_player_display_resolution_changed = check_settings_frame_size,

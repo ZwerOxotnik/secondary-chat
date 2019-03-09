@@ -46,7 +46,7 @@ function toggle_chat(cmd)
 			elseif parameter == "drop-down" then
 				toggle_drop_down(player)
 			else
-				player.print({"secondary_chat.toggle", global.toggle_chat_commands})
+				player.print({"secondary_chat.toggle", "WIP"}) -- TODO: describe commands
 			end
 		else
 			create_chat_gui(player)
@@ -72,7 +72,7 @@ function remove_command(name)
 	return commands.commands[name] and commands.remove_command(name)
 end
 
-function remove_commands()
+function remove_commands() -- TODO: change
 	for name, bool in pairs( global.secondary_chat.commands ) do
 		if bool then
 			remove_command(name)
@@ -84,7 +84,6 @@ function add_command(name, description, func, addit_description)
 	if type(func) == "function" then
 		if type(description) == "string" and (commands.game_commands[name] == nil and commands.commands[name] == nil) then
 			commands.add_command(name, {description, addit_description}, func)
-			global.secondary_chat.commands[name] = true
 			return true
 		else
 			log("command '" .. name .. "' is not added for secondary-chat")
@@ -92,9 +91,6 @@ function add_command(name, description, func, addit_description)
 	else
 		log("Function for '" .. name .. "' is not found for secondary-chat")
 	end
-
-	global.secondary_chat.commands[name] = false
-	return global.secondary_chat.commands[name]
 end
 
 function add_commands()
@@ -119,10 +115,10 @@ function add_commands()
 		end
 	end
 
-	global.toggle_chat_commands = ""  
+	local toggle_chat_commands = ""
 	for name, _ in pairs( chats.keys ) do
-		global.toggle_chat_commands = global.toggle_chat_commands .. name .. '/'
+		toggle_chat_commands = toggle_chat_commands .. name .. '/'
 	end
 
-	add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, global.toggle_chat_commands)
+	add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, toggle_chat_commands)
 end

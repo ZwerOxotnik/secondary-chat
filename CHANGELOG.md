@@ -1,5 +1,11 @@
 # Changelog
 
+## 2019-03-09
+
+### [v1.19.2][v1.19.2]
+
+* Fixed loading a save (but unstable deleting and creating commands in the mod now)
+
 ## 2019-03-05
 
 ### [v1.19.1][v1.19.1]
@@ -118,8 +124,9 @@
 
 * First release for 0.16
 
-[v1.19.1]:  https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.1.zip
-[v1.19.0]:  https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.0.zip
+[v1.19.2]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.2.zip
+[v1.19.1]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.1.zip
+[v1.19.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.0.zip
 [v1.18.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.18.0.zip
 [v1.3.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.3.0.zip
 [v1.2.4]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.2.4.zip

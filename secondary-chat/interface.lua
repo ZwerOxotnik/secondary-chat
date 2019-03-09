@@ -139,11 +139,11 @@ remote.add_interface('secondary-chat',
 		end
 	
 		remove_command("toggle-chat")
-		global.toggle_chat_commands = ""  
+		local toggle_chat_commands = ""
 		for name, _ in pairs( chats.keys ) do
-			global.toggle_chat_commands = global.toggle_chat_commands .. name .. '/'
+			toggle_chat_commands = toggle_chat_commands .. name .. '/'
 		end
-		add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, global.toggle_chat_commands)
+		add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, toggle_chat_commands)
 
 		script.raise_event(chat_events.on_delete_chat, {chat_name = name})
 
@@ -165,11 +165,11 @@ remote.add_interface('secondary-chat',
 			end
 
 			remove_command("toggle-chat")
-			global.toggle_chat_commands = ""  
+			toggle_chat_commands = ""
 			for name, _ in pairs( chats.keys ) do
-				global.toggle_chat_commands = global.toggle_chat_commands .. name .. '/'
+				toggle_chat_commands = toggle_chat_commands .. name .. '/'
 			end
-			add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, global.toggle_chat_commands)
+			add_command("toggle-chat", "secondary_chat.toggle", toggle_chat, toggle_chat_commands)
 
 			return true
 		else
