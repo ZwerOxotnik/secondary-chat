@@ -251,7 +251,7 @@ remote.add_interface('secondary-chat',
 		local table_chat = player.gui.left.table_chat
 		if table_chat == nil then return false end
 
-		return table_chat.select_chat.table
+		return table_chat.select_chat.interactions
 	end,
 	get_gui_table_filter = function(player)
 		-- Validation of data

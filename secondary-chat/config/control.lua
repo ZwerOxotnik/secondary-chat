@@ -70,7 +70,7 @@ function update_global_config_player(player)
 	global.secondary_chat.players[player_index].gui = global.secondary_chat.players[player_index].gui or {}
 	global.secondary_chat.players[player_index].gui.saves = global.secondary_chat.players[player_index].gui.saves or {}
 	global.secondary_chat.players[player_index].gui.saves.hidden = global.secondary_chat.players[player_index].gui.saves.hidden or {}
-	global.secondary_chat.players[player_index].autohide = max_time_autohide
+	global.secondary_chat.players[player_index].autohide = max_autohide_time
 	global.secondary_chat.players[player_index].blacklist = global.secondary_chat.players[player_index].blacklist or {}
 
 	if player.connected then

@@ -2,7 +2,7 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.19.1 (2019-03-05)
+Version: 1.19.3 (2019-03-31)
 
 Description: Adds gui of chat, new commands, new types of chat, new interactions.
 
@@ -14,12 +14,12 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.19.2"
-local BUILD = 1500 -- Always to increment the number when change the code
+module.version = "1.20.0"
+local BUILD = 1600 -- Always to increment the number when change the code
 
 chats = {}
 
-max_time_autohide = 60 * 60 * 10 -- 10 min
+max_autohide_time = 60 * 60 * 10 -- 10 min
 
 require('secondary-chat/self_events')
 color_picker = require('secondary-chat/integrations/color-picker')
@@ -77,8 +77,9 @@ local function on_gui_text_changed(event)
 
 	if gui.name == 'chat_text_box' and gui.parent.parent.parent.name == 'table_chat' then
 		if string.byte(gui.text, -1) == 10 then
-			if #gui.text > 2 then
-				event.element = gui.parent.parent.parent.select_chat.table.print_in_chat
+			if #gui.text > 1 then
+				gui.text = gui.text:sub(1, -2)
+				event.element = gui.parent.parent.parent.select_chat.interactions.print_in_chat
 				player_send_message(event)
 
 				-- unfocus for the gui
@@ -109,10 +110,10 @@ local function on_gui_checked_state_changed(event)
 			return
 		end
 
-		local parameter = string.match(gui.name, "(.+)-allow_show_fast") 
-		if parameter then 
-			update_allow_show_fast(player, gui, parameter)
-			return 
+		local parameter = string.match(gui.name, "(.+)-allow_fast_show")
+		if parameter then
+			update_allow_fast_show(player, gui, parameter)
+			return
 		end
 	end
 end
@@ -126,7 +127,7 @@ local function on_gui_selection_state_changed(event)
 
 	if gui.parent.parent.name == 'select_chat' then
 		if gui.parent.name == 'table_filter' then
-			update_chat_and_drop_down(gui.parent.parent.table.chat_drop_down, player)
+			update_chat_and_drop_down(gui.parent.parent.interactions.chat_drop_down, player)
 		elseif gui.name == 'chat_drop_down' then
 			update_chat_and_drop_down(gui, player)
 		end
@@ -280,7 +281,7 @@ local function on_player_left_game(event)
 		frame.destroy()
 	end
 
-	global.secondary_chat.players[event.player_index].autohide = max_time_autohide
+	global.secondary_chat.players[event.player_index].autohide = max_autohide_time
 end
 
 -- For soft-mods, scenarios, interfaces
@@ -343,7 +344,7 @@ if script.mod_name ~= 'level' then
 						data[index].autohide = data[index].autohide - (60 * 60)
 					end
 				else
-					data[index].autohide = max_time_autohide
+					data[index].autohide = max_autohide_time
 				end
 			end
 		end

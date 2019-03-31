@@ -12,7 +12,7 @@ local function send_message_pressed(event)
 			if table_chat.top_chat.chat_table.chat_text_box.text == '' then
 				table_chat.top_chat.chat_table.chat_text_box.focus()
 			else
-				event.element = select_chat.table.print_in_chat
+				event.element = select_chat.interactions.print_in_chat
 				player_send_message(event)
 			end
 		else
@@ -37,7 +37,7 @@ local function send_locale_pressed(event)
 			if table_chat.top_chat.chat_table.chat_text_box.text == '' then
 				table_chat.top_chat.chat_table.chat_text_box.focus()
 			else
-				event.element = table_chat.select_chat.table.print_in_chat
+				event.element = table_chat.select_chat.interactions.print_in_chat
 				player_send_message(event, true)
 			end
 		else
@@ -82,10 +82,9 @@ local function send_to_private_pressed(event)
 
 	-- Check the visibility of the chat
 	local table_chat = player.gui.left.table_chat
-	local select_chat = table_chat.select_chat
 	if table_chat then
 		if table_chat.visible then
-			-- temporarily
+			-- temporarily (not working now)
 			-- if not (table_chat.top_chat and table_chat.top_chat.chat_table.chat_text_box) then return end
 			-- if select_chat.visible == false then
 			--   select_chat.visible = true
@@ -100,8 +99,11 @@ local function send_to_private_pressed(event)
 		create_chat_gui(player)
 	end
 
+	if not (table_chat and table_chat.valid and table_chat.select_chat) then return end
+	local select_chat = table_chat.select_chat
+
 	-- Find a recipient
-	local select_drop_down = select_chat.table.select_drop_down
+	local select_drop_down = select_chat.interactions.select_drop_down
 	if entity.last_user then
 		select_drop_down.items = {entity.last_user.name}
 	elseif entity.type == 'car' then
@@ -142,9 +144,9 @@ local function send_to_private_pressed(event)
 	drop_down_state.selected_index = gui_state.keys['all']
 
 	-- Select a recipient
-	select_chat.table.chat_drop_down.selected_index = chats.keys['private']
+	select_chat.interactions.chat_drop_down.selected_index = chats.keys['private']
 	select_drop_down.selected_index = 1
-	update_chat_and_drop_down(select_chat.table.chat_drop_down, player)
+	update_chat_and_drop_down(select_chat.interactions.chat_drop_down, player)
 	table_chat.top_chat.chat_table.chat_text_box.focus()
 end
 script.on_event('send-to-private', send_to_private_pressed)
@@ -159,7 +161,7 @@ local function send_to_faction_pressed(event)
 	
 	-- Check the visibility of the chat
 	local table_chat = player.gui.left.table_chat
-	local select_chat = table_chat.select_chat
+
 	if table_chat then
 		if table_chat.visible then
 			-- temporarily
@@ -177,6 +179,9 @@ local function send_to_faction_pressed(event)
 		create_chat_gui(player)
 	end
 
+	if not (table_chat and table_chat.valid and table_chat.select_chat) then return end
+	local select_chat = table_chat.select_chat
+
 	local drop_down_online = select_chat.table_filter.drop_down_online
 	local drop_down_state = select_chat.table_filter.drop_down_state
 	if #entity.force.connected_players == 0 then
@@ -191,10 +196,10 @@ local function send_to_faction_pressed(event)
 	drop_down_state.selected_index = gui_state.keys['all']
 
 	-- Select a recipient
-	select_chat.table.chat_drop_down.selected_index = chats.keys['faction']
-	select_chat.table.select_drop_down.items = {entity.force.name}
-	select_chat.table.select_drop_down.selected_index = 1
-	update_chat_and_drop_down(select_chat.table.chat_drop_down, player)
+	select_chat.interactions.chat_drop_down.selected_index = chats.keys['faction']
+	select_chat.interactions.select_drop_down.items = {entity.force.name, player.force.name}
+	select_chat.interactions.select_drop_down.selected_index = 1
+	update_chat_and_drop_down(select_chat.interactions.chat_drop_down, player)
 	table_chat.top_chat.chat_table.chat_text_box.focus()
 end
 script.on_event('send-to-faction', send_to_faction_pressed)

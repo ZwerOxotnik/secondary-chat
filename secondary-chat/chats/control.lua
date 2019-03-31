@@ -144,7 +144,7 @@ end
 
 send_message['faction'] = function(input_message, player)
 	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	local drop_down = player.gui.left.table_chat.select_chat.table.select_drop_down
+	local drop_down = player.gui.left.table_chat.select_chat.interactions.select_drop_down
 	local message
 
 	if drop_down.visible then
@@ -193,9 +193,8 @@ end
 send_message['local'] = function(input_message, player)
 	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
 	local pos_p1 = player.position
-	local text_length = string.len(input_message)
 	local is_draw = false
-	if type(input_message) == "string" and text_length <= 130 then
+	if type(input_message) == "string" and string.len(input_message) <= 130 then
 		is_draw = true
 	end
 
@@ -219,7 +218,7 @@ send_message['local'] = function(input_message, player)
 			target = player.character or player.position,
 			target_offset = {0, -2.2},
 			color = {1, 1, 1},
-			time_to_live = 80 + text_length,
+			time_to_live = 80 + string.len(input_message),
 			-- forces = player.force,
 			players = targets,
 			-- visible = true,
@@ -285,7 +284,7 @@ send_message['admins'] = function(input_message, player)
 end
 
 send_message['private'] = function(input_message, player)
-	local drop_down = player.gui.left.table_chat.select_chat.table.select_drop_down
+	local drop_down = player.gui.left.table_chat.select_chat.interactions.select_drop_down
 	local target = nil
 	if drop_down.visible then
 		target = game.players[drop_down.items[drop_down.selected_index]]

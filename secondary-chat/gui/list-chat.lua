@@ -2,7 +2,7 @@
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 function update_chat_and_drop_down(gui, target)
-	global.secondary_chat.players[target.index].autohide = max_time_autohide
+	global.secondary_chat.players[target.index].autohide = max_autohide_time
 
 	local select_list = gui.parent.select_drop_down
 	local select_chat = gui.parent.parent

@@ -1,5 +1,19 @@
 # Changelog
 
+## 2019-03-31
+
+### [v1.20.0][v1.20.0]
+
+* Fixed sending messages by Enter
+* Fixed interactions with filters
+* Fixed selecting a recipient by hotkey for the private/faction chat when there is no the chat interface
+* Fixed filters for selecting a recipient by hotkey for the faction chat
+* Fixed localised messages of the local chat
+* Fixed extended settings
+* Changed style of the extended interface of settings
+* The interface is turned off together with the extended interface of settings.
+* Non-interacting stuff are hidden.
+
 ## 2019-03-09
 
 ### [v1.19.2][v1.19.2]
@@ -124,6 +138,7 @@
 
 * First release for 0.16
 
+[v1.20.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.20.0.zip
 [v1.19.2]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.2.zip
 [v1.19.1]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.1.zip
 [v1.19.0]: https://mods.factorio.com/api/downloads/data/mods/2332/secondary-chat_1.19.0.zip

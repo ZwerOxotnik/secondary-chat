@@ -26,7 +26,7 @@ function click_gui_chat(event)
 	local table_chat = player.gui.left.table_chat
 	if not table_chat then return false end
 
-	global.secondary_chat.players[player.index].autohide = max_time_autohide
+	global.secondary_chat.players[player.index].autohide = max_autohide_time
 
 	if gui.parent then
 		if gui.parent.name == "icons" and gui.parent.parent.name == "top_chat" then
@@ -70,7 +70,7 @@ function player_send_message(event, is_localised)
 
 	local text_box = table_chat.top_chat.chat_table.chat_text_box
 	if text_box.text == "" then return false end
-	local drop_down = table_chat.select_chat.table.chat_drop_down
+	local drop_down = table_chat.select_chat.interactions.chat_drop_down
 	local selected_index = (gui.name == "print_in_chat" and gui.parent and gui.parent.parent.name == "select_chat" and drop_down.selected_index)
 													or chats.keys[string.match(gui.name, "chat_(.+)")] -- For buttons
 	if selected_index then
@@ -79,14 +79,14 @@ function player_send_message(event, is_localised)
 		local chat = chats.data[chat_name]
 		local send_in_chat = chat and remote.call(chat.interface.name, chat.interface.send_message, chat_name)
 		if send_in_chat then
-			local bool
+			local is_sended = false
 			if is_localised then
-				bool = send_in_chat({text_box.text}, player)
-			else 
-				bool = send_in_chat(text_box.text, player)
+				is_sended = send_in_chat({text_box.text}, player)
+			else
+				is_sended = send_in_chat(text_box.text, player)
 			end
 
-			if bool then
+			if is_sended then
 				table_chat.last_messages.last.text = text_box.text
 
 				text_box.text = ""

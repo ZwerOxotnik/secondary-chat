@@ -18,13 +18,13 @@ function update_chat_gui()
 	for _, player in pairs ( game.connected_players ) do
 		local table_chat = player.gui.left.table_chat
 		if table_chat and table_chat.visible then
-			local drop_down = table_chat.select_chat.table.chat_drop_down
+			local drop_down = table_chat.select_chat.interactions.chat_drop_down
 			update_chat_and_drop_down(drop_down, player)
 		end
 	end
 end
 
--- function hidden_chat_gui(player)
+-- function hide_chat_gui(player)
 --   local table_chat = player.gui.left.table_chat
 --   if table_chat then
 --     table_chat.visible = false
@@ -80,8 +80,8 @@ function create_chat_gui(player)
 		
 		local select_chat = table_chat.select_chat
 		if select_chat then
-			if select_chat.table then 
-				index.chat = select_chat.table.chat_drop_down.selected_index
+			if select_chat.interactions then
+				index.chat = select_chat.interactions.chat_drop_down.selected_index
 			end
 
 			local table_filter = select_chat.table_filter
@@ -92,7 +92,7 @@ function create_chat_gui(player)
 				visible.drop_down_online = table_filter.drop_down_online.visible
 			end
 
-			local drop_down = select_chat.table.select_drop_down
+			local drop_down = select_chat.interactions.select_drop_down
 			if drop_down and drop_down.visible and #drop_down.items > 1 then
 				items.items = drop_down.items
 				index.items = drop_down.selected_index
@@ -164,7 +164,7 @@ function create_chat_gui(player)
 	local child_table = main_table.add{type = 'table', name = 'select_chat', column_count = 2}
 	child_table.visible = true
 	child_table.add{type = 'label', caption = {'secondary_chat.send_to'}}
-	local table_select = child_table.add{type = 'table', name = 'table', column_count = 30}
+	local table_select = child_table.add{type = 'table', name = 'interactions', column_count = 30}
 	table_select.style.horizontal_align  = 'left'
 	local select_drop_down = table_select.add{type = 'drop-down', name = 'select_drop_down', items = items.items or {''}, selected_index = index.items or 1}
 	select_drop_down.visible = (index.items and items.items) or false

@@ -1,4 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.20.0
+Date: 2019-03-31
+  Bugfixes:
+    - Fixed sending messages by Enter
+    - Fixed interactions with filters
+    - Fixed selecting a recipient by hotkey for the private/faction chat when there is no the chat interface
+    - Fixed filters for selecting a recipient by hotkey for the faction chat
+    - Fixed localised messages of the local chat
+    - Fixed extended settings
+  Changes:
+    - Changed style of the extended interface of settings
+    - The interface is turned off together with the extended interface of settings.
+    - Non-interacting stuff are hidden.
+---------------------------------------------------------------------------------------------------
 Version: 1.19.2
 Date: 2019-03-09
   Bugfixes:

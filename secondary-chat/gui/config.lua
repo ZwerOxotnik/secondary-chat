@@ -59,9 +59,9 @@ function make_config_table_player(gui, config, is_fast_menu)
 
 	local items = game.item_prototypes
 	for k, data in pairs (config) do
-		if data.access and (not is_fast_menu or (is_fast_menu and data.allow_show_fast)) then
+		if data.access and (not is_fast_menu or (is_fast_menu and data.allow_fast_show)) then
 			if not is_fast_menu then 
-				config_table.add{type = 'checkbox', name = k .. '-allow_show_fast', state = data.allow_show_fast}
+				config_table.add{type = 'checkbox', name = k .. '-allow_fast_show', state = data.allow_fast_show}
 			end
 
 			local label = config_table.add{type = 'label', name = k}

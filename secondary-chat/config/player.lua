@@ -16,18 +16,18 @@ end
 --    The tables contains:
 --      state :: boolean (optional): current state of parameter.
 --      access :: boolean (optional): player have access to parameter.
---      allow_show_fast :: boolean (optional): show parameter in fast menu.
+--      allow_fast_show :: boolean (optional): show parameter in fast menu.
 --      tooltip :: LocalisedString/boolean/string (optional): tooltip of parameter.
 config.get_settings = function()
 	return {
 		main = {
-			state_chat = {state = true, access = true, allow_show_fast = false},
-			with_tag = {state = true, access = true, allow_show_fast = true},
-			auto_focus = {state = false, access = true, allow_show_fast = true},
-			drop_down = {state = true, access = true, allow_show_fast = true}
+			state_chat = {state = true, access = true, allow_fast_show = false},
+			with_tag = {state = true, access = true, allow_fast_show = true},
+			auto_focus = {state = false, access = true, allow_fast_show = true},
+			drop_down = {state = true, access = true, allow_fast_show = true}
 		},
 		hidden = {
-			allow_write = {state = true, allow_show_fast = false}
+			allow_write = {state = true, allow_fast_show = false}
 		}
 	}
 end

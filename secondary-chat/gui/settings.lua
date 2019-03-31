@@ -37,7 +37,7 @@ function create_settings_chat_of_admin(player, settings)
 	label.style.font = "default-semibold"
 	-- TODO: do make events... \/
 	-- TODO: do make chat logs!
-	local logs_table = settings.add{type = 'table', name = 'logs', column_count = 20}
+	-- local logs_table = settings.add{type = 'table', name = 'logs', column_count = 20}
 	-- logs_table.add{type = 'label', caption = {''}} -- Pick a log
 	-- logs_table.add{type = 'drop-down', name = 'pick_chat_for_log'}
 	-- logs_table.add{type = 'button', name = 'log_state'} -- on / off
@@ -49,16 +49,16 @@ function create_settings_chat_of_admin(player, settings)
 	-- table_players.add{type = 'button', name = ''}
 	-- kick, ban, mute.
 	-- TODO: do make manipulation of factions!
-	local table_factions = settings.add{type = 'table', name = 'factions', column_count = 20}
-	table_factions.add{type = 'label', caption = {''}} -- Pick a faction
-	table_factions.add{type = 'drop-down', name = 'pick_faction'}
-	table_factions.add{type = 'button', name = ''}
+	-- local table_factions = settings.add{type = 'table', name = 'factions', column_count = 20}
+	-- table_factions.add{type = 'label', caption = {''}} -- Pick a faction
+	-- table_factions.add{type = 'drop-down', name = 'pick_faction'}
+	-- table_factions.add{type = 'button', name = ''}
 	-- sub table (pick player).
 	-- TODO: do make manipulation of privilages' groups!
-	local table_permission_groups = settings.add{type = 'table', name = 'permission_groups', column_count = 20}
-	table_permission_groups.add{type = 'label', caption = {''}} -- Pick a group
-	table_permission_groups.add{type = 'drop-down', name = 'pick_table_permission_group'}
-	table_permission_groups.add{type = 'button', name = ''}
+	-- local table_permission_groups = settings.add{type = 'table', name = 'permission_groups', column_count = 20}
+	-- table_permission_groups.add{type = 'label', caption = {''}} -- Pick a group
+	-- table_permission_groups.add{type = 'drop-down', name = 'pick_table_permission_group'}
+	-- table_permission_groups.add{type = 'button', name = ''}
 	-- sub table (pick player).
 	-- TODO: table - standart global chat settings for player
 	-- TODO: table - add chat
@@ -109,7 +109,7 @@ function toggle_settings_chat_gui(player, table_chat)
 end
 
 function update_checkbox(player, element, parameter)
-	global.secondary_chat.players[player.index].autohide = max_time_autohide
+	global.secondary_chat.players[player.index].autohide = max_autohide_time
 
 	local table_chat = player.gui.left.table_chat
 	local container = element.parent.parent
@@ -117,21 +117,24 @@ function update_checkbox(player, element, parameter)
 		global.secondary_chat.players[player.index].settings.main[parameter].state = element.state
 
 		if parameter == 'state_chat' then
+			local event_name = 'on_hide_gui_chat'
+			if element.state then
+				event_name = 'on_unhide_gui_chat'
+			end
+
 			table_chat.visible = element.state
 			table_chat.buttons.visible = not element.state
 			table_chat.settings.visible = not element.state
 			table_chat.settings.clear()
 
-			player.print({'', '/toggle-chat ', {'secondary_chat.toggle', "WIP"}}) -- TODO: describe commands
+			destroy_settings_gui(player)
+
+			player.print({'', '/toggle-chat ', {'secondary_chat.toggle', "[WIP]"}}) -- TODO: describe commands
 			if script.mod_name ~= 'level' then
 				player.print({'secondary_chat.or_use_hotkeys'})
 			end
 
-			local name = 'on_hide_gui_chat'
-			if element.state then
-				name = 'on_unhide_gui_chat'
-			end
-			script.raise_event(chat_events[name], {player_index = player.index, container = table_chat})
+			script.raise_event(chat_events[event_name], {player_index = player.index, container = table_chat})
 		elseif parameter == 'drop_down' then
 			toggle_drop_down(player)
 		end
@@ -161,9 +164,9 @@ function update_checkbox(player, element, parameter)
 	script.raise_event(chat_events.on_changed_parameter_setting, {player_index = player.index, parameter = element, container = container})
 end
 
-function update_allow_show_fast(player, element, parameter)
-	global.secondary_chat.players[player.index].autohide = max_time_autohide
-	global.secondary_chat.players[player.index].settings.main[parameter].allow_show_fast = element.state
+function update_allow_fast_show(player, element, parameter)
+	global.secondary_chat.players[player.index].autohide = max_autohide_time
+	global.secondary_chat.players[player.index].settings.main[parameter].allow_fast_show = element.state
 
 	local container = element.parent.parent
 	local table_chat = player.gui.left.table_chat
@@ -198,7 +201,7 @@ function create_settings_for_everything(player)
 	local frame = player.gui.center.secondary_chat_settings
 	if frame then
 		local main_table = frame.main_table
-		visible.list = main_table.level_3.select.list.visible
+		visible.list = main_table.level_3.selecting.list.visible
 		text.notice = main_table.level_2.notice.caption
 	end
 
@@ -223,13 +226,13 @@ function create_settings_for_everything(player)
 	local child_table = main_table.add{type = 'table', name = 'level_3', column_count = 2}
 	child_table.style.maximal_height = 500
 	child_table.style.maximal_width = 800
-	local select = child_table.add{type = 'table', name = 'select', column_count = 2}
-	select.draw_vertical_lines = true
-	select.draw_horizontal_lines = true
-	select.draw_horizontal_line_after_headers = true
-	select.style.horizontal_spacing = 5
+	local selecting = child_table.add{type = 'table', name = 'selecting', column_count = 2}
+	selecting.draw_vertical_lines = true
+	selecting.draw_horizontal_lines = true
+	selecting.draw_horizontal_line_after_headers = true
+	selecting.style.horizontal_spacing = 5
 
-	local list = select.add{type = 'table', name = 'list', column_count = 1}
+	local list = selecting.add{type = 'table', name = 'list', column_count = 1}
 	list.visible = true
 	local label = list.add{type = 'label', caption = {'secondary_chat_settings.list'}}
 	label.style.font = 'default-semibold'
@@ -240,7 +243,8 @@ function create_settings_for_everything(player)
 	list_container.visible = visible.list or true
 	list_container.style.horizontal_align  = 'left'
 	update_list_settings(list_container, player)
-	local button = select.add{type = 'button', name = 'toogle'}
+	local button = selecting.add{type = 'button', name = 'toogle'}
+	button.style.maximal_width = 40
 	if list.visible then
 		button.caption = '<'
 	else
@@ -249,16 +253,17 @@ function create_settings_for_everything(player)
 	button.style.font = 'default-semibold'
 	button.style.horizontal_align  = 'left'
 	button.style.vertical_align = 'center'
-	local scroll = child_table.add{name = "scrollpane", name = 'scroll', type = "scroll-pane"}
-	scroll.style.vertical_align = 'top'
-	local settings = scroll.add{type = 'table', name = 'settings', column_count = 1}
+	local scrollpane = child_table.add{name = "scrollpane", name = 'scroll', type = "scroll-pane"}
+	scrollpane.style.vertical_align = 'top'
+	local settings_table = scrollpane.add{type = 'table', name = 'settings', column_count = 1}
 
-	local patreon = main_table.add{type = 'table', name = 'patreon', column_count = 2}
-	patreon.style.vertical_align = 'bottom'
-	patreon.style.horizontal_align  = 'right'
-	local label = patreon.add{type = 'label', caption = {'', 'Patreon', {'colon'}}}
-	local text = patreon.add{type = 'text-box', text = 'https://www.patreon.com/ZwerOxotnik'}
-	text.read_only = true
+	local patreon_table = main_table.add{type = 'table', name = 'patreon', column_count = 2}
+	patreon_table.style.vertical_align = 'bottom'
+	patreon_table.style.horizontal_align  = 'right'
+	local label = patreon_table.add{type = 'label', caption = {'', 'Patreon', {'colon'}}}
+	local text_box = patreon_table.add{type = 'text-box', text = 'https://www.patreon.com/ZwerOxotnik'}
+	text_box.style.height = 40
+	text_box.read_only = true
 
 	-- local button = main_table.add{type = 'button', name = 'close', caption = {'gui.close'}}
 	-- button.style.horizontal_align  = 'right'
@@ -267,7 +272,7 @@ end
 function check_settings(player)
 	local frame = player.gui.center.secondary_chat_settings
 	if frame then
-		update_list_settings(frame.main_table.level_3.select.list.scroll.container, player)
+		update_list_settings(frame.main_table.level_3.selecting.list.scroll.container, player)
 
 		local settings = frame.main_table.level_3.scroll.settings
 		if settings.children then
@@ -339,7 +344,7 @@ function toogle_visible_list(gui, player)
 	local frame = player.gui.center.secondary_chat_settings
 	if not frame then return end
 	
-	local list = frame.main_table.level_3.select.list
+	local list = frame.main_table.level_3.selecting.list
 	if list.visible then
 		gui.caption = '>'
 	else
