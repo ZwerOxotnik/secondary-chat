@@ -1,6 +1,6 @@
 {
     "name": "secondary-chat",
-    "version": "1.20.0",
+    "version": "1.20.1",
     "factorio_version": "0.17",
     "title": "Chat of extended interaction",
     "author": "ZwerOxotnik",
@@ -10,7 +10,7 @@
     "description": "Adds gui of chat, new commands, new types of chat, new interactions",
     "dependencies":
     [
-        "event-listener >= 0.4.3",
+        "event-listener >= 0.5.0",
         "? color-picker"
     ]
 }

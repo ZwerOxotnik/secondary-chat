@@ -2,7 +2,7 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.19.3 (2019-03-31)
+Version: 1.20.1 (2019-04-07)
 
 Description: Adds gui of chat, new commands, new types of chat, new interactions.
 
@@ -14,8 +14,31 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.20.0"
-local BUILD = 1600 -- Always to increment the number when change the code
+module.version = "1.20.1"
+module.events = {}
+local BUILD = 1700 -- Always to increment this number when change the code
+
+local get_event
+if event_listener then
+	get_event = function(name)
+		return defines.events[name] or name
+	end
+else
+	get_event = function(name)
+		return defines.events[name]
+	end
+end
+
+-- This function for compatibility with "Event listener" module and into other modules
+local function put_event(event, func)
+	event = get_event(event)
+	if event then
+		module.events[event] = func
+	else
+		log("That event is nil")
+		-- error("That event is nil")
+	end
+end
 
 chats = {}
 
@@ -150,7 +173,7 @@ local function on_player_demoted(event)
 	check_settings(player)
 end
 
-local function load()
+module.on_load = function()
 	chats = global.secondary_chat.chats
 	if not game then
 		if global.secondary_chat.state_chat == true then
@@ -183,8 +206,10 @@ local function load()
 			local ID_2 = remote.call(interface, function_name, "on_round_end")
 			if (type(ID_1) == "number") and (type(ID_2) == "number") then
 				if (script.get_event_handler(ID_1) == nil) and (script.get_event_handler(ID_2) == nil) then
-					script.on_event(ID_1, on_round_start)
-					script.on_event(ID_2, on_round_end)
+					table.insert(module.events, ID_1, on_round_start)
+					table.insert(module.events, ID_2, on_round_end)
+					-- script.on_event(ID_1, on_round_start)
+					-- script.on_event(ID_2, on_round_end)
 				end
 			end
 		end
@@ -205,14 +230,15 @@ local function load()
 	if interface then
 		local ID_1 = remote.call(interface, "on_ok_button_clicked")
 		if (type(ID_1) == "number" and script.get_event_handler(ID_1) == nil) then
-			script.on_event(ID_1, modules.secondary_chat.color_picker_ok_pressed)
+			table.insert(module.events, ID_1, module.color_picker_ok_pressed)
+			-- script.on_event(ID_1, module.color_picker_ok_pressed)
 		end
 	end
 end
 
-local function init()
+module.on_init = function()
 	global_init()
-	load()
+	module.on_load()
 
 	if global.secondary_chat.state_chat == true then
 		add_commands()
@@ -309,26 +335,24 @@ local function on_player_unmuted(event)
 	global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
-module.events = {
-	on_init = init,
-	on_load = load,
-	on_configuration_changed = on_configuration_changed,
-	on_gui_selection_state_changed = on_gui_selection_state_changed,
-	on_player_display_resolution_changed = check_settings_frame_size,
-	on_gui_checked_state_changed = on_gui_checked_state_changed,
-	on_gui_text_changed = on_gui_text_changed,
-	on_gui_click = on_gui_click,
-	on_player_created = on_player_created,
-	on_player_removed = on_player_removed,
-	on_player_joined_game = on_player_joined_game,
-	on_player_left_game = on_player_left_game,
-	on_player_changed_force = update_chat_gui,
-	on_forces_merging = update_chat_gui,
-	on_player_promoted = on_player_promoted,
-	on_player_demoted = on_player_demoted,
-	on_player_muted = on_player_muted,
-	on_player_unmuted = on_player_unmuted,
-}
+
+-- For attaching events
+put_event("on_configuration_changed", on_configuration_changed)
+put_event("on_gui_selection_state_changed", on_gui_selection_state_changed)
+put_event("on_player_display_resolution_changed", check_settings_frame_size)
+put_event("on_gui_checked_state_changed", on_gui_checked_state_changed)
+put_event("on_gui_text_changed", on_gui_text_changed)
+put_event("on_gui_click", on_gui_click)
+put_event("on_player_created", on_player_created)
+put_event("on_player_removed", on_player_removed)
+put_event("on_player_joined_game", on_player_joined_game)
+put_event("on_player_left_game", on_player_left_game)
+put_event("on_player_changed_force", update_chat_gui)
+put_event("on_forces_merging", yourupdate_chat_gui_function)
+put_event("on_player_promoted", on_player_promoted)
+put_event("on_player_demoted", on_player_demoted)
+put_event("on_player_muted", on_player_muted)
+put_event("on_player_unmuted", on_player_unmuted)
 
 if script.mod_name ~= 'level' then
 	module.custom_events = {
