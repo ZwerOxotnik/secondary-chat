@@ -2,7 +2,7 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.20.1 (2019-04-07)
+Version: 1.21.0 (2019-04-08)
 
 Description: Adds gui of chat, new commands, new types of chat, new interactions.
 
@@ -14,9 +14,9 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.20.1"
+module.version = "1.21.0"
 module.events = {}
-local BUILD = 1700 -- Always to increment this number when change the code
+local BUILD = 1800 -- Always to increment this number when change the code
 
 local get_event
 if event_listener then
@@ -34,10 +34,12 @@ local function put_event(event, func)
 	event = get_event(event)
 	if event then
 		module.events[event] = func
+		return true
 	else
 		log("That event is nil")
 		-- error("That event is nil")
 	end
+	return false
 end
 
 chats = {}
@@ -116,6 +118,7 @@ local function on_gui_text_changed(event)
 				create_chat_text_box(gui.parent)
 			end
 		end
+		return true
 	end
 end
 
@@ -130,13 +133,13 @@ local function on_gui_checked_state_changed(event)
 		local parameter = string.match(gui.name, "(.+)_boolean")
 		if parameter then
 			update_checkbox(player, gui, parameter)
-			return
+			return true
 		end
 
 		local parameter = string.match(gui.name, "(.+)-allow_fast_show")
 		if parameter then
 			update_allow_fast_show(player, gui, parameter)
-			return
+			return true
 		end
 	end
 end
@@ -151,8 +154,14 @@ local function on_gui_selection_state_changed(event)
 	if gui.parent.parent.name == 'select_chat' then
 		if gui.parent.name == 'table_filter' then
 			update_chat_and_drop_down(gui.parent.parent.interactions.chat_drop_down, player)
+			return true
 		elseif gui.name == 'chat_drop_down' then
 			update_chat_and_drop_down(gui, player)
+			return true
+		elseif gui.name == 'targets_drop_down' then
+			local chat_name = get_chat_name(gui.parent.parent.interactions.chat_drop_down.selected_index)
+			script.raise_event(chat_events.on_update_chat_and_drop_down, {player_index = event.player_index, chat_name = chat_name, target = gui.items[gui.selected_index]})
+			return true
 		end
 	end
 end
@@ -328,10 +337,12 @@ local function on_player_muted(event)
 	local player = game.players[event.player_index]
 	if not (player and player.valid) then return end
 
+	-- Mute the player
 	global.secondary_chat.global.mutes[event.player_index] = true
 end
 
 local function on_player_unmuted(event)
+	-- Unmute the player
 	global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
@@ -348,27 +359,28 @@ put_event("on_player_removed", on_player_removed)
 put_event("on_player_joined_game", on_player_joined_game)
 put_event("on_player_left_game", on_player_left_game)
 put_event("on_player_changed_force", update_chat_gui)
-put_event("on_forces_merging", yourupdate_chat_gui_function)
+put_event("on_forces_merging", update_chat_gui)
 put_event("on_player_promoted", on_player_promoted)
 put_event("on_player_demoted", on_player_demoted)
 put_event("on_player_muted", on_player_muted)
 put_event("on_player_unmuted", on_player_unmuted)
 
 if script.mod_name ~= 'level' then
-	module.custom_events = {
-		autohide = function(event)
+	module.custom_events =
+	{
+		autohide = function()
 			local data = global.secondary_chat.players
-			for index, player in pairs( game.connected_players ) do
+			for player_index, player in pairs( game.connected_players ) do
 				local table_chat = player.gui.left.table_chat
 				if table_chat and table_chat.visible then
-					if data[index].autohide <= 0 then
+					if data[player_index].autohide <= 0 then
 						table_chat.visible = false
-						script.raise_event(chat_events.on_hide_gui_chat, {player_index = index, container = table_chat})
+						script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = table_chat})
 					else
-						data[index].autohide = data[index].autohide - (60 * 60)
+						data[player_index].autohide = data[player_index].autohide - (60 * 60)
 					end
 				else
-					data[index].autohide = max_autohide_time
+					data[player_index].autohide = max_autohide_time
 				end
 			end
 		end

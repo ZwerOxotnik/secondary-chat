@@ -103,36 +103,36 @@ local function send_to_private_pressed(event)
 	local select_chat = table_chat.select_chat
 
 	-- Find a recipient
-	local select_drop_down = select_chat.interactions.select_drop_down
+	local targets_drop_down = select_chat.interactions.targets_drop_down
 	if entity.last_user then
-		select_drop_down.items = {entity.last_user.name}
+		targets_drop_down.items = {entity.last_user.name}
 	elseif entity.type == 'car' then
 		local passenger = entity.get_passenger()
 		local driver = entity.get_driver()
 		if passenger and driver then
 			if driver == player then
-				select_drop_down.items = {passenger.player.name}
+				targets_drop_down.items = {passenger.player.name}
 			elseif passenger == player then
-				select_drop_down.items = {driver.player.name}
-			elseif select_drop_down.selected_index == chats.keys['private'] and driver == game.players[select_drop_down.items[select_drop_down.selected_index]] then
-				select_drop_down.items = {passenger.player.name}
+				targets_drop_down.items = {driver.player.name}
+			elseif targets_drop_down.selected_index == chats.keys['private'] and driver == game.players[targets_drop_down.items[targets_drop_down.selected_index]] then
+				targets_drop_down.items = {passenger.player.name}
 			else
-				select_drop_down.items = {driver.player.name}
+				targets_drop_down.items = {driver.player.name}
 			end
 		elseif passenger and passenger ~= player then
-			select_drop_down.items = {passenger.player.name}
+			targets_drop_down.items = {passenger.player.name}
 		elseif driver and driver ~= player then
-			select_drop_down.items = {driver.player.name}
+			targets_drop_down.items = {driver.player.name}
 		else
 			return
 		end
 	else --if entity.type == 'player' then
-		select_drop_down.items = {entity.player.name}
+		targets_drop_down.items = {entity.player.name}
 	end
 
 	local drop_down_online = select_chat.table_filter.drop_down_online
 	local drop_down_state = select_chat.table_filter.drop_down_state
-	if game.players[select_drop_down.items[1]].connected then
+	if game.players[targets_drop_down.items[1]].connected then
 		if drop_down_online.selected_index == gui_online.keys['offline'] then
 			drop_down_online.selected_index = gui_online.keys['online']
 		end
@@ -145,7 +145,7 @@ local function send_to_private_pressed(event)
 
 	-- Select a recipient
 	select_chat.interactions.chat_drop_down.selected_index = chats.keys['private']
-	select_drop_down.selected_index = 1
+	targets_drop_down.selected_index = 1
 	update_chat_and_drop_down(select_chat.interactions.chat_drop_down, player)
 	table_chat.top_chat.chat_table.chat_text_box.focus()
 end
@@ -197,8 +197,8 @@ local function send_to_faction_pressed(event)
 
 	-- Select a recipient
 	select_chat.interactions.chat_drop_down.selected_index = chats.keys['faction']
-	select_chat.interactions.select_drop_down.items = {entity.force.name, player.force.name}
-	select_chat.interactions.select_drop_down.selected_index = 1
+	select_chat.interactions.targets_drop_down.items = {entity.force.name, player.force.name}
+	select_chat.interactions.targets_drop_down.selected_index = 1
 	update_chat_and_drop_down(select_chat.interactions.chat_drop_down, player)
 	table_chat.top_chat.chat_table.chat_text_box.focus()
 end

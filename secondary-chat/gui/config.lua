@@ -89,7 +89,7 @@ function make_config_table_player(gui, config, is_fast_menu)
 					log('bug >'..data..'< with make_config_table_player')
 					for _, player in pairs (game.connected_players) do
 						if player.admin then
-							game.print('bug >'..data..'< with make_config_table_player')
+							game.print('bug >' .. data .. '< with make_config_table_player')
 						end
 					end
 				end

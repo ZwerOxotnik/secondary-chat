@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.21.0
+Date: 2019-04-08
+  Features:
+    - Extended the mod interface
+  Changes:
+    - Bugfixes
+    - Improved compatibility
+    - Code refactoring
+    - Changed the mod interface
+---------------------------------------------------------------------------------------------------
 Version: 1.20.1
 Date: 2019-04-07
   Changes:

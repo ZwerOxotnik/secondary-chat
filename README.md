@@ -117,7 +117,7 @@ For more information, see [Installing Mods on the Factorio wiki](https://wiki.fa
 If you have downloaded the source archive (GitLab):
 
 * copy the mod directory into your factorio mods directory
-* rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 1.20.0)
+* rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 1.21.0)
 
 ## License
 

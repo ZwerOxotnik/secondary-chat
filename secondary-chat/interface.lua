@@ -40,10 +40,6 @@ remote.add_interface('secondary-chat',
 		return global.secondary_chat.players[index]
 	end,
 	get_and_check_stance = function(target_1, target_2, stance)
-		-- Validation of data
-		if not (target_1 and target_1.valid) then return nil end
-		if not (target_2 and target_2.valid) then return nil end
-
 		-- Get and check stance
 		if stance then
 			local type = type(stance)
@@ -79,10 +75,7 @@ remote.add_interface('secondary-chat',
 			return 'unknown'
 		end
 	end,
-	update_gui = function()
-		update_chat_gui()
-		return true
-	end,
+	update_gui = update_chat_gui,
 	function_send_message = function(name)
 		return send_message[name]
 	end,
@@ -95,7 +88,7 @@ remote.add_interface('secondary-chat',
 	get_chat_data = function(name)
 		return chats.data[name]
 	end,
-	get_gui_chat = function(player)
+	get_chat_gui = function(player)
 		-- Validation of data
 		if not (player and player.valid) then return false end
 
@@ -220,58 +213,61 @@ remote.add_interface('secondary-chat',
 
 		return false
 	end,
-	get_gui_chat = function(player)
-		-- Validation of data
-		if not (player and player.valid) then return false end
-
+	get_chat_gui = function(player)
 		return player.gui.left.table_chat
 	end,
-	get_gui_icons = function(player)
-		-- Validation of data
-		if not (player and player.valid) then return false end
-
+	get_icons_gui = function(player)
 		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return false end
+		if table_chat == nil then return end
 
 		return table_chat.top_chat.icons
 	end,
-	get_gui_select_chat = function(player)
-		-- Validation of data
-		if not (player and player.valid) then return false end
-
+	get_select_chat_gui = function(player)
 		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return false end
+		if table_chat == nil then return end
 
 		return table_chat.select_chat
 	end,
-	get_gui_table_select = function(player)
-		-- Validation of data
-		if not (player and player.valid) then return false end
-
+	get_interactions_table_gui = function(player)
 		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return false end
+		if table_chat == nil then return end
 
 		return table_chat.select_chat.interactions
 	end,
-	get_gui_table_filter = function(player)
-		-- Validation of data
-		if not (player and player.valid) then return false end
-
+	get_filter_table_gui = function(player)
 		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return false end
+		if table_chat == nil then return end
 
 		return table_chat.select_chat.table_filter
 	end,
-	get_gui_notices = function(player)
-		-- Validation of data
-		if not (player and player.valid) then return false end
-
+	get_notices_gui = function(player)
 		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return false end
+		if table_chat == nil then return end
 
 		return table_chat.notices
 	end,
+	get_chat_name_by_player = function(player) -- This function weirdly working
+		local table_chat = player.gui.left.table_chat
+		if table_chat == nil then return end
+
+		local chat_drop_down = table_chat.select_chat.interactions.chat_drop_down
+		return chat_drop_down.items[chat_drop_down.selected_index]
+	end,
+	get_chat_id_by_name = function(name)
+		return chats.keys[name]
+	end,
 	get_build = function()
 		return build
+	end,
+	update_chat_and_drop_down = update_chat_and_drop_down,
+	update_chat_for_force = function(force)
+		-- Updating of gui
+		for _, player in pairs ( force.connected_players ) do
+			local table_chat = player.gui.left.table_chat
+			if table_chat and table_chat.visible then
+				local drop_down = table_chat.select_chat.interactions.chat_drop_down
+				update_chat_and_drop_down(drop_down, player)
+			end
+		end
 	end
 })

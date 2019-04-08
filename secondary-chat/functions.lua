@@ -57,7 +57,7 @@ function check_and_get_chat_name(name)
 	end
 end
 
-function get_name_chat(index)
+function get_chat_name(index)
 	for name, index_chat in pairs( chats.keys ) do
 		if index_chat == index then
 			return name

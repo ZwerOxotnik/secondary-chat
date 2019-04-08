@@ -92,7 +92,7 @@ function create_chat_gui(player)
 				visible.drop_down_online = table_filter.drop_down_online.visible
 			end
 
-			local drop_down = select_chat.interactions.select_drop_down
+			local drop_down = select_chat.interactions.targets_drop_down
 			if drop_down and drop_down.visible and #drop_down.items > 1 then
 				items.items = drop_down.items
 				index.items = drop_down.selected_index
@@ -166,9 +166,9 @@ function create_chat_gui(player)
 	child_table.add{type = 'label', caption = {'secondary_chat.send_to'}}
 	local table_select = child_table.add{type = 'table', name = 'interactions', column_count = 30}
 	table_select.style.horizontal_align  = 'left'
-	local select_drop_down = table_select.add{type = 'drop-down', name = 'select_drop_down', items = items.items or {''}, selected_index = index.items or 1}
-	select_drop_down.visible = (index.items and items.items) or false
-	select_drop_down.style.maximal_width = 120
+	local targets_drop_down = table_select.add{type = 'drop-down', name = 'targets_drop_down', items = items.items or {''}, selected_index = index.items or 1}
+	targets_drop_down.visible = (index.items and items.items) or false
+	targets_drop_down.style.maximal_width = 120
 	local drop_down_chat = table_select.add{type = 'drop-down', name = 'chat_drop_down', items = chats.list, selected_index = index.chat or 1}
 	drop_down_chat.style.maximal_width = 120
 	local button = table_select.add{type = 'button', name = 'print_in_chat', caption = '➤'}
@@ -183,6 +183,7 @@ function create_chat_gui(player)
 	button.style.right_padding = 0
 	local label = child_table.add{type = 'label', name ='empty_one', caption = ''}
 	label.visible = true
+	-- TODO: Change tables
 	local table_filter = child_table.add{type = 'table', name = 'table_filter', column_count = 30}
 	table_filter.style.horizontal_align  = 'left'
 	local drop_down_online = table_filter.add{type = 'drop-down', name = 'drop_down_online', items = gui_online.list, selected_index = index.state or 1}

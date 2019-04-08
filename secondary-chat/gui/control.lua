@@ -75,7 +75,7 @@ function player_send_message(event, is_localised)
 													or chats.keys[string.match(gui.name, "chat_(.+)")] -- For buttons
 	if selected_index then
 		if not is_allow_message(text_box.text, player) then return end
-		local chat_name = get_name_chat(selected_index)
+		local chat_name = get_chat_name(selected_index)
 		local chat = chats.data[chat_name]
 		local send_in_chat = chat and remote.call(chat.interface.name, chat.interface.send_message, chat_name)
 		if send_in_chat then

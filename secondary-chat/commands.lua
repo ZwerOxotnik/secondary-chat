@@ -100,7 +100,7 @@ function add_commands()
 			for _, data in pairs( commands ) do
 				local func = function(cmd)
 					local player = game.players[cmd.player_index]
-					if not player then return end 
+					if not player then return end
 					if cmd.parameter ~= nil then
 						if not is_allow_message(cmd.parameter, player) then return end
 						local chat = chats.data[chat_name]

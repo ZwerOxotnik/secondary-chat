@@ -6,7 +6,7 @@ chat_events =
 	-- Called when a player successfully send a message.
 	--	Contains:
 	--		player_index :: uint: The index of the player who did the change.
-	--    message :: string: The chat message.
+	--    	message :: string: The chat message.
 	--		chat_name :: string: name of chat.
 	on_send_message = script.generate_event_name(),
 
@@ -24,31 +24,31 @@ chat_events =
 	-- Called when delete secondary-chat.
 	on_pre_remove_mod = script.generate_event_name(),
 
-	-- Called when update for player GUI of chat.
+	-- Called when update for player GUI of the chat.
 	--	Contains:
 	--		container :: LuaGuiElement: The GUI element of the color picker's container.
 	--		player_index :: uint: The index of the player for whom the change.
 	on_update_gui_chat = script.generate_event_name(),
 
-	-- Called when for player create the gui of chat.
+	-- Called when for player create the chat gui.
 	--	Contains:
 	--		container :: LuaGuiElement: The GUI element of the chat container.
 	--		player_index :: uint: The index of the player for whom the change.
 	on_create_gui_chat = script.generate_event_name(),
 
-	-- Called when for player delete the gui of chat.
+	-- Called when for player delete the chat gui.
 	--	Contains:
 	--		container :: LuaGuiElement: The GUI element of the chat container.
 	--		player_index :: uint: The index of the player for whom the change.
 	on_pre_delete_gui_chat = script.generate_event_name(),
 
-	-- Called when for player hide the gui of chat.
+	-- Called when for player hide the chat gui.
 	--	Contains:
 	--		container :: LuaGuiElement: The GUI element of the chat container.
 	--		player_index :: uint: The index of the player for whom the change.
 	on_hide_gui_chat = script.generate_event_name(),
 
-	-- Called when for player unhide the gui of chat.
+	-- Called when for player unhide the chat gui.
 	--	Contains:
 	--		container :: LuaGuiElement: The GUI element of the chat container.
 	--		player_index :: uint: The index of the player for whom the change.
@@ -84,7 +84,7 @@ chat_events =
 	-- Called when a parameter of the settings was changed.
 	--	Contains:
 	--		container :: LuaGuiElement: container of the settings.
-	--    parameter :: LuaGuiElement: The GUI element of a parameter of the settings.
+	--   	parameter :: LuaGuiElement: The GUI element of a parameter of the settings.
 	--		player_index :: uint: The index of the player who did the change.
 	on_changed_parameter_setting = script.generate_event_name(),
 
@@ -98,5 +98,12 @@ chat_events =
 	--	Contains:
 	--		container :: LuaGuiElement: The GUI element of the settings container.
 	--		player_index :: uint: The index of the player for whom the change.
-	on_update_gui_container_settings = script.generate_event_name()
+	on_update_gui_container_settings = script.generate_event_name(),
+
+	-- Called when for a player after update the chat and its drop-down.
+	--	Contains:
+	--		player_index :: uint: The index of the player for whom the change.
+	--		chat_name :: string: Selected chat name in the drop-down
+	--		target :: anything (probably, string): Just a selected target from drop-down
+	on_update_chat_and_drop_down = script.generate_event_name()
 }
