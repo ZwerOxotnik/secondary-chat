@@ -1,7 +1,7 @@
 {
     "name": "secondary-chat",
-    "version": "1.21.1",
-    "factorio_version": "0.18",
+    "version": "1.21.2",
+    "factorio_version": "1.0",
     "title": "Chat of extended interaction",
     "author": "ZwerOxotnik",
     "contact": "zweroxotnik@gmail.com, https://steamcommunity.com/id/ZwerOxotnik, discord:ZwerOxotnik#7117",
@@ -10,7 +10,7 @@
     "description": "Adds gui of chat, new commands, new types of chat, new interactions",
     "dependencies":
     [
-        "event-listener >= 0.6.1",
+        "event-listener >= 0.6.2",
         "? color-picker"
     ]
 }
