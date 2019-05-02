@@ -28,7 +28,7 @@ Read this in another language | [English](/README.md) | [Русский](/docs/r
 
 ## Overview
 
-Add gui of chat, new commands, new types of chat, new interactions.
+Adds graphical chat interfaces, new chat commands, new chat types, new chat interactions (for example: localised messages, storing previous sent message, offline/online players/teams, relationships, filters etc), new hotkeys for chat. Provides customizable chat through mod interface, chat settings.
 Top left appear the new gui with drop-down with filters and other functions, that sends your message from the text field to the chat and can simplify the interaction of other elements.
 
 ## FAQ

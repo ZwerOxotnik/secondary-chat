@@ -2,9 +2,7 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.21.0 (2019-04-08)
-
-Description: Adds gui of chat, new commands, new types of chat, new interactions.
+Version: 1.21.3 (2019-05-03)
 
 You can write and receive any information on the links below.
 Source: https://gitlab.com/ZwerOxotnik/secondary-chat
@@ -14,18 +12,15 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.21.0"
+module.version = "1.21.3"
 module.events = {}
-local BUILD = 1800 -- Always to increment this number when change the code
+local BUILD = 1900 -- Always to increment this number when change the code
 
-local get_event
-if event_listener then
-	get_event = function(name)
-		return defines.events[name] or name
-	end
-else
-	get_event = function(name)
-		return defines.events[name]
+local function get_event(event)
+	if type(event) == "number" then
+		return event
+	else
+		return defines.events[event] --or event
 	end
 end
 
@@ -34,10 +29,13 @@ local function put_event(event, func)
 	event = get_event(event)
 	if event then
 		module.events[event] = func
+		if Event then
+			Event.register(event, func)
+		end
 		return true
 	else
-		log("That event is nil")
-		-- error("That event is nil")
+		log("The event is nil")
+		-- error("The event is nil")
 	end
 	return false
 end
@@ -58,7 +56,7 @@ if script.mod_name ~= 'level' then
 end
 require('secondary-chat/interface')
 
-local function on_configuration_changed()
+module.on_configuration_changed = function()
 	update_global_config()
 
 	for _, player in pairs( game.players ) do
@@ -348,7 +346,6 @@ end
 
 
 -- For attaching events
-put_event("on_configuration_changed", on_configuration_changed)
 put_event("on_gui_selection_state_changed", on_gui_selection_state_changed)
 put_event("on_player_display_resolution_changed", check_settings_frame_size)
 put_event("on_gui_checked_state_changed", on_gui_checked_state_changed)
