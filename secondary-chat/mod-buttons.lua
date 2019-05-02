@@ -4,7 +4,7 @@
 local function send_message_pressed(event)
 	local player = game.players[event.player_index]
 
-	-- Check the visibility of the chat
+	-- Check the chat visibility
 	local table_chat = player.gui.left.table_chat
 	if table_chat then
 	local select_chat = table_chat.select_chat
@@ -30,7 +30,7 @@ script.on_event('message-send-to-chat', send_message_pressed)
 local function send_locale_pressed(event)
 	local player = game.players[event.player_index]
 
-	-- Check the visibility of the chat
+	-- Check the chat visibility
 	local table_chat = game.players[event.player_index].gui.left.table_chat
 	if table_chat then
 		if table_chat.visible then
@@ -55,7 +55,7 @@ script.on_event('locale-send-to-chat', send_locale_pressed)
 local function recover_last_message_from_chat_pressed(event)
 	local player = game.players[event.player_index]
 
-	-- Check the visibility of the chat
+	-- Check the chat visibility
 	local table_chat = game.players[event.player_index].gui.left.table_chat
 	if table_chat then
 		if table_chat.visible then
@@ -80,7 +80,7 @@ local function send_to_private_pressed(event)
 	local entity = player.selected
 	if not (entity and entity.valid and (entity.type == 'car' or (entity.type == 'player' and entity.player) or (entity.last_user and entity.last_user.valid and entity.last_user ~= player))) then return end
 
-	-- Check the visibility of the chat
+	-- Check the chat visibility
 	local table_chat = player.gui.left.table_chat
 	if table_chat then
 		if table_chat.visible then
@@ -158,8 +158,8 @@ local function send_to_faction_pressed(event)
 	local player = game.players[event.player_index]
 	local entity = player.selected
 	if not (entity and entity.valid and entity.force and #entity.force.players > 0) then return end
-	
-	-- Check the visibility of the chat
+
+	-- Check the chat visibility
 	local table_chat = player.gui.left.table_chat
 
 	if table_chat then

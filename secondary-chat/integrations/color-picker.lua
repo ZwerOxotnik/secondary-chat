@@ -3,6 +3,7 @@
 
 local color_picker = {}
 
+-- TODO: change
 local function pick_interface()
 	for _, name in pairs( {'color-picker'} ) do
 		if remote.interfaces[name] then
