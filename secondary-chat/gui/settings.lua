@@ -64,7 +64,7 @@ function create_settings_chat_of_admin(player, settings)
 	-- TODO: table - add chat
 	-- TODO: table - pick a char for deleting/changing/getting a information!
 	make_config_table(main_table, global.secondary_chat.global.settings.main)
-	
+
 	local config_table = main_table.config_table
 	config_table.allow_custom_color_message_boolean.enabled = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker"] ~= nil))
 	if not config_table.allow_custom_color_message_boolean.enabled then
@@ -211,8 +211,11 @@ function create_settings_for_everything(player)
 	local frame = center.add{type = 'frame', name = 'secondary_chat_settings'}
 	frame.style.maximal_width = player.display_resolution.height * 0.7
 	frame.style.maximal_height = player.display_resolution.width * 0.7
+	-- frame.style.minimal_width = 400
 
 	local main_table = frame.add{type = 'table', name = 'main_table', column_count = 1}
+	main_table.style.horizontally_stretchable = true
+	main_table.style.vertically_stretchable = true
 
 	local child_table = main_table.add{type = 'table', name = 'level_1', column_count = 1}
 	child_table.draw_horizontal_line_after_headers = true
@@ -260,7 +263,7 @@ function create_settings_for_everything(player)
 	local patreon_table = main_table.add{type = 'table', name = 'patreon', column_count = 2}
 	patreon_table.style.vertical_align = 'bottom'
 	patreon_table.style.horizontal_align  = 'right'
-	local label = patreon_table.add{type = 'label', caption = {'', 'Patreon', {'colon'}}}
+	patreon_table.add{type = 'label', caption = {'', 'Patreon', {'colon'}}}
 	local text_box = patreon_table.add{type = 'text-box', text = 'https://www.patreon.com/ZwerOxotnik'}
 	text_box.style.height = 40
 	text_box.read_only = true
@@ -290,12 +293,14 @@ function update_list_settings(container, player)
 		button.style.font = 'default'
 	end
 
-	for _, data in pairs( {{name = 'personal', caption = {'gui.character'}}, {name = 'statistics'}} ) do
+	local buttons = {{name = 'personal', caption = {'gui.character'}}, {name = 'statistics'}, {name = 'news'}}
+	for _, data in pairs( buttons ) do
 		add(container, data.name, data.caption)
 	end
 
+	local buttons = {{name = 'global'}, {name = 'players', caption = {'gui-browse-games.players'}}}
 	if player.admin or game.is_multiplayer() == false then
-		for _, data in pairs( {{name = 'global'}, {name = 'players', caption = {'gui-browse-games.players'}}} ) do
+		for _, data in pairs( buttons ) do
 			add(container, data.name, data.caption)
 		end
 	end
@@ -303,11 +308,12 @@ function update_list_settings(container, player)
 	script.raise_event(chat_events.on_update_gui_list_settings, {player_index = player.index, container = container})
 end
 
-table_setting = {}
+local table_setting = {}
 table_setting['personal'] = {}
 table_setting['statistics'] = {}
 table_setting['global'] = {}
 table_setting['players'] = {}
+table_setting['news'] = {}
 --table_setting['translation'] = {}
 
 table_setting['personal'].update = function(player, table)
@@ -326,8 +332,16 @@ table_setting['players'].update = function(player, table)
 	local label = table.add{type = 'label', caption = 'WIP'}
 	label.style.font = 'default-semibold'
 	-- if player.admin or game.is_multiplayer() == false then
-		
+
 	-- end
+end
+table_setting['news'].update = function(player, table)
+	local news = table.add{type = 'text-box', text = player.name .. ', long messages are not visible, I can create a text box in the center, but is it [font=default-bold]convenient?[/font]\n\nEven the text box looks uncomfortable now :o'}
+	news.style.vertically_stretchable = true
+	news.read_only = true
+	local link = table.add{type = 'text-box', text = 'https://mods.factorio.com/mod/secondary-chat/discussion'}
+	link.style.height = 40
+	link.read_only = true
 end
 
 function click_list_settings(name, player, table)
@@ -343,7 +357,7 @@ end
 function toogle_visible_list(gui, player)
 	local frame = player.gui.center.secondary_chat_settings
 	if not frame then return end
-	
+
 	local list = frame.main_table.level_3.selecting.list
 	if list.visible then
 		gui.caption = '>'

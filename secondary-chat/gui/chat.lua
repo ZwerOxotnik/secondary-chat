@@ -54,7 +54,7 @@ function create_chat_text_box(parent, text)
 	if parent[name] then
 		parent[name].destroy()
 	end
-	
+
 	local text_box = parent.add{type = 'text-box', name = name, text = text}
 	text_box.style.minimal_width = 250
 	text_box.style.maximal_width = 300
@@ -77,7 +77,7 @@ function create_chat_gui(player)
 	if table_chat then
 		text = table_chat.top_chat.chat_table.chat_text_box.text
 		last_messages = table_chat.last_messages.last.text
-		
+
 		local select_chat = table_chat.select_chat
 		if select_chat then
 			if select_chat.interactions then

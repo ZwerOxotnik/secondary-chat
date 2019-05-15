@@ -20,7 +20,7 @@ function is_allow_message(message, sender)
 	elseif string.len(message) < global.secondary_chat.settings.limit_characters then
 		return true
 	end
-	
+
 	return false
 end
 

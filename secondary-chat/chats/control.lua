@@ -107,7 +107,7 @@ function update_chat(name, main_data)
 		log('error interface with get_commands: chats[' .. name .. ']')
 		interface.get_commands = nil
 	end
-	
+
 	table.insert(chats.list, {'secondary_chat_list.' .. name})
 	chats.keys[name] = #chats.list
 

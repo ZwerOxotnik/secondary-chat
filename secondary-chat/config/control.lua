@@ -40,7 +40,7 @@ function update_global_config_player(player)
 		if info then
 			for table, child_table in pairs( configs.global.get_info() ) do
 				info[table] = info[table] or {}
-				for name, data in pairs( child_table ) do      
+				for name, data in pairs( child_table ) do
 					if info[table][name] == nil or type(data) ~= type(info[table][name]) then
 						info[table][name] = data
 					end
@@ -106,7 +106,7 @@ function update_global_config()
 		if settings then
 			for table, child_table in pairs( configs.global.get_settings() ) do
 				settings[table] = settings[table] or {}
-				for name, data in pairs( child_table ) do      
+				for name, data in pairs( child_table ) do
 					if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
 						settings[table][name] = data
 					end
@@ -120,7 +120,7 @@ function update_global_config()
 		if info then
 			for table, child_table in pairs( configs.global.get_info() ) do
 				info[table] = info[table] or {}
-				for name, data in pairs( child_table ) do      
+				for name, data in pairs( child_table ) do
 					if info[table][name] == nil or type(data) ~= type(info[table][name]) then
 						info[table][name] = data
 					end
@@ -140,7 +140,7 @@ function global_init()
 	if script.mod_name == 'level' then
 		global.secondary_chat.build = global.secondary_chat.build or build
 	end
-	
+
 	global.secondary_chat.chats = global.secondary_chat.chats or {}
 	global.secondary_chat.players = global.secondary_chat.players or {}
 	global.secondary_chat.state_chat = global.secondary_chat.state_chat or true

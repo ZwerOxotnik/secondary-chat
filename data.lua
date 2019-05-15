@@ -2,7 +2,7 @@
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 data:extend(
-{ 
+{
 	{
 		type = 'custom-input',
 		name = 'message-send-to-chat',

@@ -130,7 +130,7 @@ remote.add_interface('secondary-chat',
 		for _, player in pairs( game.players ) do
 			create_chat_gui(player)
 		end
-	
+
 		remove_command("toggle-chat")
 		local toggle_chat_commands = ""
 		for name, _ in pairs( chats.keys ) do

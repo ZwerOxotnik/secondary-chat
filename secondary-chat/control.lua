@@ -2,7 +2,7 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.21.3 (2019-05-03)
+Version: 1.22.0 (2019-05-15)
 
 You can write and receive any information on the links below.
 Source: https://gitlab.com/ZwerOxotnik/secondary-chat
@@ -12,9 +12,9 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.21.3"
+module.version = "1.22.0"
 module.events = {}
-local BUILD = 1900 -- Always to increment this number when change the code
+local BUILD = 2000 -- Always to increment this number when change the code
 
 local function get_event(event)
 	if type(event) == "number" then
@@ -64,6 +64,18 @@ module.on_configuration_changed = function()
 	end
 end
 
+local function press_button_send_chat(event)
+	if event.shift then
+		player_send_message(event, true)
+	elseif event.control then
+		local player = game.players[event.player_index]
+		local table_chat = player.gui.left.table_chat
+		table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
+	else
+		player_send_message(event)
+	end
+end
+
 local function on_gui_click(event)
 	-- Validation of data
 	local gui = event.element
@@ -85,8 +97,9 @@ end
 local function on_player_removed(event)
 	script.raise_event(chat_events.on_pre_delete_player_data, {player_index = event.player_index})
 
-	global.secondary_chat.players[event.player_index] = nil
-	global.secondary_chat.global.mutes[event.player_index] = nil
+	local secondary_chat = global.secondary_chat
+	secondary_chat.players[event.player_index] = nil
+	secondary_chat.global.mutes[event.player_index] = nil
 
 	update_chat_gui()
 end
@@ -206,11 +219,11 @@ module.on_load = function()
 	end
 
 	-- Searching events "on_round_start" and "on_round_end"
-	for interface, _ in pairs( remote.interfaces ) do
+	for interface_name, _ in pairs( remote.interfaces ) do
 		local function_name = "get_event_name"
-		if remote.interfaces[interface][function_name] then
-			local ID_1 = remote.call(interface, function_name, "on_round_start")
-			local ID_2 = remote.call(interface, function_name, "on_round_end")
+		if remote.interfaces[interface_name][function_name] then
+			local ID_1 = remote.call(interface_name, function_name, "on_round_start")
+			local ID_2 = remote.call(interface_name, function_name, "on_round_end")
 			if (type(ID_1) == "number") and (type(ID_2) == "number") then
 				if (script.get_event_handler(ID_1) == nil) and (script.get_event_handler(ID_2) == nil) then
 					table.insert(module.events, ID_1, on_round_start)
@@ -317,7 +330,7 @@ local function on_player_left_game(event)
 	global.secondary_chat.players[event.player_index].autohide = max_autohide_time
 end
 
--- For soft-mods, scenarios, interfaces
+-- For soft-mods, scenarios, interfaces (not tested)
 module.delete = function(event)
 	script.raise_event(chat_events.on_pre_remove_mod)
 
@@ -366,18 +379,22 @@ if script.mod_name ~= 'level' then
 	module.custom_events =
 	{
 		autohide = function()
-			local data = global.secondary_chat.players
+			local secondary_chat = global.secondary_chat
+			local data = secondary_chat.players
 			for player_index, player in pairs( game.connected_players ) do
-				local table_chat = player.gui.left.table_chat
-				if table_chat and table_chat.visible then
-					if data[player_index].autohide <= 0 then
-						table_chat.visible = false
-						script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = table_chat})
+				local player_data = data[player_index]
+				if player_data.settings.main.auto_hide.state then
+					local table_chat = player.gui.left.table_chat
+					if table_chat and table_chat.visible then
+						if player_data.autohide <= 0 then
+							table_chat.visible = false
+							script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = table_chat})
+						else
+							player_data.autohide = player_data.autohide - (60 * 60)
+						end
 					else
-						data[player_index].autohide = data[player_index].autohide - (60 * 60)
+						player_data.autohide = max_autohide_time
 					end
-				else
-					data[player_index].autohide = max_autohide_time
 				end
 			end
 		end
