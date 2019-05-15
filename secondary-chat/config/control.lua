@@ -12,14 +12,22 @@ function update_global_config_player(player)
 		local settings = global.secondary_chat.players[player_index].settings
 		if settings then
 			for table, child_table in pairs( configs.player.get_settings() ) do
-				settings[table] = settings[table] or {}
-				for name, data in pairs( child_table ) do
-					if settings[table][name].state == nil or type(data.state) ~= type(settings[table][name]) then
-						settings[table][name] = data
+				if settings[table] then
+					for name, data in pairs( child_table ) do
+						local parameter = settings[table][name]
+						if parameter then
+							if parameter.state == nil or type(data.state) ~= type(parameter) then
+								parameter = data
+							end
+							if parameter.access == nil then
+								parameter.access = data.access or true
+							end
+						else
+							settings[table][name] = data
+						end
 					end
-					if settings[table][name].access == nil then
-						settings[table][name].access = data.access or true
-					end
+				else
+					settings[table] = child_table
 				end
 			end
 		else
@@ -39,11 +47,14 @@ function update_global_config_player(player)
 		local info = global.secondary_chat.players[player_index].info
 		if info then
 			for table, child_table in pairs( configs.global.get_info() ) do
-				info[table] = info[table] or {}
-				for name, data in pairs( child_table ) do
-					if info[table][name] == nil or type(data) ~= type(info[table][name]) then
-						info[table][name] = data
+				if info[table] then
+					for name, data in pairs( child_table ) do
+						if info[table][name] == nil or type(data) ~= type(info[table][name]) then
+							info[table][name] = data
+						end
 					end
+				else
+					info[table] = child_table
 				end
 			end
 		else
@@ -115,13 +126,8 @@ function update_global_config()
 			for table, child_table in pairs( configs.global.get_settings() ) do
 				if settings[table] then
 					for name, data in pairs( child_table ) do
-						local parameter = settings[table][name]
-						if parameter then
-							if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
-								settings[table][name] = data
-							end
-						else
-							parameter = data
+						if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
+							settings[table][name] = data
 						end
 					end
 				else
@@ -137,13 +143,8 @@ function update_global_config()
 			for table, child_table in pairs( configs.global.get_info() ) do
 				if info[table] then
 					for name, data in pairs( child_table ) do
-						local parameter = info[table][name]
-						if parameter then
-							if parameter == nil or type(data) ~= type(parameter) then
-								parameter = data
-							end
-						else
-							parameter = data
+						if info[table][name] == nil or type(data) ~= type(parameter) then
+							info[table][name] = data
 						end
 					end
 				else
