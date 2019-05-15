@@ -103,6 +103,7 @@ Repository or on [mods.factorio.com](https://mods.factorio.com/mod/secondary-cha
 ## Special thanks
 
 * **MeteorSbor** - tester
+* **midaw** - tester
 * **HAKER PLAY** - translator
 * **anonymous#1** - translator
 

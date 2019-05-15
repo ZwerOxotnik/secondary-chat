@@ -95,12 +95,13 @@
 ## <a name="special-thanks"></a> Особая благодарность
 
 * **MeteorSbor** - тестировщик
+* **midaw** - тестировщик
 * **HAKER PLAY** - переводчик
 * **anonymous#1** - переводчик
 
 ## <a name="license"></a> Лицензия
 
-Этот проект защищен авторским правом © 2018-2019 ZwerOxotnik \<zweroxotnik@gmail.com\>.
+Этот проект защищен авторским правом © 2017-2019 ZwerOxotnik \<zweroxotnik@gmail.com\>.
 
 Использование исходного кода, включенного здесь, регламентируется European Union Public License v. 1.2 только. Смотрите [LICENCE](/LICENCE) файл для разбора.
 
