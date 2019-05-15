@@ -2,7 +2,7 @@
 Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
-Version: 1.22.0 (2019-05-15)
+Version: 1.22.2 (2019-05-15)
 
 You can write and receive any information on the links below.
 Source: https://gitlab.com/ZwerOxotnik/secondary-chat
@@ -12,9 +12,9 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.22.0"
+module.version = "1.22.2"
 module.events = {}
-local BUILD = 2000 -- Always to increment this number when change the code
+local BUILD = 2200 -- Always to increment this number when change the code
 
 local function get_event(event)
 	if type(event) == "number" then
