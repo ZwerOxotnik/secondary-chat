@@ -1,4 +1,4 @@
-# Chat of extended interaction
+# Chat of extended interactions
 
 Read this in another language | [English](/README.md) | [Русский](/docs/ru/README.md)
 |---|---|---|
@@ -106,6 +106,7 @@ Repository or on [mods.factorio.com](https://mods.factorio.com/mod/secondary-cha
 * **midaw** - tester
 * **HAKER PLAY** - translator
 * **anonymous#1** - translator
+* [XMKTP](https://mods.factorio.com/mod/XMKTP) - Xagros's Mods Korean Translation Project
 
 ## Installing
 

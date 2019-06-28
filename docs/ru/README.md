@@ -98,6 +98,7 @@
 * **midaw** - тестировщик
 * **HAKER PLAY** - переводчик
 * **anonymous#1** - переводчик
+* [XMKTP](https://mods.factorio.com/mod/XMKTP) - Xagros's Mods Korean Translation Project
 
 ## <a name="license"></a> Лицензия
 
