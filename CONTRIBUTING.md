@@ -12,14 +12,6 @@ We optimize for readability:
 - Read [a note about Git commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 - Each branch is divided into versions of the game Factorio x.x (e.g., 0.16)
 
-## Found an Issue?
-Please report any issues or a mistake in the documentation, you can help us by
-[submitting an issue](https://gitlab.com/ZwerOxotnik/show-health-and-shield/issues) to our GitLab Repository or on [mods.factorio.com](https://mods.factorio.com/mod/show-health-and-shield/discussion).
-
-## Want a Feature?
-You can *request* a new feature by [submitting an issue](https://gitlab.com/ZwerOxotnik/show-health-and-shield/issues) to our GitLab
-Repository or on [mods.factorio.com](https://mods.factorio.com/mod/show-health-and-shield/discussion).
-
 ## Prerequisites
 
 We recommend several tools build the mod, including:

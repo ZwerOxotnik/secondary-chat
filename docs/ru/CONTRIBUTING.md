@@ -12,15 +12,6 @@
 * Прочитайте [заметка о сообщениях Git commit](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 * Каждая ветка делится на версии игры Factorio x.x (например, 0.16)
 
-## <a name="issue"></a> Нашли ошибку?
-
-Пожалуйста, сообщайте о любых проблемах или ошибках в документации, вы можете помочь нам
-[submitting an issue](https://gitlab.com/ZwerOxotnik/scan-rocket-with-radars/issues) на нашем GitLab репозитории или сообщите на [mods.factorio.com](https://mods.factorio.com/mod/scan-rocket-with-radars/discussion).
-
-## <a name="feature"></a> Хотите новую функцию?
-
-Вы можете *запросить* новую функцию [submitting an issue](https://gitlab.com/ZwerOxotnik/scan-rocket-with-radars/issues) на нашем GitLab репозитории или сообщите на [mods.factorio.com](https://mods.factorio.com/mod/scan-rocket-with-radars/discussion).
-
 ## Предпосылки
 
 Мы рекомендуем несколько инструментов, чтобы собрать мод, включая:
