@@ -1,3 +1,11 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.22.4
+Date: 2019-07-11
+  Bugfixes:
+    - Fixed localisation of buttons due to https://wiki.factorio.com/Tutorial:Localisation#Localising_alternate_input_names
+  Changes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
 Version: 1.22.3
 Date: 2019-06-29
   Features:
@@ -25,7 +33,7 @@ Date: 2019-05-15
     - Added auto-hiding in chat settings
     - Added news in extended chat settings
   Changes:
-    - Spanish localization moved to https://mods.factorio.com/mod/LPMF
+    - Spanish localisation moved to https://mods.factorio.com/mod/LPMF
   Notes:
     - This update for Factorio 0.17
 ---------------------------------------------------------------------------------------------------
@@ -122,16 +130,16 @@ Date: 2019-03-03
     - Added autohide gui for the mod
     - Added notices in gui
     - Added sending message in gui by enter
-    - Added Ukrainian localization (localization by HAKER PLAY)
-    - Added Spanish localization
-    - Added Romanian localization (localization by anonymous#1)
-    - Added Italian localization (localization by anonymous#1)
+    - Added Ukrainian localisation (localisation by HAKER PLAY)
+    - Added Spanish localisation
+    - Added Romanian localisation (localisation by anonymous#1)
+    - Added Italian localisation (localisation by anonymous#1)
     - Added muting
   Changes:
     - Changed /toggle-chat drop-down
     - Changed style of GUI
     - Changed faction chat
-    - Changed improved localization
+    - Changed improved localisation
     - Changed improved compatibility with scenarios, mods, soft-mods, game
     - Changed text field in gui not be cleared if message not be sended
     - Changed title
