@@ -143,9 +143,9 @@ function create_chat_gui(player)
 	button.style.right_padding = 0
 	button.tooltip = {
 		'', {'gui-control-settings.title'}, {'colon'},
-		'\n', {'controls.mouse-button-1'}, ' - ', {'gui-mod-settings.title'},
-		'\n', 'Shift + ', {'controls.mouse-button-1'}, ' - ', {'gui-map-generator.advanced-tab-title'},
-		'\n', 'Alt + ', {'controls.mouse-button-1'}, ' - ', {'secondary_chat.hide_chat'}
+		'\n', {'control-keys.mouse-button-1'}, ' - ', {'gui-mod-settings.title'},
+		'\n', 'Shift + ', {'control-keys.mouse-button-1'}, ' - ', {'gui-map-generator.advanced-tab-title'},
+		'\n', 'Alt + ', {'control-keys.mouse-button-1'}, ' - ', {'secondary_chat.hide_chat'}
 	}
 	local button = table.add{type = 'button', name = 'color', caption = '█'}
 	button.style.maximal_height = 20
