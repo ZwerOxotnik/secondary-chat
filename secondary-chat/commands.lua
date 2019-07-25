@@ -2,13 +2,13 @@
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 function toggle_drop_down(player)
-	local table_chat = player.gui.left.table_chat
-	if not table_chat then
+	if not player.gui.screen.chat_main_frame then
 		global.secondary_chat.players[player.index].settings.main.drop_down.state = true
 		create_chat_gui(player)
 		return
 	end
 
+	local table_chat = player.gui.screen.chat_main_frame.table_chat
 	local select_chat = table_chat.select_chat
 	if select_chat then
 		local frame = player.gui.center.secondary_chat_settings
@@ -36,9 +36,8 @@ function toggle_chat(cmd)
 	local player = game.player
 	if not (player and player.valid) then return end
 
-	local table_chat = player.gui.left.table_chat
 	if cmd.parameter then
-		if table_chat then
+		if player.gui.screen.chat_main_frame then
 			local parameter = string.lower(cmd.parameter)
 			local index = chats.keys[parameter]
 			if index then
@@ -52,15 +51,16 @@ function toggle_chat(cmd)
 			create_chat_gui(player)
 		end
 	else
-		if table_chat then
-			if table_chat.visible then
-				table_chat.visible = false
-				script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = table_chat})
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame then
+			if chat_main_frame.visible then
+				chat_main_frame.visible = false
+				script.raise_event(chat_events.on_hide_gui_chat, {player_index = player.index, container = chat_main_frame})
 			else
-				table_chat.visible = true
-				script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = table_chat})
+				chat_main_frame.visible = true
+				script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = chat_main_frame})
 			end
-			global.secondary_chat.players[player.index].settings.main.state_chat.state = table_chat.visible
+			global.secondary_chat.players[player.index].settings.main.state_chat.state = chat_main_frame.visible
 		else
 			create_chat_gui(game.player)
 			global.secondary_chat.players[player.index].settings.main.state_chat.state = true

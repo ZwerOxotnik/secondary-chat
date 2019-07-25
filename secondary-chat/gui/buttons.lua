@@ -2,7 +2,7 @@
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 function toggle_chat_part(name, player)
-	local flow = player.gui.left.table_chat.buttons
+	local flow = player.gui.screen.chat_main_frame.table_chat.buttons
 	local table_name = 'table_' .. name
 	local main_table = flow[table_name]
 	if main_table then

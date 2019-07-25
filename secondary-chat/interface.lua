@@ -92,7 +92,7 @@ remote.add_interface('secondary-chat',
 		-- Validation of data
 		if not (player and player.valid) then return false end
 
-		return player.gui.left.table_chat
+		return player.gui.screen.chat_main_frame.table_chat
 	end,
 	add_chat = function(name, data)
 		if chats.data[name] or type(data) ~= 'table' then return false end
@@ -214,43 +214,43 @@ remote.add_interface('secondary-chat',
 		return false
 	end,
 	get_chat_gui = function(player)
-		return player.gui.left.table_chat
+		return player.gui.screen.chat_main_frame.table_chat
 	end,
 	get_icons_gui = function(player)
-		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return end
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame == nil then return end
 
-		return table_chat.top_chat.icons
+		return chat_main_frame.table_chat.top_chat.icons
 	end,
 	get_select_chat_gui = function(player)
-		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return end
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame == nil then return end
 
-		return table_chat.select_chat
+		return chat_main_frame.table_chat.select_chat
 	end,
 	get_interactions_table_gui = function(player)
-		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return end
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame == nil then return end
 
-		return table_chat.select_chat.interactions
+		return chat_main_frame.table_chat.select_chat.interactions
 	end,
 	get_filter_table_gui = function(player)
-		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return end
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame == nil then return end
 
-		return table_chat.select_chat.table_filter
+		return chat_main_frame.table_chat.select_chat.table_filter
 	end,
 	get_notices_gui = function(player)
-		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return end
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame == nil then return end
 
-		return table_chat.notices
+		return chat_main_frame.table_chat.notices
 	end,
 	get_chat_name_by_player = function(player) -- This function weirdly working
-		local table_chat = player.gui.left.table_chat
-		if table_chat == nil then return end
+		local chat_main_frame = player.gui.screen.chat_main_frame
+		if chat_main_frame == nil then return end
 
-		local chat_drop_down = table_chat.select_chat.interactions.chat_drop_down
+		local chat_drop_down = chat_main_frame.table_chat.select_chat.interactions.chat_drop_down
 		return chat_drop_down.items[chat_drop_down.selected_index]
 	end,
 	get_chat_id_by_name = function(name)
@@ -263,9 +263,9 @@ remote.add_interface('secondary-chat',
 	update_chat_for_force = function(force)
 		-- Updating of gui
 		for _, player in pairs ( force.connected_players ) do
-			local table_chat = player.gui.left.table_chat
-			if table_chat and table_chat.visible then
-				local drop_down = table_chat.select_chat.interactions.chat_drop_down
+			local chat_main_frame = player.gui.screen.chat_main_frame
+			if chat_main_frame and chat_main_frame.visible then
+				local drop_down = chat_main_frame.table_chat.select_chat.interactions.chat_drop_down
 				update_chat_and_drop_down(drop_down, player)
 			end
 		end

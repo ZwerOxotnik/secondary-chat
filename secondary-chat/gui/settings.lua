@@ -111,7 +111,8 @@ end
 function update_checkbox(player, element, parameter)
 	global.secondary_chat.players[player.index].autohide = max_autohide_time
 
-	local table_chat = player.gui.left.table_chat
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	local table_chat = chat_main_frame.table_chat
 	local container = element.parent.parent
 	if container.name == 'player' then
 		global.secondary_chat.players[player.index].settings.main[parameter].state = element.state
@@ -122,7 +123,7 @@ function update_checkbox(player, element, parameter)
 				event_name = 'on_unhide_gui_chat'
 			end
 
-			table_chat.visible = element.state
+			chat_main_frame.visible = element.state
 			table_chat.buttons.visible = not element.state
 			table_chat.settings.visible = not element.state
 			table_chat.settings.clear()
@@ -143,18 +144,16 @@ function update_checkbox(player, element, parameter)
 
 		for _, target in pairs( game.connected_players ) do
 			if target.admin then
-				local table_chat = target.gui.left.table_chat
-				if table_chat and table_chat.visible and #table_chat.settings.children > 0 then
-					table_chat.settings.admin.config_table[element.name].state = element.state
+				if chat_main_frame and chat_main_frame.visible and #chat_main_frame.table_chat.settings.children > 0 then
+					chat_main_frame.table_chat.settings.admin.config_table[element.name].state = element.state
 				end
 			end
 		end
 
 		if parameter == 'allow_custom_color_message' then
 			for _, target in pairs( game.connected_players ) do
-				local table_chat = target.gui.left.table_chat
-				if table_chat then
-					table_chat.top_chat.icons.color.visible = element.state
+				if chat_main_frame then
+					chat_main_frame.table_chat.top_chat.icons.color.visible = element.state
 					if element.state == false then color_picker.destroy_gui(player) end
 				end
 			end
@@ -169,8 +168,9 @@ function update_allow_fast_show(player, element, parameter)
 	global.secondary_chat.players[player.index].settings.main[parameter].allow_fast_show = element.state
 
 	local container = element.parent.parent
-	local table_chat = player.gui.left.table_chat
-	if table_chat and table_chat.settings[container.name] then
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	if chat_main_frame and chat_main_frame.table_chat.settings[container.name] then
+		local table_chat = chat_main_frame.table_chat
 		local gui_settings = table_chat.settings[container.name].config_table
 		if #gui_settings.children_names > 0 then
 			local element_fast_menu = gui_settings[parameter]

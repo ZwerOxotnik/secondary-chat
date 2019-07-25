@@ -160,6 +160,15 @@ function update_global_config()
 	global.secondary_chat.global.list = global.secondary_chat.global.list or {}
 end
 
+function delete_old_chat()
+	for _, player in pairs(game.players) do
+		local old_chat = player.gui.left.table_chat
+		if old_chat then
+			old_chat.destroy()
+		end
+	end
+end
+
 function global_init()
 	global.secondary_chat = global.secondary_chat or {}
 	if script.mod_name == 'level' then

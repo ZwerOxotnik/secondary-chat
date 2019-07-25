@@ -144,7 +144,7 @@ end
 
 send_message['faction'] = function(input_message, player)
 	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	local drop_down = player.gui.left.table_chat.select_chat.interactions.targets_drop_down
+	local drop_down = player.gui.screen.chat_main_frame.table_chat.select_chat.interactions.targets_drop_down
 	local message
 
 	if drop_down.visible then
@@ -284,7 +284,7 @@ send_message['admins'] = function(input_message, player)
 end
 
 send_message['private'] = function(input_message, player)
-	local drop_down = player.gui.left.table_chat.select_chat.interactions.targets_drop_down
+	local drop_down = player.gui.screen.chat_main_frame.table_chat.select_chat.interactions.targets_drop_down
 	local target = nil
 	if drop_down.visible then
 		target = game.players[drop_down.items[drop_down.selected_index]]

@@ -11,9 +11,10 @@ function click_gui_chat(event)
 	-- Validation of data
 	local gui = event.element
 	local player = game.players[event.player_index]
-	local table_chat = player.gui.left.table_chat
-	if not table_chat then return false end
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	if not chat_main_frame then return false end
 
+	local table_chat = chat_main_frame.table_chat
 	global.secondary_chat.players[player.index].autohide = max_autohide_time
 
 	if gui.parent then
@@ -28,7 +29,7 @@ function click_gui_chat(event)
 						create_settings_for_everything(player)
 					end
 				elseif event.alt then
-					table_chat.visible = false
+					chat_main_frame.visible = false
 					global.secondary_chat.players[event.player_index].settings.main.state_chat.state = false
 					script.raise_event(chat_events.on_hide_gui_chat, {player_index = event.player_index, container = table_chat})
 				else
@@ -52,7 +53,7 @@ end
 function player_send_message(event, is_localised)
 	local gui = event.element
 	local player = game.players[event.player_index]
-	local table_chat = player.gui.left.table_chat
+	local table_chat = player.gui.screen.chat_main_frame.table_chat
 
 	table_chat.notices.main.caption = ""
 
