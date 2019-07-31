@@ -120,7 +120,7 @@ send_message = {}
 
 send_message['all'] = function(input_message, player)
 	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	print("0000/00/00 00:00:00 [CHAT]" .. player.name .. ": " .. player.tag .. ": " .. input_message)
+	print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message)
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
 end
 send_message['surface'] = function(input_message, player)
@@ -136,7 +136,7 @@ send_message['surface'] = function(input_message, player)
 
 	if result then
 		player.force.print(message, player.chat_color)
-		print("0000/00/00 00:00:00 [CHAT]" .. player.name .. ": " .. player.tag .. ": " .. input_message)
+		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message)
 	else
 		local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
 		send_notice(message, player)
