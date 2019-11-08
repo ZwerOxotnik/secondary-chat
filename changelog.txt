@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.23.4
+Date: 2019-11-08
+  Changes:
+    - Returned spanish localization because of last updates of Factorio
+  Bugfixes:
+    - Fixed gui in settings
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
 Version: 1.23.3
 Date: 2019-07-31
   Bugfixes:

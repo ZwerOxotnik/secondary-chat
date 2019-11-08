@@ -228,7 +228,8 @@ function create_settings_for_everything(player)
 
 	local child_table = main_table.add{type = 'table', name = 'level_3', column_count = 2}
 	child_table.style.maximal_height = 500
-	child_table.style.maximal_width = 800
+	child_table.style.maximal_width = 1000
+	child_table.style.vertically_stretchable = true
 	local selecting = child_table.add{type = 'table', name = 'selecting', column_count = 2}
 	selecting.draw_vertical_lines = true
 	selecting.draw_horizontal_lines = true
@@ -265,7 +266,8 @@ function create_settings_for_everything(player)
 	patreon_table.style.horizontal_align  = 'right'
 	patreon_table.add{type = 'label', caption = {'', 'Patreon', {'colon'}}}
 	local text_box = patreon_table.add{type = 'text-box', text = 'https://www.patreon.com/ZwerOxotnik'}
-	text_box.style.height = 40
+	text_box.style.vertically_stretchable = true
+	text_box.style.maximal_width = 800
 	text_box.read_only = true
 
 	-- local button = main_table.add{type = 'button', name = 'close', caption = {'gui.close'}}
@@ -293,7 +295,7 @@ function update_list_settings(container, player)
 		button.style.font = 'default'
 	end
 
-	local buttons = {{name = 'personal', caption = {'gui.character'}}, {name = 'statistics'}, {name = 'news'}}
+	local buttons = {{name = 'personal', caption = {'gui.character'}}, {name = 'statistics'}, {name = 'faq'}}
 	for _, data in pairs( buttons ) do
 		add(container, data.name, data.caption)
 	end
@@ -313,7 +315,7 @@ table_setting['personal'] = {}
 table_setting['statistics'] = {}
 table_setting['global'] = {}
 table_setting['players'] = {}
-table_setting['news'] = {}
+table_setting['faq'] = {}
 --table_setting['translation'] = {}
 
 table_setting['personal'].update = function(player, table)
@@ -335,12 +337,15 @@ table_setting['players'].update = function(player, table)
 
 	-- end
 end
-table_setting['news'].update = function(player, table)
-	local news = table.add{type = 'text-box', text = player.name .. ', long messages are not visible, I can create a text box in the center, but is it [font=default-bold]convenient?[/font]\n\nEven the text box looks uncomfortable now :o'}
-	news.style.vertically_stretchable = true
-	news.read_only = true
+table_setting['faq'].update = function(player, table)
+	local faq = table.add{type = 'text-box', text ='WIP https://mods.factorio.com/mod/secondary-chat/discussion/5d8b5ff1afa034000d1274fe'}
+	faq.style.vertically_stretchable = true
+	faq.read_only = true
+	faq.style.maximal_width = 800
 	local link = table.add{type = 'text-box', text = 'https://mods.factorio.com/mod/secondary-chat/discussion'}
-	link.style.height = 40
+	link.style.vertically_stretchable = true
+	link.style.maximal_width = 800
+	link.style.maximal_height = 30
 	link.read_only = true
 end
 
@@ -350,6 +355,8 @@ function click_list_settings(name, player, table)
 	table.clear()
 
 	child_table = table.add{type = 'table', name = name, column_count = 1}
+	child_table.style.vertically_stretchable = true
+	child_table.style.maximal_width = 800
 	table_setting[name].update(player, child_table)
 	script.raise_event(chat_events.on_update_gui_container_settings, {player_index = player.index, container = child_table})
 end
