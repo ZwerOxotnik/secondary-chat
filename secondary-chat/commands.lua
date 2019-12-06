@@ -33,7 +33,7 @@ end
 
 function toggle_chat(cmd)
 	-- Validation of data
-	local player = game.player
+	local player = game.players[cmd.player_index]
 	if not (player and player.valid) then return end
 
 	if cmd.parameter then
@@ -62,7 +62,7 @@ function toggle_chat(cmd)
 			end
 			global.secondary_chat.players[player.index].settings.main.state_chat.state = chat_main_frame.visible
 		else
-			create_chat_gui(game.player)
+			create_chat_gui(player)
 			global.secondary_chat.players[player.index].settings.main.state_chat.state = true
 		end
 	end
