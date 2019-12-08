@@ -33,6 +33,7 @@ end
 
 function toggle_chat(cmd)
 	-- Validation of data
+	if not cmd.player_index then return end
 	local player = game.players[cmd.player_index]
 	if not (player and player.valid) then return end
 
@@ -99,6 +100,7 @@ function add_commands()
 			local commands = remote.call(chat.interface.name, chat.interface.get_commands, chat_name)
 			for _, data in pairs( commands ) do
 				local func = function(cmd)
+					if not cmd.player_index then return end
 					local player = game.players[cmd.player_index]
 					if not player then return end
 					if cmd.parameter ~= nil then
