@@ -1,4 +1,4 @@
-# Chat of extended interaction
+# Chat of extended interactions
 
 Read this in another language | [English](/README.md) | [Русский](/docs/ru/README.md)
 |---|---|---|
@@ -103,8 +103,10 @@ Repository or on [mods.factorio.com](https://mods.factorio.com/mod/secondary-cha
 ## Special thanks
 
 * **MeteorSbor** - tester
+* **midaw** - tester
 * **HAKER PLAY** - translator
 * **anonymous#1** - translator
+* [XMKTP](https://mods.factorio.com/mod/XMKTP) - Xagros's Mods Korean Translation Project
 
 ## Installing
 
@@ -117,7 +119,7 @@ For more information, see [Installing Mods on the Factorio wiki](https://wiki.fa
 If you have downloaded the source archive (GitLab):
 
 * copy the mod directory into your factorio mods directory
-* rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 1.21.0)
+* rename the mod directory to secondary-chat_*versionnumber*, where *versionnumber* is the version of the mod that you've downloaded (e.g., 1.22.4)
 
 ## License
 

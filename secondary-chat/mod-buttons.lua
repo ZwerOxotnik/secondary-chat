@@ -5,10 +5,11 @@ local function send_message_pressed(event)
 	local player = game.players[event.player_index]
 
 	-- Check the chat visibility
-	local table_chat = player.gui.left.table_chat
-	if table_chat then
-	local select_chat = table_chat.select_chat
-		if table_chat.visible then
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	if chat_main_frame then
+		local table_chat = chat_main_frame.table_chat
+		local select_chat = table_chat.select_chat
+		if chat_main_frame.visible then
 			if table_chat.top_chat.chat_table.chat_text_box.text == '' then
 				table_chat.top_chat.chat_table.chat_text_box.focus()
 			else
@@ -31,9 +32,10 @@ local function send_locale_pressed(event)
 	local player = game.players[event.player_index]
 
 	-- Check the chat visibility
-	local table_chat = game.players[event.player_index].gui.left.table_chat
-	if table_chat then
-		if table_chat.visible then
+	local chat_main_frame = game.players[event.player_index].gui.screen.chat_main_frame
+	if chat_main_frame then
+		if chat_main_frame.visible then
+			local table_chat = chat_main_frame.table_chat
 			if table_chat.top_chat.chat_table.chat_text_box.text == '' then
 				table_chat.top_chat.chat_table.chat_text_box.focus()
 			else
@@ -56,9 +58,10 @@ local function recover_last_message_from_chat_pressed(event)
 	local player = game.players[event.player_index]
 
 	-- Check the chat visibility
-	local table_chat = game.players[event.player_index].gui.left.table_chat
-	if table_chat then
-		if table_chat.visible then
+	local chat_main_frame = game.players[event.player_index].gui.screen.chat_main_frame
+	if chat_main_frame then
+		if chat_main_frame.visible then
+			local table_chat = chat_main_frame.table_chat
 			table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
 		else
 			global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
@@ -81,9 +84,10 @@ local function send_to_private_pressed(event)
 	if not (entity and entity.valid and (entity.type == 'car' or (entity.type == 'player' and entity.player) or (entity.last_user and entity.last_user.valid and entity.last_user ~= player))) then return end
 
 	-- Check the chat visibility
-	local table_chat = player.gui.left.table_chat
-	if table_chat then
-		if table_chat.visible then
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	if chat_main_frame then
+		if chat_main_frame.visible then
+			-- local table_chat = chat_main_frame.table_chat
 			-- temporarily (not working now)
 			-- if not (table_chat.top_chat and table_chat.top_chat.chat_table.chat_text_box) then return end
 			-- if select_chat.visible == false then
@@ -99,7 +103,8 @@ local function send_to_private_pressed(event)
 		create_chat_gui(player)
 	end
 
-	if not (table_chat and table_chat.valid and table_chat.select_chat) then return end
+	if not (chat_main_frame and chat_main_frame.valid and chat_main_frame.table_chat.select_chat) then return end
+	local table_chat = chat_main_frame.table_chat
 	local select_chat = table_chat.select_chat
 
 	-- Find a recipient
@@ -160,11 +165,12 @@ local function send_to_faction_pressed(event)
 	if not (entity and entity.valid and entity.force and #entity.force.players > 0) then return end
 
 	-- Check the chat visibility
-	local table_chat = player.gui.left.table_chat
+	local chat_main_frame = player.gui.screen.chat_main_frame
 
-	if table_chat then
-		if table_chat.visible then
+	if chat_main_frame then
+		if chat_main_frame.visible then
 			-- temporarily
+			-- local table_chat = chat_main_frame.table_chat
 			-- if not (table_chat.top_chat and table_chat.top_chat.chat_table.chat_text_box) then return end
 			-- if select_chat.visible == false then
 			--   select_chat.visible = true

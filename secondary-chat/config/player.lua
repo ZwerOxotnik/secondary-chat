@@ -4,11 +4,10 @@
 local config = {}
 
 config.get_info = function()
-	return {
-		main = {
-			
-		}
+	local settings = {
+		main = {}
 	}
+	return settings
 end
 
 -- List of player settings.
@@ -19,7 +18,7 @@ end
 --      allow_fast_show :: boolean (optional): show parameter in fast menu.
 --      tooltip :: LocalisedString/boolean/string (optional): tooltip of parameter.
 config.get_settings = function()
-	return {
+	local settings = {
 		main = {
 			state_chat = {state = true, access = true, allow_fast_show = false},
 			with_tag = {state = true, access = true, allow_fast_show = true},
@@ -30,6 +29,11 @@ config.get_settings = function()
 			allow_write = {state = true, allow_fast_show = false}
 		}
 	}
+	if script.mod_name ~= 'level' then
+		settings.main.auto_hide = {state = false, access = true, allow_fast_show = true, tooltip = true}
+	end
+
+	return settings
 end
 
 return config

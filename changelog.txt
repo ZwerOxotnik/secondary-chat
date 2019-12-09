@@ -1,4 +1,93 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.23.6
+Date: 2019-12-08
+  Bugfixes:
+    - Fixed commands from headless server
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.23.5
+Date: 2019-12-06
+  Bugfixes:
+    - Fixed commands
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.23.4
+Date: 2019-11-08
+  Changes:
+    - Returned spanish localization because of last updates of Factorio
+  Bugfixes:
+    - Fixed gui in settings
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.23.3
+Date: 2019-07-31
+  Bugfixes:
+    - Fixed messages for Factocord
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.23.2
+Date: 2019-07-30
+  Changes:
+    - Full compatibility with Factocord
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.23.1
+Date: 2019-07-30
+  Major features:
+    - Added compatibility with Factocord
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.23.0
+Date: 2019-07-25
+  Major features:
+    - Users can drag chat
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.22.4
+Date: 2019-07-11
+  Bugfixes:
+    - Fixed localisation of buttons due to https://wiki.factorio.com/Tutorial:Localisation#Localising_alternate_input_names
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.22.3
+Date: 2019-06-29
+  Features:
+    - Removed rich text in the mod name (see https://forums.factorio.com/70895)
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.22.2
+Date: 2019-05-15
+  Bugfixes:
+    - Fixed loading of the previous updated mod in saves [2]
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.22.1
+Date: 2019-05-15
+  Bugfixes:
+    - Fixed loading of the previous updated mod in saves
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
+Version: 1.22.0
+Date: 2019-05-15
+  Features:
+    - Added auto-hiding in chat settings
+    - Added news in extended chat settings
+  Changes:
+    - Spanish localisation moved to https://mods.factorio.com/mod/LPMF
+  Notes:
+    - This update for Factorio 0.17
+---------------------------------------------------------------------------------------------------
 Version: 1.21.5
 Date: 2019-05-03
   Bugfixes:
@@ -92,16 +181,16 @@ Date: 2019-03-03
     - Added autohide gui for the mod
     - Added notices in gui
     - Added sending message in gui by enter
-    - Added Ukrainian localization (localization by HAKER PLAY)
-    - Added Spanish localization
-    - Added Romanian localization (localization by anonymous#1)
-    - Added Italian localization (localization by anonymous#1)
+    - Added Ukrainian localisation (localisation by HAKER PLAY)
+    - Added Spanish localisation
+    - Added Romanian localisation (localisation by anonymous#1)
+    - Added Italian localisation (localisation by anonymous#1)
     - Added muting
   Changes:
     - Changed /toggle-chat drop-down
     - Changed style of GUI
     - Changed faction chat
-    - Changed improved localization
+    - Changed improved localisation
     - Changed improved compatibility with scenarios, mods, soft-mods, game
     - Changed text field in gui not be cleared if message not be sended
     - Changed title
