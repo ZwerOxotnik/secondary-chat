@@ -3,7 +3,6 @@
 
 function is_allow_message(message, sender)
 	if sender then
-		local table_chat = sender.gui.left.table_chat
 		if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
 			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
 			send_notice(message, sender)
@@ -20,7 +19,7 @@ function is_allow_message(message, sender)
 	elseif string.len(message) < global.secondary_chat.settings.limit_characters then
 		return true
 	end
-	
+
 	return false
 end
 
@@ -111,9 +110,9 @@ check_stance['specific'] = function(force, other_force)
 end
 
 function send_notice(message, player)
-	local table_chat = player.gui.left.table_chat
-	if table_chat and table_chat.visible then
-		local notice = table_chat.notices.main
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	if chat_main_frame and chat_main_frame.visible then
+		local notice = chat_main_frame.table_chat.notices.main
 		notice.caption = message
 	else
 		if player.afk_time < 1800 or type(message) ~= "string" or string.len(message) > 60 then

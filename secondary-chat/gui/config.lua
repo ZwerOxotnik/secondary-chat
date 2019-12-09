@@ -60,7 +60,7 @@ function make_config_table_player(gui, config, is_fast_menu)
 	local items = game.item_prototypes
 	for k, data in pairs (config) do
 		if data.access and (not is_fast_menu or (is_fast_menu and data.allow_fast_show)) then
-			if not is_fast_menu then 
+			if not is_fast_menu then
 				config_table.add{type = 'checkbox', name = k .. '-allow_fast_show', state = data.allow_fast_show}
 			end
 
@@ -98,7 +98,7 @@ function make_config_table_player(gui, config, is_fast_menu)
 			label.caption = {'', {'secondary_chat.' .. k}, {'colon'}}
 			if data.tooltip then
 				if tostring(type(data.tooltip)) == 'boolean' then
-					label.tooltip = {k .. '_tooltip'}
+					label.tooltip = {'secondary_chat.' .. k .. '_tooltip'}
 				else
 					label.tooltip = data.tooltip
 				end
@@ -144,7 +144,7 @@ function add_element_config_fast(data, config_table, name)
 		label.caption = {'', {'secondary_chat.' .. name}, {'colon'}}
 		if data.tooltip then
 			if tostring(type(data.tooltip)) == 'boolean' then
-				label.tooltip = {name .. '_tooltip'}
+				label.tooltip = {'secondary_chat.' .. name .. '_tooltip'}
 			else
 				label.tooltip = data.tooltip
 			end

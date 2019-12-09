@@ -5,9 +5,7 @@ local config = {}
 
 config.get_info = function()
 	return {
-		main = {
-			
-		}
+		main = {}
 	}
 end
 
