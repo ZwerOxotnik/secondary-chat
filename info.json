@@ -1,7 +1,7 @@
 {
     "name": "secondary-chat",
-    "version": "1.23.8",
-    "factorio_version": "1.0",
+    "version": "1.23.10",
+    "factorio_version": "0.18",
     "title": "Chat of extended interactions",
     "author": "ZwerOxotnik",
     "contact": "zweroxotnik@gmail.com, discord:ZwerOxotnik#7117",
@@ -11,7 +11,6 @@
     "dependencies":
     [
         "event-listener >= 0.8.0",
-        "? color-picker",
-		"base >= 0.17.59"
+        "? color-picker"
     ]
 }
