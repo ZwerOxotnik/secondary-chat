@@ -1,5 +1,5 @@
 --[[
-Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
+Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
 
@@ -14,30 +14,6 @@ local module = {}
 module.version = "1.23.6"
 module.events = {}
 local BUILD = 3000 -- Always to increment this number when change the code
-
-local function get_event(event)
-	if type(event) == "number" then
-		return event
-	else
-		return defines.events[event] --or event
-	end
-end
-
--- This function for compatibility with "Event listener" module and into other modules
-local function put_event(event, func)
-	event = get_event(event)
-	if event then
-		module.events[event] = func
-		if Event then
-			Event.register(event, func)
-		end
-		return true
-	else
-		log("The event is nil")
-		-- error("The event is nil")
-	end
-	return false
-end
 
 chats = {}
 
@@ -357,47 +333,49 @@ local function on_player_unmuted(event)
 	global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
+module.events = {
+	[defines.events.on_gui_selection_state_changed] = on_gui_selection_state_changed,
+	[defines.events.on_player_display_resolution_changed] = check_settings_frame_size,
+	[defines.events.on_gui_checked_state_changed] = on_gui_checked_state_changed,
+	[defines.events.on_gui_text_changed] = on_gui_text_changed,
+	[defines.events.on_gui_click] = on_gui_click,
+	[defines.events.on_player_created] = on_player_created,
+	[defines.events.on_player_removed] = on_player_removed,
+	[defines.events.on_player_joined_game] = on_player_joined_game,
+	[defines.events.on_player_left_game] = on_player_left_game,
+	[defines.events.on_player_changed_force] = update_chat_gui,
+	[defines.events.on_forces_merging] = update_chat_gui,
+	[defines.events.on_player_promoted] = on_player_promoted,
+	[defines.events.on_player_demoted] = on_player_demoted,
+	[defines.events.on_player_muted] = on_player_muted,
+	[defines.events.on_player_unmuted] = on_player_unmuted
+}
 
--- For attaching events
-put_event("on_gui_selection_state_changed", on_gui_selection_state_changed)
-put_event("on_player_display_resolution_changed", check_settings_frame_size)
-put_event("on_gui_checked_state_changed", on_gui_checked_state_changed)
-put_event("on_gui_text_changed", on_gui_text_changed)
-put_event("on_gui_click", on_gui_click)
-put_event("on_player_created", on_player_created)
-put_event("on_player_removed", on_player_removed)
-put_event("on_player_joined_game", on_player_joined_game)
-put_event("on_player_left_game", on_player_left_game)
-put_event("on_player_changed_force", update_chat_gui)
-put_event("on_forces_merging", update_chat_gui)
-put_event("on_player_promoted", on_player_promoted)
-put_event("on_player_demoted", on_player_demoted)
-put_event("on_player_muted", on_player_muted)
-put_event("on_player_unmuted", on_player_unmuted)
-
+-- TODO: Test it
 if script.mod_name ~= 'level' then
-	module.custom_events =
-	{
-		autohide = function()
-			local secondary_chat = global.secondary_chat
-			local data = secondary_chat.players
-			for player_index, player in pairs( game.connected_players ) do
-				local player_data = data[player_index]
-				if player_data.settings.main.auto_hide.state then
-					local table_chat = player.gui.screen.chat_main_frame
-					if chat_main_frame and chat_main_frame.visible then
-						if player_data.autohide <= 0 then
-							chat_main_frame.visible = false
-							script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = chat_main_frame})
-						else
-							player_data.autohide = player_data.autohide - (60 * 60)
-						end
+	local function autohide_GUI()
+		local secondary_chat = global.secondary_chat
+		local data = secondary_chat.players
+		for player_index, player in pairs( game.connected_players ) do
+			local player_data = data[player_index]
+			if player_data.settings.main.auto_hide.state then
+				local table_chat = player.gui.screen.chat_main_frame
+				if chat_main_frame and chat_main_frame.visible then
+					if player_data.autohide <= 0 then
+						chat_main_frame.visible = false
+						script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = chat_main_frame})
 					else
-						player_data.autohide = max_autohide_time
+						player_data.autohide = player_data.autohide - (60 * 60)
 					end
+				else
+					player_data.autohide = max_autohide_time
 				end
 			end
 		end
+	end
+
+	module.on_nth_tick = {
+		[60 * 60] = autohide_GUI
 	}
 end
 

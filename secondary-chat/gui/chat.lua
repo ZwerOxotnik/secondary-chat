@@ -1,4 +1,4 @@
--- Copyright (C) 2017-2019 ZwerOxotnik <zweroxotnik@gmail.com>
+-- Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 function destroy_chat_gui(player)
@@ -119,7 +119,7 @@ function create_chat_gui(player)
 
 	global.secondary_chat.players[player.index].gui.saves.hidden.last_message = nil
 
-	local chat_main_frame = gui.add{type = 'frame', caption = " ", name = 'chat_main_frame', style = "bordered_frame"}
+	local chat_main_frame = gui.add{type = 'frame', caption = " ", name = 'chat_main_frame', style = "borderless_frame"}
 	chat_main_frame.visible = true
 	chat_main_frame.style.maximal_width = 380
 	chat_main_frame.style.left_padding = 5

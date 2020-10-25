@@ -1,12 +1,7 @@
-# Chat of extended interactions
+# Chat with advanced interactions
 
 Read this in another language | [English](/README.md) | [Русский](/docs/ru/README.md)
 |---|---|---|
-
-## Quick Links
-
-[Changelog](CHANGELOG.md) | [Contributing](CONTRIBUTING.md)
-|---|---|
 
 ## Contents
 
@@ -123,7 +118,7 @@ If you have downloaded the source archive (GitLab):
 
 ## License
 
-This project is copyright © 2017-2019 ZwerOxotnik \<zweroxotnik@gmail.com\>.
+This project is copyright © 2017-2020 ZwerOxotnik \<zweroxotnik@gmail.com\>.
 
 Use of the source code included here is governed by the European Union Public License v. 1.2 only. See the [LICENCE](/LICENCE) file for details.
 
