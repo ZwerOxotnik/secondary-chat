@@ -119,16 +119,24 @@ end
 send_message = {}
 
 send_message['all'] = function(input_message, player)
-	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message)
+	if type(input_message) == "string" then
+		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
+	end
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
 end
+
 send_message['surface'] = function(input_message, player)
-	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	local player_index = player.index
+	local is_string = (type(input_message) == "string")
+	if is_string then
+		script.raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
+	end
 	local message = {"", player.name .. " (", {"secondary_chat_list.surface"}, ")", {"colon"}, " ", input_message}
 	local result = false
-	for index, target in pairs ( game.players ) do
-		if target.surface == player.surface and index ~= player.index then
+	local from_surface = player.surface
+	for index, target in pairs (game.players) do
+		if target.surface == from_surface and index ~= player_index then
 			result = true
 			sc_print_in_chat(message, target, player)
 		end
@@ -136,38 +144,43 @@ send_message['surface'] = function(input_message, player)
 
 	if result then
 		player.force.print(message, player.chat_color)
-		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message)
+		if is_string then
+			print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
+		end
 	else
-		local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
-		send_notice(message, player)
+		local _message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
+		send_notice(_message, player)
 	end
 	return result
 end
 
 send_message['faction'] = function(input_message, player)
-	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	if type(input_message) == "string" then
+		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	end
 	local drop_down = player.gui.screen.chat_main_frame.table_chat.select_chat.interactions.targets_drop_down
 	local message
 
+	local player_name = player.name
 	if drop_down.visible then
 		local target = game.forces[drop_down.items[drop_down.selected_index]]
 		if target then
 			if target ~= player.force then
-				message = {"", player.name .. " | " .. player.force.name, {"colon"}, " ", input_message}
+				message = {"", player_name .. " | " .. player.force.name, {"colon"}, " ", input_message}
 				sc_print_in_chat(message, target, player)
-				message = {"", player.name .. "➟" .. target.name, {"colon"}, " ", input_message}
+				message = {"", player_name .. "➟" .. target.name, {"colon"}, " ", input_message}
 				sc_print_in_chat(message, player.force, player)
 			else
 				if global.secondary_chat.players[player.index].settings.main.with_tag.state then
 					if player.tag ~= '' then
-						message = {"", player.name .. " " .. player.tag, {"colon"}, " ", input_message}
+						message = {"", player_name .. " " .. player.tag, {"colon"}, " ", input_message}
 						return sc_print_in_chat(message, player.force, player)
 					else
-						message = {"", player.name, {"colon"}, " ", input_message}
+						message = {"", player_name, {"colon"}, " ", input_message}
 						return sc_print_in_chat(message, player.force, player)
 					end
 				else
-					message = {"", player.name, {"colon"}, " ", input_message}
+					message = {"", player_name, {"colon"}, " ", input_message}
 					return sc_print_in_chat(message, player.force, player)
 				end
 			end
@@ -179,35 +192,40 @@ send_message['faction'] = function(input_message, player)
 	else
 		if global.secondary_chat.players[player.index].settings.main.with_tag.state then
 			if player.tag ~= "" then
-				message = {"", player.name .. " " .. player.tag, {"colon"}, " ", input_message}
+				message = {"", player_name .. " " .. player.tag, {"colon"}, " ", input_message}
 				return sc_print_in_chat(message, player.force, player)
 			else
-				message = {"", player.name, {"colon"}, " ", input_message}
+				message = {"", player_name, {"colon"}, " ", input_message}
 				return sc_print_in_chat(message, player.force, player)
 			end
 		else
-			message = {"", player.name, {"colon"}, " ", input_message}
+			message = {"", player_name, {"colon"}, " ", input_message}
 			return sc_print_in_chat(message, player.force, player)
 		end
 	end
 end
 
 send_message['local'] = function(input_message, player)
-	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	local is_string = (type(input_message) == "string")
+	if is_string then
+		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	end
 	local pos_p1 = player.position
 	local is_draw = false
-	if type(input_message) == "string" and string.len(input_message) <= 130 then
+	if is_string and string.len(input_message) <= 130 then
 		is_draw = true
 	end
 
 	local targets = {}
-	for _, near_player in pairs (game.connected_players) do
-		if player.surface == near_player.surface then
+	local player_name = player.name
+	local from_surface = player.surface
+	for _, near_player in pairs(game.connected_players) do
+		if from_surface == near_player.surface then
 			local pos_p2 = near_player.position
 			if ((pos_p1.x - pos_p2.x)^2 + (pos_p1.y - pos_p2.y)^2)^(0.5) <= 116 then
-				sc_print_in_chat({"", player.name .. " (", {"secondary_chat_list.local"}, ")", {"colon"}, " ", input_message}, near_player, player)
+				sc_print_in_chat({"", player_name .. " (", {"secondary_chat_list.local"}, ")", {"colon"}, " ", input_message}, near_player, player)
 				if is_draw then
-					table.insert(targets, near_player)
+					targets[#targets+1] = near_player
 				end
 			end
 		end
@@ -233,27 +251,35 @@ send_message['local'] = function(input_message, player)
 end
 
 send_message['allies'] = function(input_message, player)
-	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	local is_string = (type(input_message) == "string")
+	if is_string then
+		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	end
 	local message = {"", player.name .. " (", {"secondary_chat_list.allies"}, ")", {"colon"}, " ", input_message}
 	local result = false
+	local player_force = player.force
 	for _, force in pairs (game.forces) do
-		if #force.players ~= 0 and player.force.get_friend(force) then
+		if #force.players ~= 0 and player_force.get_friend(force) then
 			result = true
 			sc_print_in_chat(message, force, player)
 		end
 	end
 
 	if result then
-		player.force.print(message, player.chat_color)
+		player_force.print(message, player.chat_color)
 	else
-		local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
+		message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"noone-to-reply"}}
 		send_notice(message, player)
 	end
 	return result
 end
 
 send_message['admins'] = function(input_message, player)
-	script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	local is_string = (type(input_message) == "string")
+	local player_index = player.index
+	if is_string then
+		script.raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
+	end
 	local message
 
 	if player.admin then
@@ -263,9 +289,9 @@ send_message['admins'] = function(input_message, player)
 	end
 
 	local result = false
-	for index, admin in pairs (game.players) do
-		if admin.admin and index ~= player.index then
-			sc_print_in_chat(message, admin, player)
+	for index, target in pairs(game.players) do
+		if target.admin and index ~= player_index then
+			sc_print_in_chat(message, target, player)
 			result = true
 		end
 	end
@@ -275,10 +301,10 @@ send_message['admins'] = function(input_message, player)
 		sc_print_in_chat(message, player, player)
 	else
 		if player.admin then
-			local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.sole_administrator"}}
+			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.sole_administrator"}}
 			send_notice(message, player)
 		else
-			local message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
+			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.admins_not_founded"}}
 			send_notice(message, player)
 		end
 	end
