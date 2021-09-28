@@ -1,4 +1,4 @@
--- Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
+-- Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 local function check_and_change_visible_table(table)
@@ -373,12 +373,4 @@ function toogle_visible_list(gui, player)
 	end
 
 	list.visible = not list.visible
-end
-
-function check_settings_frame_size(event)
-	local player = game.players[event.player_index]
-	if not player then return end
-	local frame = player.gui.center.secondary_chat_settings
-	if not frame then return end
-	create_settings_for_everything(player)
 end

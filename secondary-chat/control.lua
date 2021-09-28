@@ -1,5 +1,5 @@
 --[[
-Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
+Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
 
@@ -44,7 +44,7 @@ local function press_button_send_chat(event)
 	if event.shift then
 		player_send_message(event, true)
 	elseif event.control then
-		local player = game.players[event.player_index]
+		local player = game.get_player(event.player_index)
 		local table_chat = player.gui.screen.chat_main_frame.table_chat
 		table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
 	else
@@ -53,13 +53,8 @@ local function press_button_send_chat(event)
 end
 
 local function on_gui_click(event)
-	-- Validation of data
-	local gui = event.element
-	if not (gui and gui.valid) then return end
-	local player = game.players[event.player_index]
-	if not (player and player.valid) then return end
-
-	if (gui.name == "print_in_chat" or string.match(gui.name, "chat_(.+)")) then
+	local element = event.element
+	if (element.name == "print_in_chat" or string.match(element.name, "chat_(.+)")) then
 		press_button_send_chat(event)
 	else
 		click_gui_chat(event)
@@ -82,27 +77,23 @@ end
 
 local function on_gui_text_changed(event)
 	-- Validation of data
-	local gui = event.element
-	if not (gui and gui.valid) then return end
-	local player = game.players[event.player_index]
-	if not (player and player.valid) then return end
-
-	if gui.name == 'chat_text_box' and gui.parent.parent.parent.name == 'table_chat' then
-		if string.byte(gui.text, -1) == 10 then
-			if #gui.text > 1 then
-				gui.text = gui.text:sub(1, -2)
-				event.element = gui.parent.parent.parent.select_chat.interactions.print_in_chat
+	local element = event.element
+	if element.name == 'chat_text_box' and element.parent.parent.parent.name == 'table_chat' then
+		if string.byte(element.text, -1) == 10 then
+			if #element.text > 1 then
+				element.text = element.text:sub(1, -2)
+				event.element = element.parent.parent.parent.select_chat.interactions.print_in_chat
 				player_send_message(event)
 
 				-- unfocus for the gui
-				text_box = create_chat_text_box(gui.parent)
+				text_box = create_chat_text_box(element.parent)
 
 				if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
 					text_box.focus()
 				end
 			else
 				-- unfocus for the gui
-				create_chat_text_box(gui.parent)
+				create_chat_text_box(element.parent)
 			end
 		end
 		return true
@@ -110,52 +101,42 @@ local function on_gui_text_changed(event)
 end
 
 local function on_gui_checked_state_changed(event)
-	-- Validation of data
-	local gui = event.element
-	if not (gui and gui.valid and gui.parent.parent.parent) then return end
-	local player = game.players[event.player_index]
-	if not (player and player.valid) then return end
-
-	if gui.parent.name == 'config_table' and (gui.parent.parent.parent.name == 'settings' or gui.parent.parent.parent.parent.name == 'settings') then
-		local parameter = string.match(gui.name, "(.+)_boolean")
+	local element = event.element
+	if element.parent.name == 'config_table' and (element.parent.parent.parent.name == 'settings' or element.parent.parent.parent.parent.name == 'settings') then
+		local parameter = string.match(element.name, "(.+)_boolean")
 		if parameter then
-			update_checkbox(player, gui, parameter)
+			update_checkbox(game.get_player(event.player_index), element, parameter)
 			return true
 		end
 
-		local parameter = string.match(gui.name, "(.+)-allow_fast_show")
+		parameter = string.match(element.name, "(.+)-allow_fast_show")
 		if parameter then
-			update_allow_fast_show(player, gui, parameter)
+			update_allow_fast_show(game.get_player(event.player_index), element, parameter)
 			return true
 		end
 	end
 end
 
 local function on_gui_selection_state_changed(event)
-	-- Validation of data
-	local gui = event.element
-	if not (gui and gui.valid) then return end
-	local player = game.players[event.player_index]
-	if not (player and player.valid) then return end
+	if event.element.parent.parent.name ~= 'select_chat' then return end
 
-	if gui.parent.parent.name == 'select_chat' then
-		if gui.parent.name == 'table_filter' then
-			update_chat_and_drop_down(gui.parent.parent.interactions.chat_drop_down, player)
-			return true
-		elseif gui.name == 'chat_drop_down' then
-			update_chat_and_drop_down(gui, player)
-			return true
-		elseif gui.name == 'targets_drop_down' then
-			local chat_name = get_chat_name(gui.parent.parent.interactions.chat_drop_down.selected_index)
-			script.raise_event(chat_events.on_update_chat_and_drop_down, {player_index = event.player_index, chat_name = chat_name, target = gui.items[gui.selected_index]})
-			return true
-		end
+	local element = event.element
+	if element.parent.name == 'table_filter' then
+		update_chat_and_drop_down(element.parent.parent.interactions.chat_drop_down, game.get_player(event.player_index))
+		return true
+	elseif element.name == 'chat_drop_down' then
+		update_chat_and_drop_down(element, game.get_player(event.player_index))
+		return true
+	elseif element.name == 'targets_drop_down' then
+		local chat_name = get_chat_name(element.parent.parent.interactions.chat_drop_down.selected_index)
+		script.raise_event(chat_events.on_update_chat_and_drop_down, {player_index = event.player_index, chat_name = chat_name, target = element.items[element.selected_index]})
+		return true
 	end
 end
 
 local function on_player_promoted(event)
 	-- Validation of data
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
 
 	check_settings(player)
@@ -163,7 +144,7 @@ end
 
 local function on_player_demoted(event)
 	-- Validation of data
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
 
 	check_settings(player)
@@ -248,7 +229,7 @@ local function on_player_joined_game(event)
 	end
 
 	-- Validation of data
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
 
 	if global.secondary_chat.players[event.player_index] then
@@ -286,7 +267,7 @@ end
 
 local function on_player_left_game(event)
 	-- Validation of data
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
 
 	color_picker.destroy_gui(player)
@@ -321,7 +302,7 @@ end
 
 local function on_player_muted(event)
 	-- Validation of data
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
 
 	-- Mute the player
@@ -333,12 +314,21 @@ local function on_player_unmuted(event)
 	global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
+local function check_settings_frame_size(event)
+	local player = game.get_player(event.player_index)
+	if not (player and player.valid) then return end
+	local frame = player.gui.center.secondary_chat_settings
+	if not frame then return end
+	create_settings_for_everything(player)
+end
+
+
 module.events = {
-	[defines.events.on_gui_selection_state_changed] = on_gui_selection_state_changed,
+	[defines.events.on_gui_selection_state_changed] = function(e) pcall(on_gui_selection_state_changed, e) end,
 	[defines.events.on_player_display_resolution_changed] = check_settings_frame_size,
-	[defines.events.on_gui_checked_state_changed] = on_gui_checked_state_changed,
-	[defines.events.on_gui_text_changed] = on_gui_text_changed,
-	[defines.events.on_gui_click] = on_gui_click,
+	[defines.events.on_gui_checked_state_changed] = function(e) pcall(on_gui_checked_state_changed, e) end,
+	[defines.events.on_gui_text_changed] = function(e) pcall(on_gui_text_changed, e) end,
+	[defines.events.on_gui_click] = function(e) pcall(on_gui_click, e) end,
 	[defines.events.on_player_created] = on_player_created,
 	[defines.events.on_player_removed] = on_player_removed,
 	[defines.events.on_player_joined_game] = on_player_joined_game,
@@ -359,7 +349,7 @@ if script.mod_name ~= 'level' then
 		for player_index, player in pairs( game.connected_players ) do
 			local player_data = data[player_index]
 			if player_data.settings.main.auto_hide.state then
-				local table_chat = player.gui.screen.chat_main_frame
+				local chat_main_frame = player.gui.screen.chat_main_frame
 				if chat_main_frame and chat_main_frame.visible then
 					if player_data.autohide <= 0 then
 						chat_main_frame.visible = false

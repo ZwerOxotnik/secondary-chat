@@ -1,4 +1,4 @@
--- Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
+-- Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 local color_picker = {}
@@ -50,7 +50,7 @@ color_picker.ok_pressed = function(event)
 	if container.name ~= 'sccp_container' then return false end
 
 	local interface = pick_interface()
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	local color = remote.call(interface, 'get_color', container)
 	player.chat_color = color
 	local table_chat = player.gui.screen.chat_main_frame.table_chat

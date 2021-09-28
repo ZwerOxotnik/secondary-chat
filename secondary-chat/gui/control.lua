@@ -1,4 +1,4 @@
--- Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
+-- Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 require("secondary-chat/gui/config")
@@ -10,7 +10,7 @@ require("secondary-chat/gui/buttons")
 function click_gui_chat(event)
 	-- Validation of data
 	local gui = event.element
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	if not chat_main_frame then return false end
 
@@ -52,7 +52,7 @@ end
 
 function player_send_message(event, is_localised)
 	local gui = event.element
-	local player = game.players[event.player_index]
+	local player = game.get_player(event.player_index)
 	local table_chat = player.gui.screen.chat_main_frame.table_chat
 
 	table_chat.notices.main.caption = ""

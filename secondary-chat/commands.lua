@@ -1,4 +1,4 @@
--- Copyright (C) 2017-2020 ZwerOxotnik <zweroxotnik@gmail.com>
+-- Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 function toggle_drop_down(player)
@@ -34,7 +34,7 @@ end
 function toggle_chat(cmd)
 	-- Validation of data
 	if not cmd.player_index then return end
-	local player = game.players[cmd.player_index]
+	local player = game.get_player(cmd.player_index)
 	if not (player and player.valid) then return end
 
 	if cmd.parameter then
@@ -101,7 +101,7 @@ function add_commands()
 			for _, data in pairs( commands ) do
 				local func = function(cmd)
 					if not cmd.player_index then return end
-					local player = game.players[cmd.player_index]
+					local player = game.get_player(cmd.player_index)
 					if not player then return end
 					if cmd.parameter ~= nil then
 						if not is_allow_message(cmd.parameter, player) then return end
