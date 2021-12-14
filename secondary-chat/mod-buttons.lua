@@ -10,8 +10,9 @@ local function send_message_pressed(event)
 		local table_chat = chat_main_frame.table_chat
 		local select_chat = table_chat.select_chat
 		if chat_main_frame.visible then
-			if table_chat.top_chat.chat_table.chat_text_box.text == '' then
-				table_chat.top_chat.chat_table.chat_text_box.focus()
+			local chat_text_box = table_chat.top_chat.chat_table.chat_text_box
+			if chat_text_box.text == '' then
+				chat_text_box.focus()
 			else
 				event.element = select_chat.interactions.print_in_chat
 				player_send_message(event)
@@ -186,6 +187,8 @@ local function send_to_faction_pressed(event)
 		create_chat_gui(player)
 	end
 
+	-- TODO: recheck
+	local table_chat = chat_main_frame.table_chat
 	if not (table_chat and table_chat.valid and table_chat.select_chat) then return end
 	local select_chat = table_chat.select_chat
 

@@ -140,15 +140,15 @@ function update_global_config()
 
 		local info = global.secondary_chat.global.info
 		if info then
-			for table, child_table in pairs( configs.global.get_info() ) do
-				if info[table] then
+			for key, child_table in pairs( configs.global.get_info() ) do
+				if info[key] then
 					for name, data in pairs( child_table ) do
-						if info[table][name] == nil or type(data) ~= type(parameter) then
-							info[table][name] = data
+						if info[key][name] == nil or type(data) ~= type(parameter) then -- TODO: fix
+							info[key][name] = data
 						end
 					end
 				else
-					info[table] = child_table
+					info[key] = child_table
 				end
 			end
 		else

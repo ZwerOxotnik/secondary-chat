@@ -1,6 +1,10 @@
 -- Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
+local call = remote.call
+local raise_event = script.raise_event
+local tinsert = table.insert
+
 data = {}
 data.chat = {}
 
@@ -81,13 +85,13 @@ function update_chat(name, main_data)
 	if not chat then return false end
 
 	local interface = chat.interface
-
-	if not interface or type(interface.name) ~= 'string' or not remote.interfaces[interface.name] then
+	local remote_interface = remote.interfaces[interface.name]
+	if not interface or type(interface.name) ~= 'string' or not remote_interface then
 		chat = nil
 		log('error interface: chats[' .. name .. ']')
 		return false
-	elseif type(interface.send_message) ~= 'string' or not remote.interfaces[interface.name][interface.send_message]
-			or type(remote.call(interface.name, interface.send_message, name)) ~= 'function' then
+	elseif type(interface.send_message) ~= 'string' or not remote_interface[interface.send_message]
+			or type(call(interface.name, interface.send_message, name)) ~= 'function' then
 		chat = nil
 		log('error interface with send_message: chats[' .. name .. ']')
 		return false
@@ -97,21 +101,21 @@ function update_chat(name, main_data)
 	--chat.is_have_state = chat.is_have_state or false
 	--chat.is_have_online = chat.is_have_online or false
 
-	if interface.change_list and (type(interface.change_list) ~= 'string' or type(remote.call(interface.name, interface.change_list, name)) ~= 'function') then
+	if interface.change_list and (type(interface.change_list) ~= 'string' or type(call(interface.name, interface.change_list, name)) ~= 'function') then
 		log('error interface with change_list: chats[' .. name .. ']')
 		interface.change_list = nil
 	end
 
 	if interface.get_commands and (type(interface.get_commands) ~= 'string' or not remote.interfaces[interface.name][interface.get_commands]
-			or type(remote.call(interface.name, interface.get_commands, name)) ~= 'table') then
+			or type(call(interface.name, interface.get_commands, name)) ~= 'table') then
 		log('error interface with get_commands: chats[' .. name .. ']')
 		interface.get_commands = nil
 	end
 
-	table.insert(chats.list, {'secondary_chat_list.' .. name})
+	tinsert(chats.list, {'secondary_chat_list.' .. name})
 	chats.keys[name] = #chats.list
 
-	script.raise_event(chat_events.on_add_chat, {chat_name = name})
+	raise_event(chat_events.on_add_chat, {chat_name = name})
 
 	return true
 end
@@ -120,7 +124,7 @@ send_message = {}
 
 send_message['all'] = function(input_message, player)
 	if type(input_message) == "string" then
-		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
 		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
 	end
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
@@ -130,7 +134,7 @@ send_message['surface'] = function(input_message, player)
 	local player_index = player.index
 	local is_string = (type(input_message) == "string")
 	if is_string then
-		script.raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
+		raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
 	end
 	local message = {"", player.name .. " (", {"secondary_chat_list.surface"}, ")", {"colon"}, " ", input_message}
 	local result = false
@@ -156,7 +160,7 @@ end
 
 send_message['faction'] = function(input_message, player)
 	if type(input_message) == "string" then
-		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
 	end
 	local drop_down = player.gui.screen.chat_main_frame.table_chat.select_chat.interactions.targets_drop_down
 	local message
@@ -208,7 +212,7 @@ end
 send_message['local'] = function(input_message, player)
 	local is_string = (type(input_message) == "string")
 	if is_string then
-		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
 	end
 	local pos_p1 = player.position
 	local is_draw = false
@@ -253,7 +257,7 @@ end
 send_message['allies'] = function(input_message, player)
 	local is_string = (type(input_message) == "string")
 	if is_string then
-		script.raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
 	end
 	local message = {"", player.name .. " (", {"secondary_chat_list.allies"}, ")", {"colon"}, " ", input_message}
 	local result = false
@@ -278,7 +282,7 @@ send_message['admins'] = function(input_message, player)
 	local is_string = (type(input_message) == "string")
 	local player_index = player.index
 	if is_string then
-		script.raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
+		raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
 	end
 	local message
 
@@ -347,7 +351,7 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
 	else -- gui_online.keys['offline']
 		for _, player in pairs( game.players ) do
 			if not player.connected then
-				table.insert(list_players, player)
+				tinsert(list_players, player)
 			end
 		end
 	end
@@ -361,7 +365,7 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
 		if check_stance(target.force, player.force) then
 			if target ~= player then
 				index = index + 1
-				table.insert(items, player.name)
+				tinsert(items, player.name)
 			end
 			if not new_selected_index and last_target and last_target == player then
 				new_selected_index = index
@@ -435,7 +439,7 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
 	local index = 0
 	for name, force in pairs( list_forces ) do
 		if #force.players > 0 and check_stance(target.force, force) then
-			table.insert(items, name)
+			tinsert(items, name)
 			index = index + 1
 			if new_selected_index == nil then
 				if last_target then

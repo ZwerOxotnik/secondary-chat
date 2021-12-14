@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.25.0
+Date: 2021-12-14
+  Changes:
+    - Refactored slightly (I should do it fully, but it'll take too much time)
+    - Changed default location of chat gui for players
+---------------------------------------------------------------------------------------------------
 Version: 1.24.7
 Date: 2021-09-28
   Changes:

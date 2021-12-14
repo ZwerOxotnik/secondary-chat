@@ -67,7 +67,7 @@ end
 function create_chat_gui(player)
 	if not global.secondary_chat.players[player.index].settings.main.state_chat.state then return end
 
-	local gui = player.gui.screen
+	local screen = player.gui.screen
 	local last_message = ''
 	local notice_text = ''
 	local chat_text_box_text = ''
@@ -75,8 +75,8 @@ function create_chat_gui(player)
 	local items = {}
 	local visible = {}
 
-	if gui.chat_main_frame then
-		local table_chat = gui.chat_main_frame.table_chat
+	if screen.chat_main_frame then
+		local table_chat = screen.chat_main_frame.table_chat
 		chat_text_box_text = table_chat.top_chat.chat_table.chat_text_box.text
 		-- last_messages = table_chat.last_messages.last.text -- ???
 
@@ -110,8 +110,8 @@ function create_chat_gui(player)
 	end
 
 	local is_new = true
-	if gui.chat_main_frame then
-		local chat_main_frame = gui.chat_main_frame
+	if screen.chat_main_frame then
+		local chat_main_frame = screen.chat_main_frame
 		global.secondary_chat.players[player.index].gui.saves.hidden.last_message = chat_main_frame.table_chat.top_chat.chat_table.chat_text_box.text
 		chat_main_frame.destroy()
 		is_new = false
@@ -119,7 +119,8 @@ function create_chat_gui(player)
 
 	global.secondary_chat.players[player.index].gui.saves.hidden.last_message = nil
 
-	local chat_main_frame = gui.add{type = 'frame', caption = " ", name = 'chat_main_frame', style = "borderless_frame"}
+	local chat_main_frame = screen.add{type = 'frame', caption = " ", name = 'chat_main_frame', style = "borderless_frame"}
+	chat_main_frame.location = {x = player.display_resolution.width - 960, y = 50}
 	chat_main_frame.visible = true
 	chat_main_frame.style.maximal_width = 380
 	chat_main_frame.style.left_padding = 5

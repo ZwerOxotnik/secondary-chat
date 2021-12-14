@@ -9,6 +9,7 @@ local function check_and_change_visible_table(table)
 			if #child.children == 0 then
 				child.visible = false
 			else
+				-- TODO: refactor
 				for _, element in pairs( child.children ) do
 					if element.visible ~= false then
 						is_visible_elements = true
@@ -164,8 +165,9 @@ function update_checkbox(player, element, parameter)
 end
 
 function update_allow_fast_show(player, element, parameter)
-	global.secondary_chat.players[player.index].autohide = max_autohide_time
-	global.secondary_chat.players[player.index].settings.main[parameter].allow_fast_show = element.state
+	local player_data = global.secondary_chat.players[player.index]
+	player_data.autohide = max_autohide_time
+	player_data.settings.main[parameter].allow_fast_show = element.state
 
 	local container = element.parent.parent
 	local chat_main_frame = player.gui.screen.chat_main_frame
@@ -176,7 +178,7 @@ function update_allow_fast_show(player, element, parameter)
 			local element_fast_menu = gui_settings[parameter]
 			if element.state then
 				if not element_fast_menu then
-					add_element_config_fast(global.secondary_chat.players[player.index].settings.main[parameter], gui_settings, parameter)
+					add_element_config_fast(player_data.settings.main[parameter], gui_settings, parameter)
 				end
 			elseif element_fast_menu then
 				element_fast_menu.destroy()
@@ -240,7 +242,7 @@ function create_settings_for_everything(player)
 	list.visible = true
 	local label = list.add{type = 'label', caption = {'secondary_chat_settings.list'}}
 	label.style.font = 'default-semibold'
-	local scroll = list.add{name = "scrollpane", name = 'scroll', type = "scroll-pane"}
+	local scroll = list.add{name = 'scroll', type = "scroll-pane"}
 	scroll.style.maximal_width = 200
 	local list_container = scroll.add{type = 'table', name = 'container', column_count = 1}
 	list_container.style.horizontal_spacing = 5
@@ -257,9 +259,9 @@ function create_settings_for_everything(player)
 	button.style.font = 'default-semibold'
 	button.style.horizontal_align  = 'left'
 	button.style.vertical_align = 'center'
-	local scrollpane = child_table.add{name = "scrollpane", name = 'scroll', type = "scroll-pane"}
+	local scrollpane = child_table.add{name = 'scroll', type = "scroll-pane"}
 	scrollpane.style.vertical_align = 'top'
-	local settings_table = scrollpane.add{type = 'table', name = 'settings', column_count = 1}
+	scrollpane.add{type = 'table', name = 'settings', column_count = 1}
 
 	local patreon_table = main_table.add{type = 'table', name = 'patreon', column_count = 2}
 	patreon_table.style.vertical_align = 'bottom'
@@ -354,7 +356,7 @@ function click_list_settings(name, player, table)
 
 	table.clear()
 
-	child_table = table.add{type = 'table', name = name, column_count = 1}
+	local child_table = table.add{type = 'table', name = name, column_count = 1}
 	child_table.style.vertically_stretchable = true
 	child_table.style.maximal_width = 800
 	table_setting[name].update(player, child_table)

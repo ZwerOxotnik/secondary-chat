@@ -11,9 +11,11 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local module = {}
-module.version = "1.23.6"
+module.version = "1.25.0"
 module.events = {}
-local BUILD = 3000 -- Always to increment this number when change the code
+local BUILD = 3100 -- Always to increment this number when change the code
+
+local match = string.match
 
 chats = {}
 
@@ -54,7 +56,7 @@ end
 
 local function on_gui_click(event)
 	local element = event.element
-	if (element.name == "print_in_chat" or string.match(element.name, "chat_(.+)")) then
+	if (element.name == "print_in_chat" or match(element.name, "chat_(.+)")) then
 		press_button_send_chat(event)
 	else
 		click_gui_chat(event)
@@ -86,7 +88,7 @@ local function on_gui_text_changed(event)
 				player_send_message(event)
 
 				-- unfocus for the gui
-				text_box = create_chat_text_box(element.parent)
+				local text_box = create_chat_text_box(element.parent)
 
 				if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
 					text_box.focus()
@@ -103,13 +105,13 @@ end
 local function on_gui_checked_state_changed(event)
 	local element = event.element
 	if element.parent.name == 'config_table' and (element.parent.parent.parent.name == 'settings' or element.parent.parent.parent.parent.name == 'settings') then
-		local parameter = string.match(element.name, "(.+)_boolean")
+		local parameter = match(element.name, "(.+)_boolean")
 		if parameter then
 			update_checkbox(game.get_player(event.player_index), element, parameter)
 			return true
 		end
 
-		parameter = string.match(element.name, "(.+)-allow_fast_show")
+		parameter = match(element.name, "(.+)-allow_fast_show")
 		if parameter then
 			update_allow_fast_show(game.get_player(event.player_index), element, parameter)
 			return true
