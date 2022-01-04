@@ -1,5 +1,5 @@
 --[[
-Copyright (C) 2017-2021 ZwerOxotnik <zweroxotnik@gmail.com>
+Copyright (C) 2017-2022 ZwerOxotnik <zweroxotnik@gmail.com>
 Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 Author: ZwerOxotnik
 
@@ -194,15 +194,15 @@ module.on_load = function()
 		end
 	end
 
-    local function pick_interface(interfaces)
-        for _, name in pairs( interfaces ) do
-            if remote.interfaces[name] then
-                return name
-            end
-        end
+	local function pick_interface(interfaces)
+			for _, name in pairs( interfaces ) do
+					if remote.interfaces[name] then
+							return name
+					end
+			end
 
-        return nil
-    end
+			return nil
+	end
 
 	-- Searching event "on_ok_button_clicked" from a mod "color-picker"
 	local interface = pick_interface({"color-picker"})
@@ -316,6 +316,23 @@ local function on_player_unmuted(event)
 	global.secondary_chat.global.mutes[event.player_index] = nil
 end
 
+local function on_console_chat(event)
+	local player = game.get_player(event.player_index)
+	if not (player and player.valid) then return end
+
+  local force = player.force
+	if #force.players ~= 1 then return end
+
+	-- Send message to everyone
+	if #game.players > 1 then
+		local color = player.chat_color
+		local tag = player.tag
+		if tag ~= '' then tag = ' ' .. tag end
+		local message = {'', player.name, tag, " (", {"command-output.shout"}, ')', {"colon"}, ' ', event.message}
+		game.print(message, color)
+	end
+end
+
 local function check_settings_frame_size(event)
 	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
@@ -323,6 +340,7 @@ local function check_settings_frame_size(event)
 	if not frame then return end
 	create_settings_for_everything(player)
 end
+
 
 
 module.events = {
@@ -340,7 +358,8 @@ module.events = {
 	[defines.events.on_player_promoted] = on_player_promoted,
 	[defines.events.on_player_demoted] = on_player_demoted,
 	[defines.events.on_player_muted] = on_player_muted,
-	[defines.events.on_player_unmuted] = on_player_unmuted
+	[defines.events.on_player_unmuted] = on_player_unmuted,
+	[defines.events.on_console_chat] = on_console_chat
 }
 
 -- TODO: Test it
