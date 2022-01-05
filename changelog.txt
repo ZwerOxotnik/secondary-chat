@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.26.1
+Date: 2022-01-05
+  Bugfixes:
+    - Fixed double message (bug from 1.26.0)
+  Scripting:
+    - Removed firing of console events (the imitiation isn't appropriate)
+---------------------------------------------------------------------------------------------------
 Version: 1.26.0
 Date: 2022-01-04
   Features:

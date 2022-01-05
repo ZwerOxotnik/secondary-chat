@@ -124,7 +124,7 @@ send_message = {}
 
 send_message['all'] = function(input_message, player)
 	if type(input_message) == "string" then
-		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+		-- TODO: fix/change event
 		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
 	end
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
@@ -133,9 +133,10 @@ end
 send_message['surface'] = function(input_message, player)
 	local player_index = player.index
 	local is_string = (type(input_message) == "string")
-	if is_string then
-		raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
-	end
+	-- if is_string then
+		-- TODO: fix/change event
+		-- raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
+	-- end
 	local message = {"", player.name .. " (", {"secondary_chat_list.surface"}, ")", {"colon"}, " ", input_message}
 	local result = false
 	local from_surface = player.surface
@@ -159,9 +160,10 @@ send_message['surface'] = function(input_message, player)
 end
 
 send_message['faction'] = function(input_message, player)
-	if type(input_message) == "string" then
-		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	end
+	-- if type(input_message) == "string" then
+		-- TODO: fix/change event
+		-- raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	-- end
 	local drop_down = player.gui.screen.chat_main_frame.table_chat.select_chat.interactions.targets_drop_down
 	local message
 
@@ -211,9 +213,10 @@ end
 
 send_message['local'] = function(input_message, player)
 	local is_string = (type(input_message) == "string")
-	if is_string then
-		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	end
+	-- if is_string then
+		-- TODO: fix/change event
+		-- raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	-- end
 	local pos_p1 = player.position
 	local is_draw = false
 	if is_string and string.len(input_message) <= 130 then
@@ -255,10 +258,11 @@ send_message['local'] = function(input_message, player)
 end
 
 send_message['allies'] = function(input_message, player)
-	local is_string = (type(input_message) == "string")
-	if is_string then
-		raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
-	end
+	-- local is_string = (type(input_message) == "string")
+	-- if is_string then
+		-- TODO: fix/change event
+		-- raise_event(defines.events.on_console_chat, {player_index = player.index, message = input_message})
+	-- end
 	local message = {"", player.name .. " (", {"secondary_chat_list.allies"}, ")", {"colon"}, " ", input_message}
 	local result = false
 	local player_force = player.force
@@ -279,11 +283,12 @@ send_message['allies'] = function(input_message, player)
 end
 
 send_message['admins'] = function(input_message, player)
-	local is_string = (type(input_message) == "string")
+	-- local is_string = (type(input_message) == "string")
 	local player_index = player.index
-	if is_string then
-		raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
-	end
+	-- TODO: fix/change event
+	-- if is_string then
+		-- raise_event(defines.events.on_console_chat, {player_index = player_index, message = input_message})
+	-- end
 	local message
 
 	if player.admin then
