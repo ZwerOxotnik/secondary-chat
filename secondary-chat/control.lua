@@ -304,20 +304,28 @@ end
 
 local function on_player_muted(event)
 	-- Validation of data
-	local player = game.get_player(event.player_index)
+	local player_index = event.player_index
+	local player = game.get_player(player_index)
 	if not (player and player.valid) then return end
 
 	-- Mute the player
-	global.secondary_chat.global.mutes[event.player_index] = true
+	global.secondary_chat.global.mutes[player_index] = true
 end
 
 local function on_player_unmuted(event)
+	-- Validation of data
+	local player_index = event.player_index
+	local player = game.get_player(player_index)
+	if not (player and player.valid) then return end
+	
 	-- Unmute the player
-	global.secondary_chat.global.mutes[event.player_index] = nil
+	global.secondary_chat.global.mutes[player_index] = nil
 end
 
 local function on_console_chat(event)
-	local player = game.get_player(event.player_index)
+	local player_index = event.player_index
+	if player_index == nil then return end
+	local player = game.get_player(player_index)
 	if not (player and player.valid) then return end
 
   local force = player.force
