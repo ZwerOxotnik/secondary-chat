@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.26.3
+Date: 2022-02-13
+  Locale:
+    - Updated Russian translation (thanks to @SeptiSe7en on crowdin)
+    - Translations: https://crowdin.com/project/factorio-mods-localization (thank you for contributions, I really appreciate it)
+---------------------------------------------------------------------------------------------------
 Version: 1.26.2
 Date: 2022-01-09
   Bugfixes:
@@ -42,10 +48,9 @@ Date: 2021-08-24
 ---------------------------------------------------------------------------------------------------
 Version: 1.24.5
 Date: 2021-06-27
-  Changes:
+  Locale:
     - Updated Spanish translation (thanks to @josemirm on crowdin.com)
     - Other translations has been updated (thank you for contributions, I really appreciate it)
-  Notes:
     - Translations: https://crowdin.com/project/factorio-mods-localization
 ---------------------------------------------------------------------------------------------------
 Version: 1.24.2
@@ -76,7 +81,7 @@ Date: 2019-12-06
 ---------------------------------------------------------------------------------------------------
 Version: 1.23.4
 Date: 2019-11-08
-  Changes:
+  Locale:
     - Returned spanish localization because of last updates of Factorio
   Bugfixes:
     - Fixed gui in settings
