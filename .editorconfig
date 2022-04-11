@@ -9,11 +9,11 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 
-[*.lua]
+[*.{lua,lua2p,sh,cmd,can}]
 indent_style = tab
 insert_final_newline = true
 
-[*.txt]
+[*.{txt,yml}]
 indent_style = space
 indent_size = 2
 insert_final_newline = false
@@ -22,13 +22,9 @@ insert_final_newline = false
 indent_style = space
 indent_size = 2
 insert_final_newline = true
+trim_trailing_whitespace = false
 
-[*.json]
-indent_style = tab
-indent_size = 2
-insert_final_newline = false
-
-[*.md]
+[*.{json,md}]
 indent_style = tab
 indent_size = 2
 insert_final_newline = false
