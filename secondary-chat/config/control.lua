@@ -32,13 +32,13 @@ function update_global_config_player(player)
 			end
 		else
 			global.secondary_chat.players[player_index].settings = {}
-			local settings = global.secondary_chat.players[player_index].settings
+			local settings_data = global.secondary_chat.players[player_index].settings
 			for table, child_table in pairs( global.secondary_chat.default.player.settings ) do
-				settings[table] = {}
+				settings_data[table] = {}
 				for property_name, parameter in pairs( child_table ) do
-					settings[table][property_name] = {}
+					settings_data[table][property_name] = {}
 					for parameter_name, data in pairs( parameter ) do
-						settings[table][property_name][parameter_name] = data
+						settings_data[table][property_name][parameter_name] = data
 					end
 				end
 			end
@@ -61,16 +61,17 @@ function update_global_config_player(player)
 			global.secondary_chat.players[player_index].info = configs.global.get_info()
 		end
 	else
-		global.secondary_chat.players[player_index] = {}
-		global.secondary_chat.players[player_index].settings = {}
+		global.secondary_chat.players[player_index] = {
+			settings = {}
+		}
 
-		local settings = global.secondary_chat.players[player_index].settings
+		local settings_data = global.secondary_chat.players[player_index].settings
 		for table, child_table in pairs( global.secondary_chat.default.player.settings ) do
-			settings[table] = {}
+			settings_data[table] = {}
 			for property_name, parameter in pairs( child_table ) do
-				settings[table][property_name] = {}
+				settings_data[table][property_name] = {}
 				for parameter_name, data in pairs( parameter ) do
-					settings[table][property_name][parameter_name] = data
+					settings_data[table][property_name][parameter_name] = data
 				end
 			end
 		end
@@ -81,7 +82,7 @@ function update_global_config_player(player)
 	global.secondary_chat.players[player_index].gui = global.secondary_chat.players[player_index].gui or {}
 	global.secondary_chat.players[player_index].gui.saves = global.secondary_chat.players[player_index].gui.saves or {}
 	global.secondary_chat.players[player_index].gui.saves.hidden = global.secondary_chat.players[player_index].gui.saves.hidden or {}
-	global.secondary_chat.players[player_index].autohide = max_autohide_time
+	global.secondary_chat.players[player_index].autohide = MAX_AUTOHIDE_TIME
 	global.secondary_chat.players[player_index].blacklist = global.secondary_chat.players[player_index].blacklist or {}
 
 	if player.connected then
@@ -121,17 +122,17 @@ function update_global_config()
 		global.secondary_chat.global.settings = configs.global.get_settings()
 		global.secondary_chat.global.info = configs.global.get_info()
 	else
-		local settings = global.secondary_chat.global.settings
-		if settings then
+		local settings_data = global.secondary_chat.global.settings
+		if settings_data then
 			for table, child_table in pairs( configs.global.get_settings() ) do
-				if settings[table] then
+				if settings_data[table] then
 					for name, data in pairs( child_table ) do
-						if settings[table][name] == nil or type(data) ~= type(settings[table][name]) then
-							settings[table][name] = data
+						if settings_data[table][name] == nil or type(data) ~= type(settings_data[table][name]) then
+							settings_data[table][name] = data
 						end
 					end
 				else
-					settings[table] = child_table
+					settings_data[table] = child_table
 				end
 			end
 		else
@@ -171,9 +172,6 @@ end
 
 function global_init()
 	global.secondary_chat = global.secondary_chat or {}
-	if script.mod_name == 'level' then
-		global.secondary_chat.build = global.secondary_chat.build or build
-	end
 
 	global.secondary_chat.chats = global.secondary_chat.chats or {}
 	global.secondary_chat.players = global.secondary_chat.players or {}

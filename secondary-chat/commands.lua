@@ -2,13 +2,15 @@
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 function toggle_drop_down(player)
-	if not player.gui.screen.chat_main_frame then
-		global.secondary_chat.players[player.index].settings.main.drop_down.state = true
+	local player_index = player.index
+	local chat_main_frame = player.gui.screen.chat_main_frame
+	if not chat_main_frame then
+		global.secondary_chat.players[player_index].settings.main.drop_down.state = true
 		create_chat_gui(player)
 		return
 	end
 
-	local table_chat = player.gui.screen.chat_main_frame.table_chat
+	local table_chat = chat_main_frame.table_chat
 	local select_chat = table_chat.select_chat
 	if select_chat then
 		local frame = player.gui.center.secondary_chat_settings
@@ -20,7 +22,7 @@ function toggle_drop_down(player)
 			end
 		end
 
-		global.secondary_chat.players[player.index].settings.main.drop_down.state = not select_chat.visible
+		global.secondary_chat.players[player_index].settings.main.drop_down.state = not select_chat.visible
 		if table_chat.settings and table_chat.settings.player then
 			table_chat.settings.player.config_table.drop_down_boolean.state = not select_chat.visible
 		end

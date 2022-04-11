@@ -110,7 +110,7 @@ function toggle_settings_chat_gui(player, table_chat)
 end
 
 function update_checkbox(player, element, parameter)
-	global.secondary_chat.players[player.index].autohide = max_autohide_time
+	global.secondary_chat.players[player.index].autohide = MAX_AUTOHIDE_TIME
 
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	local table_chat = chat_main_frame.table_chat
@@ -166,7 +166,7 @@ end
 
 function update_allow_fast_show(player, element, parameter)
 	local player_data = global.secondary_chat.players[player.index]
-	player_data.autohide = max_autohide_time
+	player_data.autohide = MAX_AUTOHIDE_TIME
 	player_data.settings.main[parameter].allow_fast_show = element.state
 
 	local container = element.parent.parent
