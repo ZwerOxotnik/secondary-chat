@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.27.0
+Date: 2022-04-11
+  Features:
+    - Added logging of global chat (use `/open-chat-logs` command)
+  Changes:
+    - Refactored some code
+  Bugfixes:
+    - Fixed minor bugs
+---------------------------------------------------------------------------------------------------
 Version: 1.26.3
 Date: 2022-02-13
   Locale:

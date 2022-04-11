@@ -112,8 +112,9 @@ end
 function send_notice(message, player)
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	if chat_main_frame and chat_main_frame.visible then
-		local notice = chat_main_frame.table_chat.notices.main
-		notice.caption = message
+		local notices = chat_main_frame.table_chat.notices
+		notices.visible = true
+		notices.main.caption = message
 	else
 		if player.afk_time < 1800 or type(message) ~= "string" or string.len(message) > 60 then
 			player.print(message)

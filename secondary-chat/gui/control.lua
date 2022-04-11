@@ -12,6 +12,7 @@ function player_send_message(event, is_localised)
 	local player = game.get_player(event.player_index)
 	local table_chat = player.gui.screen.chat_main_frame.table_chat
 
+	table_chat.notices.visible = false
 	table_chat.notices.main.caption = ""
 
 	local text_box = table_chat.top_chat.chat_table.chat_text_box

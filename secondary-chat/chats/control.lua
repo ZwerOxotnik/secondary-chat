@@ -127,6 +127,7 @@ send_message['all'] = function(input_message, player)
 		-- TODO: fix/change event
 		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
 	end
+	add_message_into_global_chat_logs(player.name, input_message)
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
 end
 
@@ -341,6 +342,7 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
 	if #game.players < 2 then
 		gui.selected_index = 0
 
+		table_chat.notices.visible = true
 		table_chat.notices.main.caption = {'', {'secondary_chat.attention'}, {'colon'}, ' ', {'noone-to-reply'}}
 
 		drop_down_online.visible = false

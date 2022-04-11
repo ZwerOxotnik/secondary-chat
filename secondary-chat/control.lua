@@ -11,14 +11,25 @@ Homepage: https://forums.factorio.com/viewtopic.php?f=190&t=64625
 ]]--
 
 local M = {}
-M.events = {}
 
+
+require('secondary-chat/self_events')
+color_picker = require('secondary-chat/integrations/color-picker')
+require("secondary-chat/config/control")
+require('secondary-chat/functions')
+require('secondary-chat/gui/control')
+require('secondary-chat/commands')
+require('secondary-chat/chats/control')
+require('secondary-chat/mod-buttons')
+require('secondary-chat/interface')
 
 
 --#region Global data
 local mod_data
 ---@type table<number, table>
 local players_data
+---@type table<string, table<number, string>>
+local chat_logs
 chats = {}
 --#endregion
 
@@ -26,8 +37,18 @@ chats = {}
 --#region Constants
 local print_to_rcon = rcon.print
 local match = string.match
+local floor = math.floor
 local call = remote.call
+local FLOW = {type = "flow"}
 local RED_COLOR = {1, 0, 0}
+local CLOSE_BUTTON = {
+	type = "sprite-button",
+	name = "SChat_close",
+	style = "frame_action_button",
+	sprite = "utility/close_white",
+	hovered_sprite = "utility/close_black",
+	clicked_sprite = "utility/close_black"
+}
 MAX_AUTOHIDE_TIME = 60 * 60 * 10 -- 10 min
 --#endregion
 
@@ -41,33 +62,153 @@ end
 
 --#endregion
 
+---Format: hh:mm
+---@param tick number
+---@return string
+function ticks_to_time(tick)
+	local mins = floor(tick / (60 * 60))
+	local hours = floor(mins / 60)
+	mins = mins - hours * 60
 
+	if hours < 9 then
+		if hours == 0 then
+			hours = "00"
+		else
+			hours = "0" .. hours
+		end
+	end
 
-require('secondary-chat/self_events')
-color_picker = require('secondary-chat/integrations/color-picker')
-require("secondary-chat/config/control")
-require('secondary-chat/functions')
-require('secondary-chat/gui/control')
-require('secondary-chat/commands')
-require('secondary-chat/chats/control')
-if script.mod_name ~= 'level' then
-	require('secondary-chat/mod-buttons')
+	if mins < 9 then
+		if mins == 0 then
+			mins = "00"
+		else
+			mins = "0" .. mins
+		end
+	end
+
+	return hours .. ":" .. mins
 end
-require('secondary-chat/interface')
+
+
+---@param nickname string
+---@param message string
+function add_message_into_global_chat_logs(nickname, message)
+	if #message > 2000 then return end
+	if not settings.global.SChat_allow_log_global_chat.value then return end
+
+	message = "[" .. ticks_to_time(game.tick) .. "] " .. nickname .. ": " .. message
+	local global_chat_logs = chat_logs.global
+	local last_logs = global_chat_logs[#global_chat_logs]
+	if #last_logs > 2000 then
+		global_chat_logs[#global_chat_logs+1] = message
+	elseif #last_logs == 0 then
+		global_chat_logs[#global_chat_logs] = message
+	else
+		global_chat_logs[#global_chat_logs] = last_logs .. "\n" .. message
+	end
+end
+
+
+---@param player LuaPlayer
+function switch_chat_logs_frame(player)
+	local screen = player.gui.screen
+	local main_frame = screen.SChat_chat_logs_frame
+	if main_frame then
+		main_frame.destroy()
+		return
+	end
+
+	main_frame = screen.add{
+		type = "frame",
+		name = "SChat_chat_logs_frame",
+		direction = "vertical"
+	}
+	main_frame.auto_center = true
+
+	local top_flow = main_frame.add(FLOW)
+	top_flow.add{
+		type = "label",
+		style = "frame_title",
+		caption = "Global chat logs", --TODO: add and change localization
+		ignored_by_interaction = true
+	}
+	local drag_handler = top_flow.add{type = "empty-widget", style = "draggable_space"}
+	drag_handler.drag_target = main_frame
+	drag_handler.style.right_margin = 0
+	drag_handler.style.horizontally_stretchable = true
+	drag_handler.style.height = 32
+	top_flow.add(CLOSE_BUTTON)
+
+	local scroll_pane = main_frame.add{
+		type = "scroll-pane",
+		name = "SChat_scroll_pane"
+	}
+	local textbox = scroll_pane.add{
+		type = "text-box",
+		name = "SChat_chat_logs_textbox"
+	}
+	textbox.read_only = true
+	textbox.word_wrap = true
+	textbox.style.minimal_height = 250
+	textbox.style.maximal_width  = player.display_resolution.width  * 0.6 / player.display_scale
+	textbox.style.maximal_height = player.display_resolution.height * 0.6 / player.display_scale
+	textbox.style.width  = player.display_resolution.width  * 0.6 / player.display_scale
+	textbox.style.height = player.display_resolution.height * 0.6 / player.display_scale
+	textbox.style.horizontally_stretchable = true
+	textbox.style.vertically_stretchable = true
+	textbox.text = chat_logs.global[#chat_logs.global]
+
+	local bottom_flow = main_frame.add{type = "flow", direction = "horizontal", style = "dialog_buttons_horizontal_flow"}
+	local pusher = bottom_flow.add{type = "empty-widget", style = "draggable_space"}
+	pusher.style.horizontally_stretchable = true
+	pusher.style.vertically_stretchable = true
+	pusher.drag_target = main_frame
+	local prev_page_elem = bottom_flow.add{
+		type = "button",
+		name = "SChat_log_chat_prev_page",
+		caption = "<"
+	}
+	prev_page_elem.style.width = 30
+	if #chat_logs.global <= 1 then
+		prev_page_elem.enabled = false
+	end
+	local page_elem = bottom_flow.add{
+		type = "textfield",
+		name = "SChat_chat_logs_page",
+		numeric = true
+	}
+	page_elem.text = tostring(#chat_logs.global)
+	page_elem.style.width = 50
+	page_elem.style.vertically_stretchable = false
+	local next_page_elem = bottom_flow.add{
+		type = "button",
+		name = "SChat_log_chat_next_page",
+		caption = ">"
+	}
+	next_page_elem.enabled = false
+	next_page_elem.style.width = 30
+	pusher = bottom_flow.add{type = "empty-widget", style = "draggable_space"}
+	pusher.style.horizontally_stretchable = true
+	pusher.style.vertically_stretchable = true
+	pusher.drag_target = main_frame
+end
 
 
 local function clicked_chat_gui(event, player, player_index)
 	-- Validation of data
 	local element = event.element
+	local parent = element.parent
+	if parent == nil then return end
+	if parent.parent == nil then return end
 	local chat_main_frame = player.gui.screen.chat_main_frame
-	if not chat_main_frame then return false end
+	if not chat_main_frame then return end
 
 	local table_chat = chat_main_frame.table_chat
-	global.secondary_chat.players[player_index].autohide = MAX_AUTOHIDE_TIME
+	players_data[player_index].autohide = MAX_AUTOHIDE_TIME
 
-	local parent = element.parent
-	if not (parent and parent.valid) then return end
-	if parent.name == "icons" and parent.parent.name == "top_chat" then
+	--TODO: refactor
+	if parent.name == "icons" and parent.parent and parent.parent.name == "top_chat" then
+		table_chat.notices.visible = false
 		table_chat.notices.main.caption = ""
 		if element.name == "settings" then
 			if event.shift then
@@ -79,7 +220,7 @@ local function clicked_chat_gui(event, player, player_index)
 				end
 			elseif event.alt then
 				chat_main_frame.visible = false
-				global.secondary_chat.players[player_index].settings.main.state_chat.state = false
+				players_data[player_index].settings.main.state_chat.state = false
 				script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = table_chat})
 			else
 				toggle_settings_chat_gui(player, table_chat)
@@ -89,8 +230,40 @@ local function clicked_chat_gui(event, player, player_index)
 		end
 	elseif element.name == "toogle" and parent.parent.parent and parent.parent.parent.parent.name == "secondary_chat_settings" then
 		toogle_visible_list(element, player)
-	elseif parent.name == "container" and parent.parent.parent.name == "list" then
+	elseif parent.name == "container" and parent.parent.parent and parent.parent.parent.name == "list" then
 		click_list_settings(element.name, player, parent.parent.parent.parent.parent.scroll.settings)
+	elseif element.name == "SChat_close" then
+		parent.parent.destroy()
+	elseif element.name == "SChat_log_chat_prev_page" then
+		local page_elem = parent.SChat_chat_logs_page
+		local page = tonumber(page_elem.text)
+		if page == 1 then
+			element.enabled = false
+			page_elem.text = "1"
+			return
+		else
+			parent.SChat_log_chat_next_page.enabled = true
+			page = page - 1
+			element.enabled = (page ~= 1)
+			page_elem.text = tostring(page)
+			local chat_logs_textbox = parent.parent.SChat_scroll_pane.SChat_chat_logs_textbox
+			chat_logs_textbox.text = chat_logs.global[page]
+		end
+	elseif element.name == "SChat_log_chat_next_page" then
+		local page_elem = parent.SChat_chat_logs_page
+		local page = tonumber(page_elem.text)
+		if page == #chat_logs.global then
+			element.enabled = false
+			page_elem.text = tostring(chat_logs.global)
+			return
+		else
+			parent.SChat_log_chat_prev_page.enabled = true
+			page = page + 1
+			element.enabled = (page ~= #chat_logs.global)
+			page_elem.text = tostring(page)
+			local chat_logs_textbox = parent.parent.SChat_scroll_pane.SChat_chat_logs_textbox
+			chat_logs_textbox.text = chat_logs.global[page]
+		end
 	end
 end
 
@@ -99,7 +272,7 @@ local function on_gui_click(event)
 	if not (element and element.valid) then return end
 
 	local player_index = event.player_index
-	if (element.name == "print_in_chat" or match(element.name, "chat_(.+)")) then
+	if (element.name == "print_in_chat" or match(element.name, "^chat_(.+)")) then
 		if event.shift then
 			player_send_message(event, true)
 		elseif event.control then
@@ -118,6 +291,24 @@ local function on_gui_click(event)
 	end
 end
 
+local function on_gui_confirmed(event)
+	local element = event.element
+	if not (element and element.valid) then return end
+	if element.name ~= "SChat_chat_logs_page" then return end
+
+	local page = tonumber(element.text)
+	if page == nil or page <= 0 then
+		page = 1
+		element.text = "1"
+	elseif page > #chat_logs.global then
+		page = #chat_logs.global
+		element.text = tostring(page)
+	end
+
+	local chat_logs_textbox = element.parent.parent.SChat_scroll_pane.SChat_chat_logs_textbox
+	chat_logs_textbox.text = chat_logs.global[page]
+end
+
 M.color_picker_ok_pressed = color_picker.ok_pressed
 
 local function on_player_removed(event)
@@ -134,25 +325,29 @@ local function on_gui_text_changed(event)
 	-- Validation of data
 	local element = event.element
 	if not (element and element.valid) then return end
+	local parent = element.parent
+	if parent == nil then return end
+	local parent2 = parent.parent
+	if parent2 == nil then return end
+	local parent3 = parent.parent
+	if parent3 == nil then return end
 
-	if element.name ~= 'chat_text_box' and element.parent.parent.parent.name ~= 'table_chat' then return end
+	if element.name ~= 'chat_text_box' and parent3.name ~= 'table_chat' then return end
 	if string.byte(element.text, -1) ~= 10 then return end
 	if #element.text > 1 then
 		element.text = element.text:sub(1, -2)
-		event.element = element.parent.parent.parent.select_chat.interactions.print_in_chat
+		event.element = parent3.select_chat.interactions.print_in_chat -- is this okay? TODO: fix a weird bug here
 		player_send_message(event)
 
 		-- unfocus for the gui
-		local text_box = create_chat_text_box(element.parent)
+		local text_box = create_chat_text_box(parent)
 		if players_data[event.player_index].settings.main.auto_focus.state then
 			text_box.focus()
 		end
 	else
 		-- unfocus for the gui
-		create_chat_text_box(element.parent)
+		create_chat_text_box(parent)
 	end
-
-	return true
 end
 
 local function on_gui_checked_state_changed(event)
@@ -181,7 +376,7 @@ local function on_gui_selection_state_changed(event)
 	local element = event.element
 	if not (element and element.valid) then return end
 	local parent = element.parent
-	if not (parent and parent.valid) then return end
+	if parent == nil then return end
 	if parent.parent.name ~= 'select_chat' then return end
 
 	if parent.name == 'table_filter' then
@@ -317,23 +512,42 @@ local function on_player_unmuted(event)
 	mod_data.global.mutes[player_index] = nil
 end
 
+local function on_console_command(event)
+	local command = event.command
+	if command ~= "s" and command ~= "shout" then return end
+
+	local player_index = event.player_index
+	if player_index == nil then
+		add_message_into_global_chat_logs("[color=red]server[/color]", event.parameters)
+		return
+	end
+
+	local player = game.get_player(player_index)
+	if not (player and player.valid) then return end
+	add_message_into_global_chat_logs(player.name, event.parameters)
+end
+
 local function on_console_chat(event)
 	local player_index = event.player_index
-	if player_index == nil then return end
+	if player_index == nil then
+		add_message_into_global_chat_logs("[color=red]server[/color]", event.message)
+		return
+	end
+
 	local player = game.get_player(player_index)
 	if not (player and player.valid) then return end
 
   local force = player.force
 	if #force.players ~= 1 then return end
+	if #game.players <= 1 then return end
 
 	-- Send message to everyone
-	if #game.players > 1 then
-		local color = player.chat_color
-		local tag = player.tag
-		if tag ~= '' then tag = ' ' .. tag end
-		local message = {'', player.name, tag, " (", {"command-output.shout"}, ')', {"colon"}, ' ', event.message}
-		game.print(message, color)
-	end
+	local color = player.chat_color
+	local tag = player.tag
+	if tag ~= '' then tag = ' ' .. tag end
+	local message = {'', player.name, tag, " (", {"command-output.shout"}, ')', {"colon"}, ' ', event.message}
+	game.print(message, color)
+	add_message_into_global_chat_logs(player.name, event.message)
 end
 
 local function check_settings_frame_size(event)
@@ -350,8 +564,11 @@ M.events = {
 	[defines.events.on_gui_selection_state_changed] = on_gui_selection_state_changed,
 	[defines.events.on_player_display_resolution_changed] = check_settings_frame_size,
 	[defines.events.on_gui_checked_state_changed] = on_gui_checked_state_changed,
-	[defines.events.on_gui_text_changed] = on_gui_text_changed,
+	[defines.events.on_gui_text_changed] = function(event)
+		pcall(on_gui_text_changed, event)
+	end,
 	[defines.events.on_gui_click] = on_gui_click,
+	[defines.events.on_gui_confirmed] = on_gui_confirmed,
 	[defines.events.on_player_created] = on_player_created,
 	[defines.events.on_player_removed] = on_player_removed,
 	[defines.events.on_player_joined_game] = on_player_joined_game,
@@ -362,7 +579,8 @@ M.events = {
 	[defines.events.on_player_demoted] = on_player_demoted,
 	[defines.events.on_player_muted] = on_player_muted,
 	[defines.events.on_player_unmuted] = on_player_unmuted,
-	[defines.events.on_console_chat] = on_console_chat
+	[defines.events.on_console_command] = on_console_command,
+	[defines.events.on_console_chat] = on_console_chat,
 }
 
 M.on_nth_tick = {
@@ -391,7 +609,40 @@ M.on_nth_tick = {
 local function link_data()
 	mod_data = global.secondary_chat
 	players_data = mod_data.players
+	chat_logs = mod_data.chat_logs
 	chats = mod_data.chats
+end
+
+function global_init()
+	global.secondary_chat = global.secondary_chat or {}
+	mod_data = global.secondary_chat
+
+	mod_data.chats = mod_data.chats or {}
+	mod_data.players = mod_data.players or {}
+	mod_data.state_chat = mod_data.state_chat or true
+	mod_data.default = mod_data.default or {}
+	mod_data.default.player = mod_data.default.player or {}
+	mod_data.default.player.settings = configs.player.get_settings()
+	mod_data.settings = mod_data.settings or {}
+	mod_data.settings.limit_characters = mod_data.settings.limit_characters or 73 * 14 --1022
+	mod_data.commands = mod_data.commands or {}
+	mod_data.chat_logs = mod_data.chat_logs or {}
+	chat_logs = mod_data.chat_logs
+	chat_logs.global = chat_logs.global or {''}
+
+	update_global_config()
+	link_data()
+
+	chats = mod_data.chats
+	if chats.keys == nil then
+		init_chats()
+	end
+
+	if game then
+		for _, player in pairs( game.players ) do
+			update_global_config_player(player)
+		end
+	end
 end
 
 
@@ -491,5 +742,11 @@ M.on_configuration_changed = function(event)
 		mod_data.build = nil
 	end
 end
+
+M.commands = {
+	["open-chat-logs"] = function(cmd)
+		switch_chat_logs_frame(game.get_player(cmd.player_index))
+	end,
+}
 
 return M

@@ -102,6 +102,7 @@ function create_chat_gui(player)
 
 			local notices = table_chat.notices
 			if notices then
+				notices.visible = true
 				notice_text = notices.main.caption
 			end
 		end
@@ -158,7 +159,7 @@ function create_chat_gui(player)
 	button.style.minimal_width = 20
 	button.style.maximal_width = 20
 	button.style.font = 'default'
-	button.style.horizontal_align  = 'left'
+	button.style.horizontal_align = 'left'
 	button.style.left_padding = 1
 	button.style.top_padding = 0
 	button.style.bottom_padding = 3
@@ -170,7 +171,7 @@ function create_chat_gui(player)
 	child_table.visible = true
 	child_table.add{type = 'label', caption = {'secondary_chat.send_to'}}
 	local table_select = child_table.add{type = 'table', name = 'interactions', column_count = 30}
-	table_select.style.horizontal_align  = 'left'
+	table_select.style.horizontal_align = 'left'
 	local targets_drop_down = table_select.add{type = 'drop-down', name = 'targets_drop_down', items = items.items or {''}, selected_index = index.items or 1}
 	targets_drop_down.visible = (index.items and items.items) or false
 	targets_drop_down.style.maximal_width = 120
@@ -187,39 +188,40 @@ function create_chat_gui(player)
 	button.style.bottom_padding = 0
 	button.style.right_padding = 0
 	local label = child_table.add{type = 'label', name ='empty_one', caption = ''}
-	label.visible = true
+	label.visible = true --WARNING: is this should be false?
 	-- TODO: Change tables
 	local table_filter = child_table.add{type = 'table', name = 'table_filter', column_count = 30}
-	table_filter.style.horizontal_align  = 'left'
+	table_filter.style.horizontal_align = 'left'
 	local drop_down_online = table_filter.add{type = 'drop-down', name = 'drop_down_online', items = gui_online.list, selected_index = index.state or 1}
 	drop_down_online.style.maximal_width = 240
 	drop_down_online.visible = visible.drop_down_online or false
-	drop_down_online.style.horizontal_align  = 'left'
+	drop_down_online.style.horizontal_align = 'left'
 	local drop_down_state = table_filter.add{type = 'drop-down', name = 'drop_down_state', items = gui_state.list, selected_index = index.online or 1}
 	drop_down_state.style.maximal_width = 240
 	drop_down_state.visible = visible.drop_down_state or false
-	drop_down_online.style.horizontal_align  = 'left'
+	drop_down_online.style.horizontal_align = 'left'
 
 	local child_table = main_table.add{type = 'table', name = 'notices', column_count = 1}
-	child_table.style.horizontal_align  = 'left'
+	child_table.style.horizontal_align = 'left'
+	child_table.visible = false
 	local label = child_table.add{type = 'label', name = 'main'}
 	label.style.font = 'default-semibold'
 	label.style.font_color = {r = 255, g = 140, b = 0}
 	label.caption = notice_text or ''
 
 	local child_table = main_table.add{type = 'table', name = 'last_messages', column_count = 1}
-	child_table.style.horizontal_align  = 'left'
+	child_table.style.horizontal_align = 'left'
 	child_table.visible = false
 	local textfield = child_table.add{type = 'textfield', name = 'last', text = last_message}
 	textfield.style.minimal_width = 250
 	textfield.style.maximal_width = chat_main_frame.style.maximal_width - 60
-	textfield.style.horizontally_stretchable = false
-	textfield.style.horizontal_align  = 'left'
+	textfield.style.vertically_stretchable = false
+	textfield.style.horizontal_align = 'left'
 
 	local child_table = main_table.add{type = 'table', name = 'buttons', column_count = 1}
-	child_table.style.horizontal_align  = 'left'
+	child_table.style.horizontal_align = 'left'
 	local child_table = main_table.add{type = 'table', name = 'settings', column_count = 1}
-	child_table.style.horizontal_align  = 'left'
+	child_table.style.horizontal_align = 'left'
 	child_table.visible = false
 
 	update_chat_and_drop_down(drop_down_chat, player)
