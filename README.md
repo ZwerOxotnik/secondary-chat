@@ -53,7 +53,7 @@ You can either download a zip archive from [mods.factorio.com][homepage] or the 
 
 * /a \<message\> or /allied-send \<message\> - sends a message to the allies.
 * /l \<message\> or /local-send \<message\> - sends a message to the nearest players.
-* /surface-send \<message\> - sends a message all players on your surface.
+* /surface-send \<message\> - sends a message to all players on your surface.
 * /admins-send \<message\> - sends a message to admins.
 * /toggle-chat [\<all/faction/allied/local/surface/admins/drop-down\>] - Disabled or re-enables your own parts of additional chat.
 * /open-chat-logs - opens chat logs
