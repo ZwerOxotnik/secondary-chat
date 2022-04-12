@@ -187,8 +187,8 @@ function create_chat_gui(player)
 	button.style.top_padding = 0
 	button.style.bottom_padding = 0
 	button.style.right_padding = 0
-	local label = child_table.add{type = 'label', name ='empty_one', caption = ''}
-	label.visible = true --WARNING: is this should be false?
+	local empty_one = child_table.add{type = 'empty-widget', name ='empty_one'}
+	empty_one.visible = true --WARNING: is this should be false?
 	-- TODO: Change tables
 	local table_filter = child_table.add{type = 'table', name = 'table_filter', column_count = 30}
 	table_filter.style.horizontal_align = 'left'

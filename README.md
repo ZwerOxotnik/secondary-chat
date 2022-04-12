@@ -25,8 +25,7 @@ Read this in another language | [English](/README.md) | [Русский](/docs/r
 
 ## Overview
 
-Adds graphical chat interfaces, new chat commands, new chat types, new chat interactions (for example: localised messages, storing previous sent message, offline/online players/teams, relationships, filters etc), new hotkeys for chat. Provides customizable chat through mod interface, chat settings.
-Top left appear the new gui with drop-down with filters and other functions, that sends your message from the text field to the chat and can simplify the interaction of other elements.
+Adds chat logs, draggable chat, new chat commands, new chat types, new chat interactions (for example: localised messages, storing previous sent message, offline/online players/teams, relationships, filters etc), new hotkeys for chat. Provides customizable chat through mod interface, chat settings.
 
 ## FAQ
 
@@ -52,11 +51,12 @@ You can either download a zip archive from [mods.factorio.com][homepage] or the 
 
 ### Commands
 
-* /a \<message\> or /allied-send \<message\> - Sends a message to the allies.
-* /l \<message\> or /local-send \<message\> - Sends a message to the nearest players.
-* /surface-send \<message\> - Sends a message all players on your surface.
-* /admins-send \<message\> - Sends a message to admins.
+* /a \<message\> or /allied-send \<message\> - sends a message to the allies.
+* /l \<message\> or /local-send \<message\> - sends a message to the nearest players.
+* /surface-send \<message\> - sends a message all players on your surface.
+* /admins-send \<message\> - sends a message to admins.
 * /toggle-chat [\<all/faction/allied/local/surface/admins/drop-down\>] - Disabled or re-enables your own parts of additional chat.
+* /open-chat-logs - opens chat logs
 
 ## Dependencies
 
