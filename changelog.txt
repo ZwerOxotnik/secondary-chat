@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.28.0
+Date: 2022-06-03
+  Features:
+    - Switchable visualization of global messages
+  Changes:
+    - Improved stability
+    - Refacored some stuff
+---------------------------------------------------------------------------------------------------
 Version: 1.27.1
 Date: 2022-04-12
   Bugfixes:

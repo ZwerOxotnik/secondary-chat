@@ -35,6 +35,7 @@ chats = {}
 
 
 --#region Constants
+local draw_text = rendering.draw_text
 local print_to_rcon = rcon.print
 local match = string.match
 local floor = math.floor
@@ -450,7 +451,9 @@ local function on_player_created(event)
 	if #players_data ~= 0 then return end
 	-- Delete previous chat GUI
 	for _, _player in pairs(game.players) do
-		destroy_chat_gui(_player)
+		if _player.valid then
+			destroy_chat_gui(_player)
+		end
 	end
 end
 
@@ -485,8 +488,10 @@ M.delete = function(event)
 
 	remove_commands()
 	for _, player in pairs(game.players) do
-		destroy_chat_gui(player)
-		color_picker.destroy_gui(player)
+		if player.valid then
+			destroy_chat_gui(player)
+			color_picker.destroy_gui(player)
+		end
 	end
 	remote.remove_interface('secondary-chat')
 	global.secondary_chat = nil
@@ -512,43 +517,85 @@ local function on_player_unmuted(event)
 	mod_data.global.mutes[player_index] = nil
 end
 
+
+local speech_bubble_data = {
+	name = "speech-bubble-no-fade",
+	position = {},
+	source = nil,
+	text = '',
+	lifetime = 120
+}
 local function on_console_command(event)
 	local command = event.command
 	if command ~= "s" and command ~= "shout" then return end
 
+	local message = event.parameters
 	local player_index = event.player_index
 	if player_index == nil then
-		add_message_into_global_chat_logs("[color=red]server[/color]", event.parameters)
+		add_message_into_global_chat_logs("[color=red]server[/color]", message)
 		return
 	end
 
 	local player = game.get_player(player_index)
 	if not (player and player.valid) then return end
-	add_message_into_global_chat_logs(player.name, event.parameters)
+
+	local character = player.character
+	if not character.valid then
+		character = nil
+	end
+	if character and #message < 2000 and #game.players > 1 then
+		local setting_value = settings.global["SChat_show_global_messages_visually"].value
+		if setting_value then
+			speech_bubble_data.lifetime = 120 + (#message * 1.8)
+			speech_bubble_data.position = character.position
+			speech_bubble_data.source = character
+			speech_bubble_data.text = message
+			character.surface.create_entity(speech_bubble_data)
+		end
+	end
+	add_message_into_global_chat_logs(player.name, message)
 end
 
 local function on_console_chat(event)
 	local player_index = event.player_index
+	local message = event.message
 	if player_index == nil then
-		add_message_into_global_chat_logs("[color=red]server[/color]", event.message)
+		add_message_into_global_chat_logs("[color=red]server[/color]", message)
 		return
 	end
 
 	local player = game.get_player(player_index)
 	if not (player and player.valid) then return end
 
-  local force = player.force
-	if #force.players ~= 1 then return end
+	local force = player.force
+	if #force.players > 1 then return end
 	if #game.players <= 1 then return end
 
 	-- Send message to everyone
 	local color = player.chat_color
 	local tag = player.tag
 	if tag ~= '' then tag = ' ' .. tag end
-	local message = {'', player.name, tag, " (", {"command-output.shout"}, ')', {"colon"}, ' ', event.message}
-	game.print(message, color)
-	add_message_into_global_chat_logs(player.name, event.message)
+	local form_message = {'', player.name, tag, " (", {"command-output.shout"}, ')', {"colon"}, ' ', event.message}
+	local character = player.character
+	if not character.valid then
+		character = nil
+	end
+	if character and #message < 2000 then
+		local setting_value = settings.global["SChat_show_global_messages_visually"].value
+		if setting_value then
+			speech_bubble_data.lifetime = 120 + (#message * 1.8)
+			speech_bubble_data.position = character.position
+			speech_bubble_data.source = character
+			speech_bubble_data.text = message
+			character.surface.create_entity(speech_bubble_data)
+		end
+	end
+	if #form_message < 5000 then
+		game.print(form_message, color)
+	end
+	add_message_into_global_chat_logs(player.name, message)
 end
+
 
 local function check_settings_frame_size(event)
 	local player = game.get_player(event.player_index)
@@ -574,11 +621,11 @@ M.events = {
 	[defines.events.on_player_joined_game] = on_player_joined_game,
 	[defines.events.on_player_left_game] = on_player_left_game,
 	[defines.events.on_player_changed_force] = update_chat_gui,
-	[defines.events.on_forces_merging] = update_chat_gui,
 	[defines.events.on_player_promoted] = on_player_promoted,
 	[defines.events.on_player_demoted] = on_player_demoted,
 	[defines.events.on_player_muted] = on_player_muted,
 	[defines.events.on_player_unmuted] = on_player_unmuted,
+	[defines.events.on_forces_merging] = update_chat_gui,
 	[defines.events.on_console_command] = on_console_command,
 	[defines.events.on_console_chat] = on_console_chat,
 }
@@ -587,18 +634,20 @@ M.on_nth_tick = {
 	-- TODO: Test it
 	[60 * 60] = function()
 		for player_index, player in pairs(game.connected_players) do
-			local player_data = players_data[player_index]
-			if player_data.settings.main.auto_hide.state then
-				local chat_main_frame = player.gui.screen.chat_main_frame
-				if chat_main_frame and chat_main_frame.visible then
-					if player_data.autohide <= 0 then
-						chat_main_frame.visible = false
-						script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = chat_main_frame})
+			if player.valid then
+				local player_data = players_data[player_index]
+				if player_data.settings.main.auto_hide.state then
+					local chat_main_frame = player.gui.screen.chat_main_frame
+					if chat_main_frame and chat_main_frame.visible then
+						if player_data.autohide <= 0 then
+							chat_main_frame.visible = false
+							script.raise_event(chat_events.on_hide_gui_chat, {player_index = player_index, container = chat_main_frame})
+						else
+							player_data.autohide = player_data.autohide - (60 * 60)
+						end
 					else
-						player_data.autohide = player_data.autohide - (60 * 60)
+						player_data.autohide = MAX_AUTOHIDE_TIME
 					end
-				else
-					player_data.autohide = MAX_AUTOHIDE_TIME
 				end
 			end
 		end
@@ -640,7 +689,9 @@ function global_init()
 
 	if game then
 		for _, player in pairs( game.players ) do
-			update_global_config_player(player)
+			if player.valid then
+				update_global_config_player(player)
+			end
 		end
 	end
 end
@@ -746,7 +797,7 @@ end
 M.commands = {
 	["open-chat-logs"] = function(cmd)
 		switch_chat_logs_frame(game.get_player(cmd.player_index))
-	end,
+	end
 }
 
 return M

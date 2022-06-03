@@ -1,6 +1,10 @@
 -- Copyright (C) 2017-2022 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
+
+local draw_text = rendering.draw_text
+
+
 function is_allow_message(message, sender)
 	if sender then
 		if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
@@ -9,14 +13,14 @@ function is_allow_message(message, sender)
 		elseif global.secondary_chat.global.mutes[sender.index] then
 			message = {"command-help.mutes"}
 			send_notice(message, sender)
-		elseif string.len(message) < global.secondary_chat.settings.limit_characters then
+		elseif #message < global.secondary_chat.settings.limit_characters then
 			return true
 		else
 			log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
 			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.long_message"}}
 			send_notice(message, sender)
 		end
-	elseif string.len(message) < global.secondary_chat.settings.limit_characters then
+	elseif #message < global.secondary_chat.settings.limit_characters then
 		return true
 	end
 
@@ -31,7 +35,7 @@ end
 
 function is_force_have_allies(target)
 	for _, force in pairs (game.forces) do
-		if #force.players ~= 0 and target.get_friend(force) then
+		if force.valid and #force.players ~= 0 and target.get_friend(force) then
 			return true
 		end
 	end
@@ -109,6 +113,18 @@ check_stance['specific'] = function(force, other_force)
 	return false
 end
 
+local notice_players = {nil}
+local notice_text_data = {
+	text = '',
+	surface = nil,
+	target = nil,
+	target_offset = {0, -1.4},
+	color = {1, 1, 1},
+	time_to_live = 110,
+	players = notice_players,
+	alignment = "left",
+	scale_with_zoom = true
+}
 function send_notice(message, player)
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	if chat_main_frame and chat_main_frame.visible then
@@ -116,20 +132,14 @@ function send_notice(message, player)
 		notices.visible = true
 		notices.main.caption = message
 	else
-		if player.afk_time < 1800 or type(message) ~= "string" or string.len(message) > 60 then
+		if player.afk_time < 1800 or type(message) ~= "string" or #message > 60 then
 			player.print(message)
 		else
-			rendering.draw_text({
-				text = message,
-				surface = player.surface,
-				target = player.character or player.position,
-				target_offset = {0, -1.4},
-				color = {1, 1, 1},
-				time_to_live = 110,
-				players = {player},
-				alignment = "left",
-				scale_with_zoom = true
-			})
+			notice_players[1] = player
+			notice_text_data.text = message
+			notice_text_data.surface = player.surface
+			notice_text_data.target = player.character or player.position
+			draw_text(notice_text_data)
 		end
 	end
 end

@@ -17,10 +17,12 @@ end
 function update_chat_gui()
 	-- Updating of gui
 	for _, player in pairs ( game.connected_players ) do
-		local chat_main_frame = player.gui.screen.chat_main_frame
-		if chat_main_frame and chat_main_frame.visible then
-			local drop_down = chat_main_frame.table_chat.select_chat.interactions.chat_drop_down
-			update_chat_and_drop_down(drop_down, player)
+		if player.valid then
+			local chat_main_frame = player.gui.screen.chat_main_frame
+			if chat_main_frame and chat_main_frame.visible then
+				local drop_down = chat_main_frame.table_chat.select_chat.interactions.chat_drop_down
+				update_chat_and_drop_down(drop_down, player)
+			end
 		end
 	end
 end

@@ -2,8 +2,8 @@ if script.level.campaign_name then return end
 
 ---@type table<string, module>
 local modules = {
-  better_commands = require("BetterCommands/control"),
-  secondary_chat = require("secondary-chat/control"),
+	better_commands = require("BetterCommands/control"),
+	secondary_chat = require("secondary-chat/control"),
 }
 
 modules.better_commands:handle_custom_commands(modules.secondary_chat) -- adds commands

@@ -3,6 +3,7 @@
 
 local call = remote.call
 local raise_event = script.raise_event
+local draw_text = rendering.draw_text
 local tinsert = table.insert
 
 data = {}
@@ -122,10 +123,31 @@ end
 
 send_message = {}
 
+local speech_bubble_data = {
+	name = "speech-bubble-no-fade",
+	position = {},
+	source = nil,
+	text = '',
+	lifetime = 120
+}
 send_message['all'] = function(input_message, player)
 	if type(input_message) == "string" then
 		-- TODO: fix/change event
 		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
+	end
+	local character = player.character
+	if not character.valid then
+		character = nil
+	end
+	if character and #input_message < 2000 and #game.players > 1 then
+		local setting_value = settings.global["SChat_show_global_messages_visually"].value
+		if setting_value then
+			speech_bubble_data.lifetime = 120 + (#input_message * 1.8)
+			speech_bubble_data.position = character.position
+			speech_bubble_data.source = character
+			speech_bubble_data.text = input_message
+			character.surface.create_entity(speech_bubble_data)
+		end
 	end
 	add_message_into_global_chat_logs(player.name, input_message)
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
@@ -141,8 +163,8 @@ send_message['surface'] = function(input_message, player)
 	local message = {"", player.name .. " (", {"secondary_chat_list.surface"}, ")", {"colon"}, " ", input_message}
 	local result = false
 	local from_surface = player.surface
-	for index, target in pairs (game.players) do
-		if target.surface == from_surface and index ~= player_index then
+	for index, target in pairs(game.players) do
+		if target.valid and target.surface == from_surface and index ~= player_index then
 			result = true
 			sc_print_in_chat(message, target, player)
 		end
@@ -171,7 +193,7 @@ send_message['faction'] = function(input_message, player)
 	local player_name = player.name
 	if drop_down.visible then
 		local target = game.forces[drop_down.items[drop_down.selected_index]]
-		if target then
+		if target and target.valid then
 			if target ~= player.force then
 				message = {"", player_name .. " | " .. player.force.name, {"colon"}, " ", input_message}
 				sc_print_in_chat(message, target, player)
@@ -212,6 +234,19 @@ send_message['faction'] = function(input_message, player)
 	end
 end
 
+local text_data_for_local_chat = {
+	text = '',
+	surface = nil,
+	target = nil,
+	target_offset = {0, -2.2},
+	color = {1, 1, 1},
+	time_to_live = 80,
+	-- forces = player.force,
+	players = nil,
+	-- visible = true,
+	alignment = "center",
+	scale_with_zoom = true
+}
 send_message['local'] = function(input_message, player)
 	local is_string = (type(input_message) == "string")
 	-- if is_string then
@@ -220,7 +255,7 @@ send_message['local'] = function(input_message, player)
 	-- end
 	local pos_p1 = player.position
 	local is_draw = false
-	if is_string and string.len(input_message) <= 130 then
+	if is_string and #input_message <= 130 then
 		is_draw = true
 	end
 
@@ -228,7 +263,7 @@ send_message['local'] = function(input_message, player)
 	local player_name = player.name
 	local from_surface = player.surface
 	for _, near_player in pairs(game.connected_players) do
-		if from_surface == near_player.surface then
+		if near_player.valid and from_surface == near_player.surface then
 			local pos_p2 = near_player.position
 			if ((pos_p1.x - pos_p2.x)^2 + (pos_p1.y - pos_p2.y)^2)^(0.5) <= 116 then
 				sc_print_in_chat({"", player_name .. " (", {"secondary_chat_list.local"}, ")", {"colon"}, " ", input_message}, near_player, player)
@@ -240,19 +275,12 @@ send_message['local'] = function(input_message, player)
 	end
 
 	if is_draw then
-		rendering.draw_text({
-			text = input_message,
-			surface = player.surface,
-			target = player.character or player.position,
-			target_offset = {0, -2.2},
-			color = {1, 1, 1},
-			time_to_live = 80 + string.len(input_message),
-			-- forces = player.force,
-			players = targets,
-			-- visible = true,
-			alignment = "center",
-			scale_with_zoom = true
-		})
+		text_data_for_local_chat.text = input_message
+		text_data_for_local_chat.surface = player.surface
+		text_data_for_local_chat.players = targets
+		text_data_for_local_chat.target = player.character or player.position
+		text_data_for_local_chat.time_to_live = 80 + #input_message
+		draw_text(text_data_for_local_chat)
 	end
 
 	return true
@@ -267,8 +295,8 @@ send_message['allies'] = function(input_message, player)
 	local message = {"", player.name .. " (", {"secondary_chat_list.allies"}, ")", {"colon"}, " ", input_message}
 	local result = false
 	local player_force = player.force
-	for _, force in pairs (game.forces) do
-		if #force.players ~= 0 and player_force.get_friend(force) then
+	for _, force in pairs(game.forces) do
+		if force.valid and #force.players ~= 0 and player_force.get_friend(force) then
 			result = true
 			sc_print_in_chat(message, force, player)
 		end
@@ -300,7 +328,7 @@ send_message['admins'] = function(input_message, player)
 
 	local result = false
 	for index, target in pairs(game.players) do
-		if target.admin and index ~= player_index then
+		if target.valid and target.admin and index ~= player_index then
 			sc_print_in_chat(message, target, player)
 			result = true
 		end
@@ -357,8 +385,8 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
 		list_players = game.connected_players
 	else -- gui_online.keys['offline']
 		for _, player in pairs( game.players ) do
-			if not player.connected then
-				tinsert(list_players, player)
+			if player.valid and not player.connected then
+				list_players[#list_players+1] = player
 			end
 		end
 	end
@@ -368,11 +396,12 @@ change_list['private'] = function(gui, target, select_list, last_target, drop_do
 	local new_selected_index
 	last_target = last_target and game.players[last_target]
 	local index = 0
+	local target_force = target.force
 	for _, player in pairs( list_players ) do
-		if check_stance(target.force, player.force) then
+		if player.valid and check_stance(target_force, player.force) then
 			if target ~= player then
 				index = index + 1
-				tinsert(items, player.name)
+				items[#items+1] = player.name
 			end
 			if not new_selected_index and last_target and last_target == player then
 				new_selected_index = index
@@ -399,7 +428,7 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
 	local is_more_than_2_force = function()
 		local count = 0
 		for _, force in pairs( game.forces ) do
-			if #force.players ~= 0 then
+			if force.valid and #force.players ~= 0 then
 				count = count + 1
 				if count > 1 then
 					return true
@@ -426,13 +455,13 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
 	else
 		if gui_online.keys['online'] == drop_down_online.selected_index then
 			for name, force in pairs( game.forces ) do
-				if #force.connected_players > 0 then
+				if force.valid and #force.connected_players > 0 then
 					list_forces[name] = force
 				end
 			end
 		else -- gui_online.keys['offline']
 			for name, force in pairs( game.forces ) do
-				if #force.connected_players == 0 then
+				if force.valid and #force.connected_players == 0 then
 					list_forces[name] = force
 				end
 			end
@@ -445,11 +474,11 @@ change_list['faction'] = function(gui, target, select_list, last_target, drop_do
 	last_target = last_target and game.forces[last_target]
 	local index = 0
 	for name, force in pairs( list_forces ) do
-		if #force.players > 0 and check_stance(target.force, force) then
-			tinsert(items, name)
+		if force.valid and #force.players > 0 and check_stance(target.force, force) then
+			items[#items+1] = name
 			index = index + 1
 			if new_selected_index == nil then
-				if last_target then
+				if last_target and last_target.valid then
 					if last_target == force then
 						new_selected_index = index
 					end

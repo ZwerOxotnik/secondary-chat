@@ -7,6 +7,8 @@ assignees: ZwerOxotnik
 
 ---
 
+Usually any information is enough to fix a bug, but, please, consider to provide more information now or **later**.
+
 Please drop the `factorio-current.log` file or `factorio-previous.log` here
 
 **Describe the bug**

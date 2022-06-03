@@ -9,7 +9,7 @@ function toggle_chat_part(name, player)
 		script.raise_event(chat_events.on_pre_delete_button, {player_index = player.index, container = main_table})
 		main_table.destroy()
 	else
-		local main_table = flow.add{type = 'table', name = table_name, column_count = 1}
+		main_table = flow.add{type = 'table', name = table_name, column_count = 1}
 		local table = main_table.add{type = 'table', name = 'main', column_count = 8}
 		local button = table.add{type = 'button', name = 'chat_' .. name, caption = {'', {'secondary_chat.send_to'}, ' ', {'secondary_chat_list.' .. name}}}
 		button.style.font = 'default'

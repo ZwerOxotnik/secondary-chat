@@ -17,7 +17,9 @@ remote.add_interface('secondary-chat',
 		if bool.new == true and bool.old == false then
 			add_commands()
 			for _, player in pairs( game.players ) do
-				create_chat_gui(player)
+				if player.valid then
+					create_chat_gui(player)
+				end
 			end
 			script.raise_event(chat_events.on_toggle, {state = true})
 		elseif bool.new == false and bool.old == true then
@@ -99,7 +101,9 @@ remote.add_interface('secondary-chat',
 
 		if update_chat(name, data) then
 			for _, player in pairs( game.players ) do
-				create_chat_gui(player)
+				if player.valid then
+					create_chat_gui(player)
+				end
 			end
 			return true
 		else
@@ -128,7 +132,9 @@ remote.add_interface('secondary-chat',
 		end
 
 		for _, player in pairs( game.players ) do
-			create_chat_gui(player)
+			if player.valid then
+				create_chat_gui(player)
+			end
 		end
 
 		remove_command("toggle-chat")
@@ -154,7 +160,9 @@ remote.add_interface('secondary-chat',
 
 		if update_chat(name, data) then
 			for _, player in pairs( game.players ) do
-				create_chat_gui(player)
+				if player.valid then
+					create_chat_gui(player)
+				end
 			end
 
 			remove_command("toggle-chat")
@@ -182,20 +190,24 @@ remote.add_interface('secondary-chat',
 		if type(receiver) == 'string' then
 			if receiver == 'everybody' or receiver == 'all' then
 				for _, player in pairs( game.players ) do
-					send_notice(message, player)
+					if player.valid then
+						send_notice(message, player)
+					end
 				end
 
 				return true
 			elseif receiver == 'online' then
 				for _, player in pairs( game.connected_players ) do
-					send_notice(message, player)
+					if player.valid then
+						send_notice(message, player)
+					end
 				end
 
 				return true
 			elseif receiver == 'admins' then
 				if game.is_multiplayer() then
 					for _, player in pairs( game.connected_players ) do
-						if player.admin then
+						if player.valid and player.admin then
 							send_notice(message, player)
 						end
 					end
@@ -212,9 +224,6 @@ remote.add_interface('secondary-chat',
 		end
 
 		return false
-	end,
-	get_chat_gui = function(player)
-		return player.gui.screen.chat_main_frame.table_chat
 	end,
 	get_icons_gui = function(player)
 		local chat_main_frame = player.gui.screen.chat_main_frame
@@ -256,17 +265,16 @@ remote.add_interface('secondary-chat',
 	get_chat_id_by_name = function(name)
 		return chats.keys[name]
 	end,
-	get_build = function()
-		return build
-	end,
 	update_chat_and_drop_down = update_chat_and_drop_down,
 	update_chat_for_force = function(force)
 		-- Updating of gui
 		for _, player in pairs ( force.connected_players ) do
-			local chat_main_frame = player.gui.screen.chat_main_frame
-			if chat_main_frame and chat_main_frame.visible then
-				local drop_down = chat_main_frame.table_chat.select_chat.interactions.chat_drop_down
-				update_chat_and_drop_down(drop_down, player)
+			if player.valid then
+				local chat_main_frame = player.gui.screen.chat_main_frame
+				if chat_main_frame and chat_main_frame.visible then
+					local drop_down = chat_main_frame.table_chat.select_chat.interactions.chat_drop_down
+					update_chat_and_drop_down(drop_down, player)
+				end
 			end
 		end
 	end
