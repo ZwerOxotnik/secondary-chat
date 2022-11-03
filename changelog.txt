@@ -2,7 +2,7 @@
 Version: 1.28.1
 Date: 2022-11-03
   Bugfixes:
-    - You send messages by pressing "enter" key again in the interface
+    - You can send messages by pressing "enter" key again in the interface
 ---------------------------------------------------------------------------------------------------
 Version: 1.28.0
 Date: 2022-06-03
