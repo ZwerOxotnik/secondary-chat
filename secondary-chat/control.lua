@@ -326,18 +326,18 @@ local function on_gui_text_changed(event)
 	-- Validation of data
 	local element = event.element
 	if not (element and element.valid) then return end
+	if string.byte(element.text, -1) ~= 10 then return end
 	local parent = element.parent
 	if parent == nil then return end
 	local parent2 = parent.parent
 	if parent2 == nil then return end
-	local parent3 = parent.parent
+	local parent3 = parent2.parent
 	if parent3 == nil then return end
 
 	if element.name ~= 'chat_text_box' and parent3.name ~= 'table_chat' then return end
-	if string.byte(element.text, -1) ~= 10 then return end
 	if #element.text > 1 then
 		element.text = element.text:sub(1, -2)
-		event.element = parent3.select_chat.interactions.print_in_chat -- is this okay? TODO: fix a weird bug here
+		event.element = parent3.select_chat.interactions.print_in_chat
 		player_send_message(event)
 
 		-- unfocus for the gui
@@ -754,13 +754,13 @@ M.on_load = function()
 	end
 
 	local function pick_interface(interfaces)
-			for _, name in pairs(interfaces) do
-					if remote.interfaces[name] then
-							return name
-					end
-			end
+		for _, name in pairs(interfaces) do
+				if remote.interfaces[name] then
+						return name
+				end
+		end
 
-			return nil
+		return nil
 	end
 
 	-- Searching event "on_ok_button_clicked" from a mod "color-picker"
