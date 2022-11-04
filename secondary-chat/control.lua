@@ -540,7 +540,7 @@ local function on_console_command(event)
 	if not (player and player.valid) then return end
 
 	local character = player.character
-	if not character.valid then
+	if not (character and character.valid) then
 		character = nil
 	end
 	if character and #message < 2000 and #game.players > 1 then
@@ -577,7 +577,7 @@ local function on_console_chat(event)
 	if tag ~= '' then tag = ' ' .. tag end
 	local form_message = {'', player.name, tag, " (", {"command-output.shout"}, ')', {"colon"}, ' ', event.message}
 	local character = player.character
-	if not character.valid then
+	if not (character and character.valid) then
 		character = nil
 	end
 	if character and #message < 2000 then
