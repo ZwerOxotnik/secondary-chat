@@ -136,7 +136,7 @@ send_message['all'] = function(input_message, player)
 		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
 	end
 	local character = player.character
-	if not character.valid then
+	if not (character and character.valid) then
 		character = nil
 	end
 	if character and #input_message < 2000 and #game.players > 1 then
