@@ -133,12 +133,21 @@ local speech_bubble_data = {
 send_message['all'] = function(input_message, player)
 	if type(input_message) == "string" then
 		-- TODO: fix/change event
-		print("0000/00/00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message) -- TODO: change
+		local message
+		if player.tag and player.tag ~= "" then
+			message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message
+		else
+			message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. ": " .. input_message
+		end 
+		print(message)
+		log(message)
 	end
+
 	local character = player.character
 	if not (character and character.valid) then
 		character = nil
 	end
+
 	if character and #input_message < 2000 and #game.players > 1 then
 		local setting_value = settings.global["SChat_show_global_messages_visually"].value
 		if setting_value then
@@ -230,6 +239,18 @@ send_message['faction'] = function(input_message, player)
 		else
 			message = {"", player_name, {"colon"}, " ", input_message}
 			return sc_print_in_chat(message, player.force, player)
+		end
+
+		if type(input_message) == "string" then -- TODO: check
+			-- TODO: fix/change event
+			local _message
+			if player.tag and player.tag ~= "" then
+				_message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message
+			else
+				_message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. ": " .. input_message
+			end 
+			print(_message)
+			log(_message)
 		end
 	end
 end
