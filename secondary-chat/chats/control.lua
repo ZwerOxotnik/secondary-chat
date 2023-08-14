@@ -248,9 +248,9 @@ send_message['faction'] = function(input_message, player)
 				_message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message
 			else
 				_message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. ": " .. input_message
-			end 
+			end
 			print(_message)
-			log(_message)
+			log("\n" .. message)
 		end
 	end
 end
