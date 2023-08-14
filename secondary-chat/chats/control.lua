@@ -135,9 +135,9 @@ send_message['all'] = function(input_message, player)
 		-- TODO: fix/change event
 		local message
 		if player.tag and player.tag ~= "" then
-			message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message
+			message = "0000-00-00 00:00:00 [SHOUT] " .. player.name .. " " .. player.tag .. " (shout): " .. input_message
 		else
-			message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. ": " .. input_message
+			message = "0000-00-00 00:00:00 [SHOUT] " .. player.name .. " (shout): " .. input_message
 		end
 		print(message)
 		log("\n" .. message)
