@@ -138,9 +138,9 @@ send_message['all'] = function(input_message, player)
 			message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. " " .. player.tag .. ": " .. input_message
 		else
 			message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. ": " .. input_message
-		end 
+		end
 		print(message)
-		log(message)
+		log("\n" .. message)
 	end
 
 	local character = player.character
