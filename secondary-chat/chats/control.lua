@@ -140,7 +140,7 @@ send_message['all'] = function(input_message, player)
 			message = "0000-00-00 00:00:00 [SHOUT] " .. player.name .. " (shout): " .. input_message
 		end
 		print(message)
-		log("\n" .. message)
+		log("\r\n" .. message)
 	end
 
 	local character = player.character
@@ -250,7 +250,7 @@ send_message['faction'] = function(input_message, player)
 				_message = "0000-00-00 00:00:00 [CHAT] " .. player.name .. ": " .. input_message
 			end
 			print(_message)
-			log("\n" .. message)
+			log("\r\n" .. message)
 		end
 	end
 end
