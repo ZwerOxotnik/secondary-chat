@@ -131,7 +131,8 @@ local speech_bubble_data = {
 	lifetime = 120
 }
 send_message['all'] = function(input_message, player)
-	if type(input_message) == "string" then
+	local is_string = (type(input_message) == "string")
+	if is_string then
 		-- TODO: fix/change event
 		local message
 		if player.tag and player.tag ~= "" then
@@ -141,6 +142,7 @@ send_message['all'] = function(input_message, player)
 		end
 		print(message)
 		log("\r\n" .. message)
+		add_message_into_global_chat_logs(player.name, input_message)
 	end
 
 	local character = player.character
@@ -158,7 +160,7 @@ send_message['all'] = function(input_message, player)
 			character.surface.create_entity(speech_bubble_data)
 		end
 	end
-	add_message_into_global_chat_logs(player.name, input_message)
+
 	return sc_print_in_chat({"", player.name .. " (", {"command-output.shout"}, ")", {"colon"}, " ", input_message}, game, player)
 end
 
