@@ -120,7 +120,7 @@ If you have downloaded the source archive (GitLab):
 
 ## License
 
-This project is copyright © 2017-2022 ZwerOxotnik \<zweroxotnik@gmail.com\>.
+This project is copyright © 2017-2023 ZwerOxotnik \<zweroxotnik@gmail.com\>.
 
 Use of the source code included here is governed by the European Union Public License v. 1.2 only. See the [LICENCE](/LICENCE) file for details.
 

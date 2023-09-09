@@ -1,4 +1,4 @@
--- Copyright (C) 2017-2022 ZwerOxotnik <zweroxotnik@gmail.com>
+-- Copyright (C) 2017-2023 ZwerOxotnik <zweroxotnik@gmail.com>
 -- Licensed under the EUPL, Version 1.2 only (the "LICENCE");
 
 local call = remote.call

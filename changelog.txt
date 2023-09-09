@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.28.10
+Date: 2023-09-09
+  Changes:
+    - Improved commands (I should improve it again with new mod for new features)
+  Scripting:
+    - New remote interfaces via zk-lib
+---------------------------------------------------------------------------------------------------
 Version: 1.28.9
 Date: 2023-08-16
   Bugfixes:

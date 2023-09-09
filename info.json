@@ -1,6 +1,6 @@
 {
     "name": "secondary-chat",
-    "version": "1.28.9",
+    "version": "1.28.10",
     "factorio_version": "1.1",
     "title": "Chat with advanced interactions",
     "author": "ZwerOxotnik",
@@ -10,6 +10,8 @@
     "description": "Adds draggable chat, new chat commands, new chat types, new chat interactions (for example: localised messages, storing previous sent message, offline/online players/teams, relationships, filters etc), new hotkeys for chat. Provides customizable chat through mod interface, chat settings.\n+ 🇷🇺 🇺🇦 🇷🇴 🇮🇹 🇪🇸 locales ",
     "dependencies": [
         "zk-lib >= 0.10.24",
+        "BetterCommands",
+        "? gvv",
         "? color-picker"
     ]
 }
