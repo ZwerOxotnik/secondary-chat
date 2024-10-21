@@ -5,7 +5,7 @@ function toggle_drop_down(player)
 	local player_index = player.index
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	if not chat_main_frame then
-		global.secondary_chat.players[player_index].settings.main.drop_down.state = true
+		storage.secondary_chat.players[player_index].settings.main.drop_down.state = true
 		create_chat_gui(player)
 		return
 	end
@@ -22,7 +22,7 @@ function toggle_drop_down(player)
 			end
 		end
 
-		global.secondary_chat.players[player_index].settings.main.drop_down.state = not select_chat.visible
+		storage.secondary_chat.players[player_index].settings.main.drop_down.state = not select_chat.visible
 		if table_chat.settings and table_chat.settings.player then
 			table_chat.settings.player.config_table.drop_down_boolean.state = not select_chat.visible
 		end
@@ -63,10 +63,10 @@ function toggle_chat(cmd)
 				chat_main_frame.visible = true
 				script.raise_event(chat_events.on_unhide_gui_chat, {player_index = player.index, container = chat_main_frame})
 			end
-			global.secondary_chat.players[player.index].settings.main.state_chat.state = chat_main_frame.visible
+			storage.secondary_chat.players[player.index].settings.main.state_chat.state = chat_main_frame.visible
 		else
 			create_chat_gui(player)
-			global.secondary_chat.players[player.index].settings.main.state_chat.state = true
+			storage.secondary_chat.players[player.index].settings.main.state_chat.state = true
 		end
 	end
 end
@@ -76,7 +76,7 @@ function remove_command(name)
 end
 
 function remove_commands() -- TODO: change
-	for name, bool in pairs( global.secondary_chat.commands ) do
+	for name, bool in pairs( storage.secondary_chat.commands ) do
 		if bool then
 			remove_command(name)
 		end

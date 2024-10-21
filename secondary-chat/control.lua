@@ -494,7 +494,7 @@ M.delete = function(event)
 		end
 	end
 	remote.remove_interface('secondary-chat')
-	global.secondary_chat = nil
+	storage.secondary_chat = nil
 end
 
 local function on_player_muted(event)
@@ -656,15 +656,15 @@ M.on_nth_tick = {
 
 
 local function link_data()
-	mod_data = global.secondary_chat
+	mod_data = storage.secondary_chat
 	players_data = mod_data.players
 	chat_logs = mod_data.chat_logs
 	chats = mod_data.chats
 end
 
 function global_init()
-	global.secondary_chat = global.secondary_chat or {}
-	mod_data = global.secondary_chat
+	storage.secondary_chat = storage.secondary_chat or {}
+	mod_data = storage.secondary_chat
 
 	mod_data.chats = mod_data.chats or {}
 	mod_data.players = mod_data.players or {}

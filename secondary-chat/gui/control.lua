@@ -37,7 +37,7 @@ function player_send_message(event, is_localised)
 				table_chat.last_messages.last.text = text_box.text
 
 				text_box.text = ""
-				if global.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
+				if storage.secondary_chat.players[event.player_index].settings.main.auto_focus.state then
 					text_box.focus()
 				end
 

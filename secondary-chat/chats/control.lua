@@ -211,7 +211,7 @@ send_message['faction'] = function(input_message, player)
 				message = {"", player_name .. "➟" .. target.name, {"colon"}, " ", input_message}
 				sc_print_in_chat(message, player.force, player)
 			else
-				if global.secondary_chat.players[player.index].settings.main.with_tag.state then
+				if storage.secondary_chat.players[player.index].settings.main.with_tag.state then
 					if player.tag ~= '' then
 						message = {"", player_name .. " " .. player.tag, {"colon"}, " ", input_message}
 						return sc_print_in_chat(message, player.force, player)
@@ -230,7 +230,7 @@ send_message['faction'] = function(input_message, player)
 		end
 		return target
 	else
-		if global.secondary_chat.players[player.index].settings.main.with_tag.state then
+		if storage.secondary_chat.players[player.index].settings.main.with_tag.state then
 			if player.tag ~= "" then
 				message = {"", player_name .. " " .. player.tag, {"colon"}, " ", input_message}
 				return sc_print_in_chat(message, player.force, player)

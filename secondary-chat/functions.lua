@@ -7,20 +7,20 @@ local draw_text = rendering.draw_text
 
 function is_allow_message(message, sender)
 	if sender then
-		if not global.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
+		if not storage.secondary_chat.players[sender.index].settings.hidden.allow_write.state then
 			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.not_allowed_to_write"}}
 			send_notice(message, sender)
-		elseif global.secondary_chat.global.mutes[sender.index] then
+		elseif storage.secondary_chat.global.mutes[sender.index] then
 			message = {"command-help.mutes"}
 			send_notice(message, sender)
-		elseif #message < global.secondary_chat.settings.limit_characters then
+		elseif #message < storage.secondary_chat.settings.limit_characters then
 			return true
 		else
 			log({"", sender.name .. " > ", {"secondary_chat.long_message"}})
 			message = {"", {"secondary_chat.attention"}, {"colon"}, " ", {"secondary_chat.long_message"}}
 			send_notice(message, sender)
 		end
-	elseif #message < global.secondary_chat.settings.limit_characters then
+	elseif #message < storage.secondary_chat.settings.limit_characters then
 		return true
 	end
 

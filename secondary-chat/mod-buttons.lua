@@ -18,12 +18,12 @@ local function send_message_pressed(event)
 				player_send_message(event)
 			end
 		else
-			global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+			storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 			create_chat_gui(player)
 		end
 	else
-		if not global.secondary_chat.state_chat then return end
-		global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+		if not storage.secondary_chat.state_chat then return end
+		storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 		create_chat_gui(player)
 	end
 end
@@ -45,12 +45,12 @@ local function send_locale_pressed(event)
 				player_send_message(event, true)
 			end
 		else
-			global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+			storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 			create_chat_gui(player)
 		end
 	else
-		if not global.secondary_chat.state_chat then return end
-		global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+		if not storage.secondary_chat.state_chat then return end
+		storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 		create_chat_gui(player)
 	end
 end
@@ -66,12 +66,12 @@ local function recover_last_message_from_chat_pressed(event)
 			local table_chat = chat_main_frame.table_chat
 			table_chat.top_chat.chat_table.chat_text_box.text = table_chat.last_messages.last.text
 		else
-			global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+			storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 			create_chat_gui(player)
 		end
 	else
-		if not global.secondary_chat.state_chat then return end
-		global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+		if not storage.secondary_chat.state_chat then return end
+		storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 		create_chat_gui(player)
 	end
 end
@@ -96,12 +96,12 @@ local function send_to_private_pressed(event)
 			--   select_chat.visible = true
 			-- end
 		else
-			global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+			storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 			create_chat_gui(player)
 		end
 	else
-		if not global.secondary_chat.state_chat then return end
-		global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+		if not storage.secondary_chat.state_chat then return end
+		storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 		create_chat_gui(player)
 	end
 
@@ -178,12 +178,12 @@ local function send_to_faction_pressed(event)
 			--   select_chat.visible = true
 			-- end
 		else
-			global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+			storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 			create_chat_gui(player)
 		end
 	else
-		if not global.secondary_chat.state_chat then return end
-		global.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
+		if not storage.secondary_chat.state_chat then return end
+		storage.secondary_chat.players[event.player_index].settings.main.state_chat.state = true
 		create_chat_gui(player)
 	end
 

@@ -12,7 +12,7 @@ remote.add_interface('secondary-chat',
 
 		local bool = {}
 		bool.new = new_bool
-		bool.old = global.secondary_chat.state_chat or false
+		bool.old = storage.secondary_chat.state_chat or false
 
 		if bool.new == true and bool.old == false then
 			add_commands()
@@ -29,17 +29,17 @@ remote.add_interface('secondary-chat',
 			return false
 		end
 
-		global.secondary_chat.state_chat = bool.new
+		storage.secondary_chat.state_chat = bool.new
 		return true
 	end,
 	get_state = function()
-		return global.secondary_chat.state_chat
+		return storage.secondary_chat.state_chat
 	end,
 	get_global_data = function()
-		return global.secondary_chat.global
+		return storage.secondary_chat.global
 	end,
 	get_player_data = function(index)
-		return global.secondary_chat.players[index]
+		return storage.secondary_chat.players[index]
 	end,
 	get_and_check_stance = function(target_1, target_2, stance)
 		-- Get and check stance

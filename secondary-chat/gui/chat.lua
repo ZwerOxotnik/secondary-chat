@@ -5,8 +5,8 @@ function destroy_chat_gui(player)
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	if chat_main_frame then
 		local table_chat = chat_main_frame.table_chat
-		if global.secondary_chat.players[player.index] then
-			global.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
+		if storage.secondary_chat.players[player.index] then
+			storage.secondary_chat.players[player.index].gui.saves.hidden.last_message = table_chat.top_chat.chat_table.chat_text_box.text
 		end
 
 		script.raise_event(chat_events.on_pre_delete_gui_chat, {player_index = player.index, container = table_chat})
@@ -31,7 +31,7 @@ end
 --   local chat_main_frame = player.gui.screen.chat_main_frame
 --   if chat_main_frame then
 --     chat_main_frame.visible = false
---     global.secondary_chat.players[player.index].settings.main.state_chat.state = false
+--     storage.secondary_chat.players[player.index].settings.main.state_chat.state = false
 --   end
 -- end
 
@@ -67,7 +67,7 @@ function create_chat_text_box(parent, text)
 end
 
 function create_chat_gui(player)
-	if not global.secondary_chat.players[player.index].settings.main.state_chat.state then return end
+	if not storage.secondary_chat.players[player.index].settings.main.state_chat.state then return end
 
 	local screen = player.gui.screen
 	local last_message = ''
@@ -109,20 +109,20 @@ function create_chat_gui(player)
 			end
 		end
 	else
-		chat_text_box_text = global.secondary_chat.players[player.index].gui.saves.hidden.last_message or ''
+		chat_text_box_text = storage.secondary_chat.players[player.index].gui.saves.hidden.last_message or ''
 	end
 
 	local is_new = true
 	if screen.chat_main_frame then
 		local chat_main_frame = screen.chat_main_frame
-		global.secondary_chat.players[player.index].gui.saves.hidden.last_message = chat_main_frame.table_chat.top_chat.chat_table.chat_text_box.text
+		storage.secondary_chat.players[player.index].gui.saves.hidden.last_message = chat_main_frame.table_chat.top_chat.chat_table.chat_text_box.text
 		chat_main_frame.destroy()
 		is_new = false
 	end
 
-	global.secondary_chat.players[player.index].gui.saves.hidden.last_message = nil
+	storage.secondary_chat.players[player.index].gui.saves.hidden.last_message = nil
 
-	local chat_main_frame = screen.add{type = 'frame', caption = " ", name = 'chat_main_frame', style = "borderless_frame"}
+	local chat_main_frame = screen.add{type = 'frame', caption = " ", name = 'chat_main_frame', style = "tips_and_tricks_notification_frame"}
 	chat_main_frame.location = {x = player.display_resolution.width - 960, y = 50}
 	chat_main_frame.visible = true
 	chat_main_frame.style.maximal_width = 380
@@ -167,7 +167,7 @@ function create_chat_gui(player)
 	button.style.bottom_padding = 3
 	button.style.right_padding = 0
 	button.style.font_color = player.chat_color
-	button.visible = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker"] ~= nil))
+	button.visible = (storage.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker"] ~= nil))
 
 	local child_table = main_table.add{type = 'table', name = 'select_chat', column_count = 2}
 	child_table.visible = true

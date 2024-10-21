@@ -8,8 +8,8 @@ configs.player = require('secondary-chat/config/player')
 function update_global_config_player(player)
 	player_index = player.index
 
-	if global.secondary_chat.players[player_index] ~= nil then
-		local settings = global.secondary_chat.players[player_index].settings
+	if storage.secondary_chat.players[player_index] ~= nil then
+		local settings = storage.secondary_chat.players[player_index].settings
 		if settings then
 			for table, child_table in pairs( configs.player.get_settings() ) do
 				if settings[table] then
@@ -31,9 +31,9 @@ function update_global_config_player(player)
 				end
 			end
 		else
-			global.secondary_chat.players[player_index].settings = {}
-			local settings_data = global.secondary_chat.players[player_index].settings
-			for table, child_table in pairs( global.secondary_chat.default.player.settings ) do
+			storage.secondary_chat.players[player_index].settings = {}
+			local settings_data = storage.secondary_chat.players[player_index].settings
+			for table, child_table in pairs( storage.secondary_chat.default.player.settings ) do
 				settings_data[table] = {}
 				for property_name, parameter in pairs( child_table ) do
 					settings_data[table][property_name] = {}
@@ -44,7 +44,7 @@ function update_global_config_player(player)
 			end
 		end
 
-		local info = global.secondary_chat.players[player_index].info
+		local info = storage.secondary_chat.players[player_index].info
 		if info then
 			for table, child_table in pairs( configs.global.get_info() ) do
 				if info[table] then
@@ -58,15 +58,15 @@ function update_global_config_player(player)
 				end
 			end
 		else
-			global.secondary_chat.players[player_index].info = configs.global.get_info()
+			storage.secondary_chat.players[player_index].info = configs.global.get_info()
 		end
 	else
-		global.secondary_chat.players[player_index] = {
+		storage.secondary_chat.players[player_index] = {
 			settings = {}
 		}
 
-		local settings_data = global.secondary_chat.players[player_index].settings
-		for table, child_table in pairs( global.secondary_chat.default.player.settings ) do
+		local settings_data = storage.secondary_chat.players[player_index].settings
+		for table, child_table in pairs( storage.secondary_chat.default.player.settings ) do
 			settings_data[table] = {}
 			for property_name, parameter in pairs( child_table ) do
 				settings_data[table][property_name] = {}
@@ -76,23 +76,23 @@ function update_global_config_player(player)
 			end
 		end
 
-		global.secondary_chat.players[player_index].info = configs.global.get_info()
+		storage.secondary_chat.players[player_index].info = configs.global.get_info()
 	end
 
-	global.secondary_chat.players[player_index].gui = global.secondary_chat.players[player_index].gui or {}
-	global.secondary_chat.players[player_index].gui.saves = global.secondary_chat.players[player_index].gui.saves or {}
-	global.secondary_chat.players[player_index].gui.saves.hidden = global.secondary_chat.players[player_index].gui.saves.hidden or {}
-	global.secondary_chat.players[player_index].autohide = MAX_AUTOHIDE_TIME
-	global.secondary_chat.players[player_index].blacklist = global.secondary_chat.players[player_index].blacklist or {}
+	storage.secondary_chat.players[player_index].gui = storage.secondary_chat.players[player_index].gui or {}
+	storage.secondary_chat.players[player_index].gui.saves = storage.secondary_chat.players[player_index].gui.saves or {}
+	storage.secondary_chat.players[player_index].gui.saves.hidden = storage.secondary_chat.players[player_index].gui.saves.hidden or {}
+	storage.secondary_chat.players[player_index].autohide = MAX_AUTOHIDE_TIME
+	storage.secondary_chat.players[player_index].blacklist = storage.secondary_chat.players[player_index].blacklist or {}
 
 	if player.connected then
-		if not global.secondary_chat.state_chat then return end
+		if not storage.secondary_chat.state_chat then return end
 		create_chat_gui(player)
 	end
 end
 
 function update_global_config()
-	local settings = global.secondary_chat.default.player.settings
+	local settings = storage.secondary_chat.default.player.settings
 	if settings then
 		for table, child_table in pairs( configs.player.get_settings() ) do
 			if settings[table] then
@@ -114,15 +114,15 @@ function update_global_config()
 			end
 		end
 	else
-		global.secondary_chat.default.player.settings = configs.player.get_settings()
+		storage.secondary_chat.default.player.settings = configs.player.get_settings()
 	end
 
-	if global.secondary_chat.global == nil then
-		global.secondary_chat.global = {}
-		global.secondary_chat.global.settings = configs.global.get_settings()
-		global.secondary_chat.global.info = configs.global.get_info()
+	if storage.secondary_chat.global == nil then
+		storage.secondary_chat.global = {}
+		storage.secondary_chat.global.settings = configs.global.get_settings()
+		storage.secondary_chat.global.info = configs.global.get_info()
 	else
-		local settings_data = global.secondary_chat.global.settings
+		local settings_data = storage.secondary_chat.global.settings
 		if settings_data then
 			for table, child_table in pairs( configs.global.get_settings() ) do
 				if settings_data[table] then
@@ -136,10 +136,10 @@ function update_global_config()
 				end
 			end
 		else
-			global.secondary_chat.global.settings = configs.global.get_settings()
+			storage.secondary_chat.global.settings = configs.global.get_settings()
 		end
 
-		local info = global.secondary_chat.global.info
+		local info = storage.secondary_chat.global.info
 		if info then
 			for key, child_table in pairs( configs.global.get_info() ) do
 				if info[key] then
@@ -153,12 +153,12 @@ function update_global_config()
 				end
 			end
 		else
-			global.secondary_chat.global.info = configs.global.get_info()
+			storage.secondary_chat.global.info = configs.global.get_info()
 		end
 	end
 
-	global.secondary_chat.global.mutes = global.secondary_chat.global.mutes or {}
-	global.secondary_chat.global.list = global.secondary_chat.global.list or {}
+	storage.secondary_chat.global.mutes = storage.secondary_chat.global.mutes or {}
+	storage.secondary_chat.global.list = storage.secondary_chat.global.list or {}
 end
 
 function delete_old_chat()

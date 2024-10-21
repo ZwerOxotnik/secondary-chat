@@ -64,10 +64,10 @@ function create_settings_chat_of_admin(player, settings)
 	-- TODO: table - standart global chat settings for player
 	-- TODO: table - add chat
 	-- TODO: table - pick a char for deleting/changing/getting a information!
-	make_config_table(main_table, global.secondary_chat.global.settings.main)
+	make_config_table(main_table, storage.secondary_chat.global.settings.main)
 
 	local config_table = main_table.config_table
-	config_table.allow_custom_color_message_boolean.enabled = (global.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker"] ~= nil))
+	config_table.allow_custom_color_message_boolean.enabled = (storage.secondary_chat.global.settings.main.allow_custom_color_message and (remote.interfaces["color-picker"] ~= nil))
 	if not config_table.allow_custom_color_message_boolean.enabled then
 		config_table.allow_custom_color_message_boolean.tooltip = {'', {'secondary_chat.connect_mod'}, {'colon'},' "Color picker"'}
 	end
@@ -89,7 +89,7 @@ function create_settings_chat_of_player(player, settings, is_fast_menu)
 	main_table.style.right_padding = 0
 	local label = main_table.add{type = 'label', caption = {'gui-mod-settings.title'}}
 	label.style.font = "default-semibold"
-	make_config_table_player(main_table, global.secondary_chat.players[player.index].settings.main, is_fast_menu)
+	make_config_table_player(main_table, storage.secondary_chat.players[player.index].settings.main, is_fast_menu)
 
 	check_and_change_visible_table(main_table)
 end
@@ -110,13 +110,13 @@ function toggle_settings_chat_gui(player, table_chat)
 end
 
 function update_checkbox(player, element, parameter)
-	global.secondary_chat.players[player.index].autohide = MAX_AUTOHIDE_TIME
+	storage.secondary_chat.players[player.index].autohide = MAX_AUTOHIDE_TIME
 
 	local chat_main_frame = player.gui.screen.chat_main_frame
 	local table_chat = chat_main_frame.table_chat
 	local container = element.parent.parent
 	if container.name == 'player' then
-		global.secondary_chat.players[player.index].settings.main[parameter].state = element.state
+		storage.secondary_chat.players[player.index].settings.main[parameter].state = element.state
 
 		if parameter == 'state_chat' then
 			local event_name = 'on_hide_gui_chat'
@@ -141,7 +141,7 @@ function update_checkbox(player, element, parameter)
 			toggle_drop_down(player)
 		end
 	elseif container.name == 'admin' then
-		global.secondary_chat.global.settings.main[parameter] = element.state
+		storage.secondary_chat.global.settings.main[parameter] = element.state
 
 		for _, target in pairs( game.connected_players ) do
 			if target.admin then
@@ -165,7 +165,7 @@ function update_checkbox(player, element, parameter)
 end
 
 function update_allow_fast_show(player, element, parameter)
-	local player_data = global.secondary_chat.players[player.index]
+	local player_data = storage.secondary_chat.players[player.index]
 	player_data.autohide = MAX_AUTOHIDE_TIME
 	player_data.settings.main[parameter].allow_fast_show = element.state
 

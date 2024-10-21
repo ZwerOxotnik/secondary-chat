@@ -9,7 +9,7 @@ function make_config_table(gui, config)
 		config_table = gui.add{type = 'table', name = 'config_table', column_count = 2}
 		config_table.style.column_alignments[2] = 'right'
 	end
-	local items = game.item_prototypes
+	local items = prototypes.item
 	for k, data in pairs (config) do
 		local label = config_table.add{type = 'label', name = k}
 
@@ -57,7 +57,7 @@ function make_config_table_player(gui, config, is_fast_menu)
 		config_table.style.column_alignments[column_count] = 'right'
 	end
 
-	local items = game.item_prototypes
+	local items = prototypes.item
 	for k, data in pairs (config) do
 		if data.access and (not is_fast_menu or (is_fast_menu and data.allow_fast_show)) then
 			if not is_fast_menu then
@@ -108,7 +108,7 @@ function make_config_table_player(gui, config, is_fast_menu)
 end
 
 function add_element_config_fast(data, config_table, name)
-	local items = game.item_prototypes
+	local items = prototypes.item
 	if data.access then
 		local label = config_table.add{type = 'label', name = name}
 
