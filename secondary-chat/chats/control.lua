@@ -257,11 +257,11 @@ send_message['faction'] = function(input_message, player)
 	end
 end
 
-local text_data_for_local_chat = {
+
+local __text_data_for_local_chat = {
 	text = '',
 	surface = nil,
-	target = nil,
-	target_offset = {0, -2.2},
+	target = {entity = nil, offset = {0, -2.2}},
 	color = {1, 1, 1},
 	time_to_live = 80,
 	-- forces = player.force,
@@ -298,12 +298,12 @@ send_message['local'] = function(input_message, player)
 	end
 
 	if is_draw then
-		text_data_for_local_chat.text = input_message
-		text_data_for_local_chat.surface = player.surface
-		text_data_for_local_chat.players = targets
-		text_data_for_local_chat.target = player.character or player.position
-		text_data_for_local_chat.time_to_live = 80 + #input_message
-		draw_text(text_data_for_local_chat)
+		__text_data_for_local_chat.text    = input_message
+		__text_data_for_local_chat.surface = player.surface
+		__text_data_for_local_chat.players = targets
+		__text_data_for_local_chat.target.entity = player.character or player.position
+		__text_data_for_local_chat.time_to_live = 80 + #input_message
+		draw_text(__text_data_for_local_chat)
 	end
 
 	return true

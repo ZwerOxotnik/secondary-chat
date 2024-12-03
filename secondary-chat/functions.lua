@@ -113,15 +113,14 @@ check_stance['specific'] = function(force, other_force)
 	return false
 end
 
-local notice_players = {nil}
-local notice_text_data = {
+local __notice_players = {nil}
+local __notice_text_data = {
 	text = '',
 	surface = nil,
-	target = nil,
-	target_offset = {0, -1.4},
+	target = {entity = nil, offset = {0, -1.4}},
 	color = {1, 1, 1},
 	time_to_live = 110,
-	players = notice_players,
+	players = __notice_players,
 	alignment = "left",
 	scale_with_zoom = true
 }
@@ -135,11 +134,11 @@ function send_notice(message, player)
 		if player.afk_time < 1800 or type(message) ~= "string" or #message > 60 then
 			player.print(message)
 		else
-			notice_players[1] = player
-			notice_text_data.text = message
-			notice_text_data.surface = player.surface
-			notice_text_data.target = player.character or player.position
-			draw_text(notice_text_data)
+			__notice_players[1] = player
+			__notice_text_data.text = message
+			__notice_text_data.surface = player.surface
+			__notice_text_data.target.entity = player.character or player.position
+			draw_text(__notice_text_data)
 		end
 	end
 end

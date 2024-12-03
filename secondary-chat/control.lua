@@ -35,7 +35,6 @@ chats = {}
 
 
 --#region Constants
-local draw_text = rendering.draw_text
 local print_to_rcon = rcon.print
 local match = string.match
 local floor = math.floor
@@ -46,7 +45,7 @@ local CLOSE_BUTTON = {
 	type = "sprite-button",
 	name = "SChat_close",
 	style = "frame_action_button",
-	sprite = "utility/close_white",
+	sprite = "utility/close",
 	hovered_sprite = "utility/close_black",
 	clicked_sprite = "utility/close_black"
 }
@@ -58,7 +57,7 @@ MAX_AUTOHIDE_TIME = 60 * 60 * 10 -- 10 min
 
 ---@param name string
 function getRconData(name)
-	print_to_rcon(game.table_to_json(mod_data[name]))
+	print_to_rcon(helpers.table_to_json(mod_data[name]))
 end
 
 --#endregion
